@@ -1,0 +1,124 @@
+<!-- Main content -->
+<section class="content">
+
+    <div>
+        <label for="sel2EmailTemplates">
+            Escolher o assunto:
+
+            <select id="sel2EmailTemplates" class="form-control" style="width: 100%;">
+                <option></option>
+            </select>
+        </label>
+
+        <label for="sel2Groups">
+            &nbsp; Grupos:
+
+            <select id="sel2Groups" class="form-control" style="width: 100%;">
+                <option></option>
+            </select>
+        </label>
+
+        <label for="sel2Regions">
+            &nbsp; Regiões:
+
+            <select id="sel2Regions" class="form-control" style="width: 100%;">
+                <option></option>
+            </select>
+        </label>
+
+        <label for="sel2Categories">
+            &nbsp; Categorias:
+
+            <select id="sel2Categories" class="form-control" style="width: 100%;">
+                <option></option>
+            </select>
+        </label>
+
+
+        <label for="sel2States">
+            &nbsp; Estados:
+
+            <select id="sel2States" class="form-control" style="width: 100%;">
+                <option></option>
+            </select>
+        </label>
+
+
+        <label for="sel2Cities">
+            &nbsp; Cidades:
+
+            <select id="sel2Cities" class="form-control" style="width: 95%;">
+                <option></option>
+            </select>
+        </label>
+
+
+        <label for="sel2Recipients">
+            &nbsp; Destinatários:
+
+            <select id="sel2Recipients" class="form-control" style="width: 100%;">
+                <option></option>
+            </select>
+        </label>
+    </div>
+
+    <!-- Default box -->
+    <div class="box box-solid">
+        <div class="box-body">
+            <div id="headerPreview" class="oem">
+                Conteúdo...
+            </div>
+            <div id="bodyPreview" class="oem">
+            </div>
+            <div id="footerPreview" class="oem">
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="chkSingle" id="chkSingle">
+                    <strong>Enviar Comunicado</strong>
+                </label>
+            </div>
+            <button id="btnOpenUpload" class="btn btn-info" data-toggle="modal" data-target="#filesModal">
+                <sapn class="fa fa-cloud-upload"></sapn> &nbsp;Anéxos</button>
+            <button id="btnSend" class="btn btn-primary">
+                <span class="fa fa-send-o"></span> &nbsp; Enviar</button>
+        </div>
+    </div>
+    <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+    <!-- Files modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="filesModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Fazer upload de anexos</h4>
+                </div>
+                <div class="modal-body">
+                    {{>fileBrowser}}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btnUploadFiles" class="btn btn-primary">
+                        <sapn class="fa fa-cloud-upload"></sapn> &nbsp; Salvar arquivo(s)</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+</section>
+<!-- /.content -->
+
+<script>
+    let userInfo = "{{json user}}".replace(/&quot;/g, '"');
+</script>

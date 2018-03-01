@@ -1,0 +1,205 @@
+<!-- Accordion END -->
+<div id="accordion">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="accordion-toggle">
+                    Cadastro
+                </a>
+            </h3>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <form role="form">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="inputName">Nome</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Nome" style="text-transform: uppercase">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPhone">Celular</label>
+                        <input type="text" class="form-control" id="inputPhone" placeholder="Telefone">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Endereço</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="Endereço" style="text-transform: uppercase">
+                    </div>
+                    <div class="form-group">
+                        <label for="sel2States">Estado</label>
+                        <br />
+                        <select id="sel2States" class="form-control" style="width: 100%;">
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel2Cities">Cidade</label>
+                        <br />
+                        <select id="sel2Cities" class="form-control" style="width: 95%;">
+                            <option></option>
+                        </select>
+                        <button class="btn btn-link btnEditModals" value="city" disabled>
+                            <span class="fa fa-edit"></span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel2Regions">Região</label>
+                        <br />
+                        <select id="sel2Regions" class="form-control" style="width: 95%;">
+                            <option></option>
+                        </select>
+                        <button class="btn btn-link btnEditModals" value="region">
+                            <span class="fa fa-edit"></span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel2Groups">Grupo</label>
+                        <br />
+                        <select id="sel2Groups" class="form-control" style="width: 95%;">
+                            <option></option>
+                        </select>
+                        <button class="btn btn-link btnEditModals" value="group">
+                            <span class="fa fa-edit"></span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel2Categories">Categoria</label>
+                        <br />
+                        <select id="sel2Categories" class="form-control" style="width: 95%;">
+                            <option></option>
+                        </select>
+                        <button class="btn btn-link btnEditModals" value="category">
+                            <span class="fa fa-edit"></span>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                    <button id="btnSaveRecipient" type="submit" class="btn btn-primary" value="post">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="jsGrid">
+</div>
+
+<!-- Category Modal -->
+<div id="categoryModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nova Categoria</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="inputCategoryName">Categoria</label>
+                        <input type="text" class="form-control" id="inputCategoryName" placeholder="Nome">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSaveCategory" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /Modal -->
+
+<!-- Region Modal -->
+<div id="regionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nova Região</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="inputRegionName">Região</label>
+                        <input type="text" class="form-control" id="inputRegionName" placeholder="Nome">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSaveRegion" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /Modal -->
+
+<!-- Group Modal -->
+<div id="groupModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Novo Grupo</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="inputGroupName">Grupo</label>
+                        <input type="text" class="form-control" id="inputGroupName" placeholder="Nome">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSaveGroup" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /Modal -->
+
+<!-- City Modal -->
+<div id="cityModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nova Cidade</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="inputCityName">Cidade</label>
+                        <input type="text" class="form-control" id="inputCityName" placeholder="Nome">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSaveCity" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /Modal -->
+
+<script>
+    let userInfo = "{{json user}}".replace(/&quot;/g, '"');
+</script>

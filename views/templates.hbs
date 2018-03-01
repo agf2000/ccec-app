@@ -1,0 +1,121 @@
+<!-- Main content -->
+<section class="content">
+
+    <div>
+        <label for="id_label_single">
+            Escolher o tipo de correspondência:
+
+            <select id="sel2EmailTemplates" class="form-control">
+                <option></option>
+            </select>
+
+            <button id="btnNew" class="btn btn-link">Novo Template</button>
+        </label>
+    </div>
+    <br />
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 id="h3Edit" class="box-title">Assunto:</h3>
+        </div>
+        <div class="box-body">
+            <input id="inputName" type="text" class="form-control" placeholder="Dê um nome ao template" />
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+    <div class="box">
+        <div class="box-header with-border hidden">
+            <h3 class="box-title">Cabeçalho</h3>
+        </div>
+        <div class="box-body">
+            <textarea id="headerTemplate" class="textarea"></textarea>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <div class="box-tools pull-right">
+                <button class="btn btn-link restoreTemplate" value="restoreHeader">
+                    Restaurar
+                </button>
+                <button class="btn btn-link saveTemplate" value="saveHeader">
+                    Salvar
+                </button>
+            </div>
+            <div id="headerPreview" class="oem">
+            </div>
+            <div id="oemHeaderTemplate" class="hidden">
+                <h1>Teste cabeçalho</h1>
+            </div>
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+    <!-- Default box -->
+    <div class="box hidden">
+        <div class="box-header with-border">
+            <h3 class="box-title">Corpo</h3>
+
+            <div class="box-tools pull-right">
+                <button class="btn btn-link restoreTemplate" value="restoreBody">
+                    Restaurar
+                </button>
+                <button class="btn btn-link saveTemplate" value="saveBody">
+                    Salvar
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <textarea id="bodyTemplate" class="textarea"></textarea>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <div id="bodyPreview" class="oem">
+            </div>
+            <div id="oemBodyTemplate" class="hidden">
+                <h1>Teste corpo</h1>
+            </div>
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+    <!-- Default box -->
+    <div class="box hidden">
+        <div class="box-header with-border">
+            <h3 class="box-title">Rodapé</h3>
+
+            <div class="box-tools pull-right">
+                <button class="btn btn-link restoreTemplate" value="restoreFooter">
+                    Restaurar
+                </button>
+                <button class="btn btn-link saveTemplate" value="saveFooter">
+                    Salvar
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <textarea id="footerTemplate" class="textarea"></textarea>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <div id="footerPreview" class="oem">
+            </div>
+            <div id="oemFooterTemplate" class="hidden">
+                <h1>Teste rodapé</h1>
+            </div>
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+</section>
+<!-- /.content -->
+
+<script>
+    let userInfo = "{{json user}}".replace(/&quot;/g, '"');
+</script>
