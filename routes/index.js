@@ -178,7 +178,8 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/sweetalert2/css/sweetalert2.min.css',
 			'/lib/jsgrid/css/jsgrid.min.css',
 			'/lib/jsgrid/css/jsgrid-theme.min.css',
-			'/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
+			// '/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
+			'/lib/pikaday/css/pikaday.css'
 		],
 		script: [
 			'/js/pages/sponsors.js',
@@ -186,8 +187,9 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
 			'/lib/jsgrid/js/jsgrid.min.js',
-			'/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js',
-			'/lib/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js',
+			// '/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js',
+			// '/lib/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js',
+			'/lib/pikaday/js/pikaday.js',
 			'/lib/hotkeys-js/js/hotkeys.min.js'
 		]
 	});

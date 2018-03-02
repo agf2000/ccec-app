@@ -50,6 +50,7 @@
 		"pace-js": "^1.0.2",
 		"passport": "^0.4.0",
 		"passport-local": "^1.0.0",
+		"pikaday": "^1.7.0",
 		"pnotify": "^3.2.1",
 		"select2": "4.0.5",
 		"select2-bootstrap-theme": "^0.1.0-beta.10",

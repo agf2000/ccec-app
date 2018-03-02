@@ -4,6 +4,40 @@ $(function () {
     my.sponsorId = 0;
     my.originalFileName = '';
 
+    let pickerIn = new Pikaday({
+        field: $('#inputDateStart')[0],
+        format: 'D MMM YYYY',
+        minDate: moment().toDate(),
+        theme: 'dark-theme',
+        onSelect: function () {
+            console.log(this.getMoment().format('D/M/YYYY'));
+        },
+        i18n: {
+            previousMonth: 'Previous Month',
+            nextMonth: 'Next Month',
+            months: ['Janairo', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            weekdays: ['Somingo', 'Segunda', 'Quinta', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+        }
+    });
+
+    let pickerOut = new Pikaday({
+        field: $('#inputDateEnd')[0],
+        format: 'D MMM YYYY',
+        minDate: moment().toDate(),
+        theme: 'dark-theme',
+        onSelect: function () {
+            console.log(this.getMoment().format('D/M/YYYY'));
+        },
+        i18n: {
+            previousMonth: 'Previous Month',
+            nextMonth: 'Next Month',
+            months: ['Janairo', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            weekdays: ['Somingo', 'Segunda', 'Quinta', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+        }
+    });
+
     hotkeys('f4', function (e, h) {
         if (h.key == "f4") {
             $('#categoryModal').modal();
@@ -383,8 +417,8 @@ $(function () {
         formData.append('portalId', 0);
         formData.append('sponsorName', $('#inputName').val());
         formData.append('sponsorUrl', $('#inputLink').val());
-        formData.append('dateStart', ($('#inputDateStart').val().length ? moment($('#inputDateStart').val()).format('MM/DD/YYYY 00:00:00') : ''));
-        formData.append('dateEnd', ($('#inputDateEnd').val().length ? moment($('#inputDateEnd').val()).format('MM/DD/YYYY 00:00:00') : ''));
+        formData.append('dateStart', ($('#inputDateStart').val().length ? pickerIn.getMoment().format('YYYY-MM-DD') : ''));
+        formData.append('dateEnd', ($('#inputDateEnd').val().length ? pickerOut.getMoment().format('YYYY-MM-DD') : ''));
         formData.append('active', $('#inputActive').is(':checked'));
         // formData.append('sponsorCategories', JSON.stringify($('#sel2Categories').select2('data')));
         formData.append('sponsorCategory', $('#sel2Categories').val());
@@ -633,8 +667,8 @@ $(function () {
                 }
                 $('#inputName').val(item.sponsorName);
                 $('#inputLink').val(item.sponsorUrl);
-                $('#inputDateStart').val((item.dateStart ? moment(item.dateStart).format('DD/MM/YYYY') : ''));
-                $('#inputDateEnd').val((item.dateEnd ? moment(item.dateEnd).format('DD/MM/YYYY') : ''));
+                pickerIn.setDate(item.dateStart);
+                pickerOut.setDate(item.dateEnd);
                 $('#inputActive').prop('checked', item.active);
 
                 // let categories = item.sponsorCategoriesIds.split(',');
@@ -781,10 +815,6 @@ $(function () {
         }).fail(function (jqXHR, textStatus) {
             console.log(jqXHR.responseText);
         });
-    });
-
-    $('.datepicker').datepicker({
-        language: 'pt-BR'
     });
 
 });

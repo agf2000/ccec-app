@@ -171,23 +171,23 @@ gulp.task('vendors', function () {
     // gulp.src('node_modules/webui-popover/dist/jquery.webui-popover.min.js')
     //     .pipe(gulp.dest(app + '/lib/webui-popover/js'));
 
-    // gulp.src('node_modules/pikaday/css/pikaday.css')
-    //     .pipe(gulp.dest(app + '/lib/pikaday/css'));
+    gulp.src('node_modules/pikaday/css/pikaday.css')
+        .pipe(gulp.dest(app + '/lib/pikaday/css'));
 
-    // gulp.src('node_modules/pikaday/pikaday.js')
-    //     .pipe(gulp.dest(app + '/lib/pikaday/js'));
+    gulp.src('node_modules/pikaday/pikaday.js')
+        .pipe(gulp.dest(app + '/lib/pikaday/js'));
 
-    // gulp.src('process/js/pikaday.pt-BR.js')
-    //     .pipe(gulp.dest(app + '/lib/pikaday/js/locales'));
+    gulp.src('process/js/pikaday.pt-BR.js')
+        .pipe(gulp.dest(app + '/lib/pikaday/js/locales'));
 
-    gulp.src('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css')
-        .pipe(gulp.dest(app + '/lib/bootstrap-datepicker/css'));
+    // gulp.src('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css')
+    //     .pipe(gulp.dest(app + '/lib/bootstrap-datepicker/css'));
 
-    gulp.src('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')
-        .pipe(gulp.dest(app + '/lib/bootstrap-datepicker/js'));
+    // gulp.src('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')
+    //     .pipe(gulp.dest(app + '/lib/bootstrap-datepicker/js'));
 
-    gulp.src('node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js')
-        .pipe(gulp.dest(app + '/lib/bootstrap-datepicker/locales'));
+    // gulp.src('node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js')
+    //     .pipe(gulp.dest(app + '/lib/bootstrap-datepicker/locales'));
 
     // gulp.src('node_modules/jquery.counterup/jquery.counterup.min.js')
     //     .pipe(gulp.dest(app + '/lib/jquery.counterup/js'));
