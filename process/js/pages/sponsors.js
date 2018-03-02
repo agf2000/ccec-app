@@ -91,7 +91,6 @@ $(function () {
         e.preventDefault();
 
         let $this = $(this);
-
         $this.prop('disabled', true);
 
         let params = {
@@ -110,7 +109,7 @@ $(function () {
                     type: "success",
                     showCancelButton: false,
                     confirmButtonText: "Ok",
-                    timer: 2000
+                    timer: 3000
                 }).then(
                     function () {},
                     // handling the promise rejection
@@ -195,7 +194,7 @@ $(function () {
                     type: "success",
                     showCancelButton: false,
                     confirmButtonText: "Ok",
-                    timer: 2000
+                    timer: 3000
                 }).then(
                     function () {},
                     // handling the promise rejection
@@ -280,7 +279,7 @@ $(function () {
                     type: "success",
                     showCancelButton: false,
                     confirmButtonText: "Ok",
-                    timer: 2000
+                    timer: 3000
                 }).then(
                     function () {},
                     // handling the promise rejection
@@ -467,7 +466,7 @@ $(function () {
                             type: "success",
                             showCancelButton: false,
                             confirmButtonText: "Ok",
-                            timer: 2000
+                            timer: 3000
                         }).then(
                             function () {
 
@@ -628,7 +627,7 @@ $(function () {
                             type: "success",
                             showCancelButton: false,
                             confirmButtonText: "Ok",
-                            timer: 2000
+                            timer: 3000
                         }).then(
                             function () {},
                             // handling the promise rejection
@@ -781,6 +780,22 @@ $(function () {
         }
         e.preventDefault();
 
+        swal({
+            title: "Excluindo arquivo!",
+            html: "Tentativa de exclusão de arquivo.<br />Por favor aguarde uma resposta do sistema.",
+            type: "success",
+            showCancelButton: false,
+            confirmButtonText: "Ok"
+        }).then(
+            function () {},
+            // handling the promise rejection
+            function (dismiss) {
+                if (dismiss === 'timer') {
+                    console.log('I was closed by the timer')
+                }
+            }
+        );
+
         $.ajax({
             type: 'DELETE',
             url: '/api/sponsorImage',
@@ -795,7 +810,7 @@ $(function () {
                     type: "success",
                     showCancelButton: false,
                     confirmButtonText: "Ok",
-                    timer: 2000
+                    timer: 3000
                 }).then(
                     function () {
                         $('#imagePreview').removeAttr('src');
