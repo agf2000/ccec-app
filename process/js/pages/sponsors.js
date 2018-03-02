@@ -782,10 +782,10 @@ $(function () {
 
         swal({
             title: "Excluindo arquivo!",
-            html: "Tentativa de exclusão de arquivo.<br />Por favor aguarde uma resposta do sistema.",
+            html: "Liberando arquivo para exclusão.<br />Por favor aguarde uma resposta do sistema.",
             type: "info",
             showCancelButton: false,
-            confirmButtonText: "Ok"
+            showConfirmButton: false
         }).then(
             function () {},
             // handling the promise rejection
