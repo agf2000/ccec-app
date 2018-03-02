@@ -177,8 +177,8 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/select2/css/select2.min.css',
 			'/lib/sweetalert2/css/sweetalert2.min.css',
 			'/lib/jsgrid/css/jsgrid.min.css',
-			'/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css',
-			'/lib/jsgrid/css/jsgrid-theme.min.css'
+			'/lib/jsgrid/css/jsgrid-theme.min.css',
+			'/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
 		],
 		script: [
 			'/js/pages/sponsors.js',
@@ -249,13 +249,20 @@ router.get('/historico', ensureAuthenticated, function (req, res) {
 		css: [
 			'/css/pages/history.css',
 			'/lib/select2/css/select2.min.css',
-			'/lib/sweetalert2/css/sweetalert2.min.css'
+			'/lib/sweetalert2/css/sweetalert2.min.css',
+			'/lib/jsgrid/css/jsgrid.min.css',
+			'/lib/jsgrid/css/jsgrid-theme.min.css',
+			'/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
 		],
 		script: [
 			'/js/pages/history.js',
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
-			'/lib/sweetalert2/js/sweetalert2.min.js'
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/jsgrid/js/jsgrid.min.js',
+			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
+			'/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js',
+			'/lib/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js'
 		]
 	});
 });

@@ -1269,11 +1269,11 @@ exports.getEmailTemplate = function (req, res, templateId) {
 
 // Adds email log
 // vscode-fold=38
-exports.addEmailLog = function (req, res, portalId, sent, notSent, sentLog, cb) {
+exports.addEmailLog = function (req, res, portalId, sent, sentLog, notSent, attachies, toWhom, subject, sentDate, cb) {
     try {
-        let sqlInst = "insert into sendlog (portalId, sent, notsent, sentlog, createdondate";
+        let sqlInst = "insert into sendlog (portalId, sent, sentlog, notsent, attachments, towhom, subject, sentondate";
 
-        sqlInst += `) values (${portalId}, ${sent}, ${notSent}, '${sentLog}', getdate()); `;
+        sqlInst += `) values (${portalId}, ${sent}, '${sentLog}', ${notSent}, ${attachies}, '${toWhom}', '${subject}', '${sentDate}'); `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {
@@ -1292,4 +1292,27 @@ exports.addEmailLog = function (req, res, portalId, sent, notSent, sentLog, cb) 
             ex.message
         );
     };
+};
+
+// Gets email templates
+// vscode-fold=39
+exports.getHistories = function (req, res) {
+    try {
+        let sqlInst = 'select * from sendlog;';
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json(data.recordset);
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    }
 };

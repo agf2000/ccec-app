@@ -523,7 +523,7 @@ $(function () {
 
         swal({
             title: "Sucesso!",
-            html: "Correspondêcia(s) sendo preparada para envio.<br />Aguarde oru verifique o histórico de envio para mais informações.",
+            html: "Correspondêcia(s) sendo preparada para envio.<br />Aguarde ou verifique o histórico de envio para mais informações.",
             type: "success",
             showCancelButton: false,
             confirmButtonText: "Ok"

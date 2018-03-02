@@ -10,6 +10,7 @@ const shortid = require('shortid');
 const email = require('../config/emailConfig');
 const _ = require('lodash');
 const mime = require('mime-types');
+const moment = require('moment');
 const router = express.Router();
 
 let tempFolder = shortid.generate(),
@@ -480,7 +481,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                                 sent++;
                             }
 
-                            apiController.addEmailLog(req, res, 0, sent, notSent, emailErr || message, function (cb) {
+                            apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, attachArray.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                                 if (cb.error) return console.error(cb.error)
 
                                 counter++;
@@ -501,7 +502,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                     } else {
                         notSent++;
 
-                        apiController.addEmailLog(req, res, 0, sent, notSent, emailErr || message, function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment().format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) return console.error(cb.error)
 
                             res.json({
@@ -541,7 +542,8 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                             } else {
                                 sent++;
                             }
-                            apiController.addEmailLog(req, res, 0, sent, notSent, emailErr || message, function (cb) {
+
+                            apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, attachments.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                                 counter++;
 
                                 if (counter == results.response.recipients.length) {
@@ -576,7 +578,8 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                             } else {
                                 sent++;
                             }
-                            apiController.addEmailLog(req, res, 0, sent, notSent, emailErr || message, function (cb) {
+
+                            apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                                 console.error(cb.error);
                             });
 
@@ -588,6 +591,18 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                         });
                     }
                 }
+            });
+        }
+    });
+});
+
+// Gets list of email history
+// vscode-fold=43
+router.get('/histories', ensureAuthenticated, function (req, res, next) {
+    apiController.getHistories(req, res, req.query, function (results) {
+        if (!results.error) {
+            res.json({
+                histories: results
             });
         }
     });
