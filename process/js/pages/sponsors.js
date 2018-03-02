@@ -783,7 +783,7 @@ $(function () {
         swal({
             title: "Excluindo arquivo!",
             html: "Tentativa de exclusão de arquivo.<br />Por favor aguarde uma resposta do sistema.",
-            type: "success",
+            type: "info",
             showCancelButton: false,
             confirmButtonText: "Ok"
         }).then(
