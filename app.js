@@ -11,6 +11,7 @@ const helpers = require("./process/js/helpers.js");
 const virtualPath = process.env.VIRTUAL_PATH || "";
 
 const index = require('./routes/index');
+const users = require('./routes/users');
 const api = require('./routes/api');
 
 const app = express();
@@ -59,6 +60,7 @@ app.use(express.static(path.join(__dirname, 'data')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/users', users);
 app.use('/api', api);
 
 // catch 404 and forward to error handler

@@ -2,16 +2,41 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const peopleController = require("../controllers/peopleController.js");
+const ensureAuthenticated = require('../process/js/ensureAuthenticated');
 const router = express.Router();
 
+// Gets list of users
+// vscode-fold=1
+router.get('/', ensureAuthenticated, function (req, res) {
+	peopleController.getUsers(req, res);
+});
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-	res.send('respond with a resource');
+// Adds user
+// vscode-fold=2
+router.post('/user', ensureAuthenticated, function (req, res, next) {
+	peopleController.addUser(req, res, req.body);
+});
+
+// Updates user
+// vscode-fold=3
+router.put('/user', ensureAuthenticated, function (req, res, next) {
+	peopleController.updateUser(req, res, req.body);
+});
+
+// Removes user
+// vscode-fold=4
+router.delete('/user', ensureAuthenticated, function (req, res, next) {
+	peopleController.removeUser(req, res, req.body);
+});
+
+// Gets list of rolews
+// vscode-fold=2
+router.get('/roles', function (req, res) {
+	peopleController.getRoles(req, res);
 });
 
 // Login Form
-// vscode-fold=1
+// vscode-fold=5
 router.get('/login', function (req, res) {
 	res.render('login', {
 		title: 'Login',
@@ -23,7 +48,7 @@ router.get('/login', function (req, res) {
 });
 
 // Registration Form
-// vscode-fold=2
+// vscode-fold=6
 router.get('/register', function (req, res) {
 	res.render('register', {
 		title: 'Cadastro de Usuários',
@@ -37,7 +62,7 @@ router.get('/register', function (req, res) {
 
 // Users
 // User registration proccess
-// vscode-fold=3
+// vscode-fold=7
 router.post('/register', function (req, res, next) {
 	bcrypt.genSalt(10, function (err, salt) {
 		bcrypt.hash(req.body.password, salt, function (err, hash) {
@@ -83,7 +108,7 @@ router.post('/register', function (req, res, next) {
 });
 
 // Login process
-// vscode-fold=9
+// vscode-fold=8
 router.post('/login', function (req, res, next) {
 	passport.authenticate('local', function (error, user, info) {
 		if (error) {
@@ -114,7 +139,7 @@ router.post('/login', function (req, res, next) {
 });
 
 // Send user passoword process
-// vscode-fold=10
+// vscode-fold=9
 router.get('/reset/:token', function (req, res) {
 	let sqlInst = `select * from users where passwordresettoken = '${req.params.token}' and passwordresetexpiration <= '${(new Date().toISOString().slice(0, 19).replace('T', ' '))}'`;
 	db.querySql(sqlInst, (data, err) => {
@@ -286,7 +311,7 @@ router.post('/resetpassword', function (req, res, next) {
 });
 
 // logout
-// vscode-fold=11
+// vscode-fold=10
 router.get('/logout', function (req, res) {
 	req.logout();
 	res.redirect('/');

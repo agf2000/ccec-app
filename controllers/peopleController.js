@@ -2,6 +2,31 @@ const db = require("../core/db");
 const util = require("util");
 const _ = require('lodash');
 
+// Gets list of users
+// vscode-fold=3
+exports.getUsers = function (req, res) {
+    try {
+        let sqlInst = "select u.*, stuff((select ', ' + r.rolename from roles r join userroles ur on r.roleid = ur.roleid where u.userid = ur.userid for xml path('')), 1, 1, '') as userRoleNames, ";
+        sqlInst += "stuff((select ',', ' ' + convert(varchar, r.roleid) + ':' + r.rolename from roles r join userroles ur on r.roleid = ur.roleid where u.userid = ur.userid for xml path('')), 1, 2, '') as userRoles ";
+        sqlInst += 'from users u; ';
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json(data.recordset);
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    }
+};
+
 // Adds user
 // vscode-fold=1
 exports.addUser = function (req, res, reqBody, cb) {
@@ -9,36 +34,26 @@ exports.addUser = function (req, res, reqBody, cb) {
         if (!reqBody) throw new Error("Input not valid");
         let data = reqBody;
         if (data) {
-            let sqlInst = " declare @id int, @error nvarchar(100) "
-            sqlInst += "if exists(select top 1 1 from users where email = '" + data.email + "') "
-            sqlInst += "begin "
-            sqlInst += "set @error = 'Email " + data.email + " já cadastrado.' "
-            sqlInst += "end "
-            sqlInst += "else "
-            sqlInst += "insert into users (portalid, username, displayname, email, hashed_password, createdbyuser, createdondate ";
+            let sqlInst = 'declare @id int;';
+            sqlInst += `insert into users (displayname, email, createdbyuser, createdondate) values ('${data.displayName}', '${data.email}', ${data.createdByUser}, getdate); `;
+            sqlInst += 'set @id = scope_identity(); ';
 
-            sqlInst += util.format(" ) values (%d, '%s', '%s', '%s', '%s', -1, getdate() ",
-                data.portalId, data.email, data.displayName, data.email, data.password);
+            _.forEach(JSON.parse(data.roles), function (value) {
+                sqlInst += `insert into userroles (userid, roleid) values (@id, (select top 1 roleid from roles where rolename = '${value.text}')); `;
+            });
 
-            sqlInst += " ) set @id = scope_identity() ";
-            sqlInst += " select @id as userid, @error as error ";
+            sqlINst += 'select @id as userId;';
 
-            db.querySql(sqlInst, function (data, err) {
+            db.querySql(sqlInst, function (result, err) {
                 if (err) {
                     console.log(err.message);
-                    cb({
+                    res.status(500).json({
                         "error": err.message
                     });
                 } else {
-                    if (data.recordset[0].error == null) {
-                        cb({
-                            "userid": data.recordset[0].userid
-                        });
-                    } else {
-                        cb({
-                            "error": data.recordset[0].error
-                        });
-                    }
+                    res.json({
+                        "success": "success"
+                    });
                 }
             });
         } else {
@@ -46,7 +61,9 @@ exports.addUser = function (req, res, reqBody, cb) {
             return res.status(500).json(`Input not valid (status: 500)`);
         }
     } catch (ex) {
-        res.send(ex);
+        res.status(500).send(
+            ex.message
+        );
     };
 };
 
@@ -57,80 +74,25 @@ exports.updateUser = function (req, res, reqBody) {
         if (!reqBody) throw new Error("Input not valid");
         let data = reqBody;
         if (data) {
-            let sqlInst = " declare @originalEmail nvarchar(10), @newEmail nvarchar(100), @error nvarchar(100) ";
-            sqlInst += "set @originalEmail = (select email from users where userid = " + data.userId + ") ";
-            sqlInst += "set @newEmail = '" + data.email + "' ";
-            sqlInst += "if (@originalEmail <> @newEmail) ";
-            sqlInst += "if exists(select top 1 1 from users where email = '" + data.email + "') ";
-            sqlInst += " begin ";
-            sqlInst += "set @error = 'Email " + data.email + " já cadastrado.' ";
-            sqlInst += "end ";
-            sqlInst += "else ";
-            sqlInst += "update users set portalid = " + data.portalId + ", firstname = '" + data.firstName + "', lastname = '" + data.lastName + "', lastmodifiedbyuserid = " + data.lastModifiedByUserId + ", lastmodifiedondate = getdate()";
-            sqlInst += ", displayname = '" + (data.displayName || data.firstName + " " + data.lastName) + "', countryid = 29";
+            let sqlInst = "update users set  = '" + data.displayName + "', email = '" + data.email + "', modifiedbyuser = " + data.modifiedByUser + ", modifiedondate = getdate() ";
 
-            if (data.postalCode !== '') sqlInst += ", postalcode = " + data.postalCode;
-            if (data.street) sqlInst += ", street = " + data.street;
+            sqlInst += "where userid = " + data.userId + "; ";
 
-            if (data.telephone !== '') {
-                sqlInst += ", telephone = '" + data.telephone + "'"
-            } else {
-                sqlInst += ", telephone = " + null
-            };
-            if (data.cell) {
-                sqlInst += ", cell = '" + data.cell + "'"
-            } else {
-                sqlInst += ", cell = " + null
-            };
-            if (data.docid !== '') {
-                sqlInst += ", docid = '" + data.docId + "'"
-            } else {
-                sqlInst += ", docid = " + null
-            };
-            if (data.streetNumber !== '') {
-                sqlInst += ", streetNumber = " + data.streetNumber
-            } else {
-                sqlInst += ", streetNumber = " + null
-            };
-            if (data.district !== '') {
-                sqlInst += ", district = " + data.district
-            } else {
-                sqlInst += ", district = " + null
-            };
-            if (data.region !== '') {
-                if (typeof data.region === 'number') {
-                    sqlInst += ", regionid = " + data.region;
-                } else {
-                    sqlInst += ", regionid = (select [entryid] from lists where [text]] = " + data.region + ")";
-                }
-            }
-            if (data.city !== '') {
-                if (typeof data.city === 'number') {
-                    sqlInst += ", cityid = " + data.city;
-                } else {
-                    sqlInst += ", cityid = (select [entryid] from lists where [text]] = " + data.city + ")";
-                }
-            }
+            sqlInst += `delete from userroles where userid = ${data.userId}; `;
+            _.forEach(JSON.parse(data.roles), function (value) {
+                sqlInst += `insert into userroles (userid, roleid) values (${data.userId}, (select top 1 roleid from roles where rolename = '${value.text}'));`;
+            });
 
-            sqlInst += " where userid = " + data.userId;
-            sqlInst += " select @error as error ";
-
-            db.querySql(sqlInst, function (data, err) {
+            db.querySql(sqlInst, function (result, err) {
                 if (err) {
                     console.log(err.message);
                     res.status(500).json({
                         "error": err.message
                     });
                 } else {
-                    if (data.recordset[0].error == null) {
-                        res.json({
-                            "success": data.recordset[0].userid
-                        });
-                    } else {
-                        res.json({
-                            "error": data.recordset[0].error
-                        });
-                    }
+                    res.json({
+                        "success": "success"
+                    });
                 }
             });
         } else {
@@ -138,7 +100,34 @@ exports.updateUser = function (req, res, reqBody) {
             return res.status(500).json(`Input not valid (status: 500)`);
         }
     } catch (ex) {
-        res.send(ex);
+        res.status(500).send(
+            ex.message
+        );
+    };
+};
+
+// Removes user
+// vscode-fold=6
+exports.removeUser = function (req, res, userId) {
+    try {
+        let sqlInst = `delete from users where userid = ${userId}; `;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json({
+                    success: "success"
+                });
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
     };
 };
 
@@ -416,4 +405,27 @@ exports.getPeopleDate = function (req, res, year, cb) {
             'error': ex.message
         });
     };
+};
+
+// Gets roles
+// vscode-fold=1
+exports.getRoles = function (req, res) {
+    try {
+        let sqlInst = `select * from roles; `;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json(data.recordset);
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    }
 };

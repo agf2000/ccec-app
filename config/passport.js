@@ -37,7 +37,7 @@ module.exports = function (passport) {
     }));
 
     passport.serializeUser(function (user, done) {
-        done(null, user.userid);
+        done(null, user.userId);
     });
 
     passport.deserializeUser(function (id, done) {

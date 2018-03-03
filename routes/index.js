@@ -279,12 +279,15 @@ router.get('/usuarios', ensureAuthenticated, function (req, res) {
 		css: [
 			'/css/pages/users.css',
 			'/lib/select2/css/select2.min.css',
+			'/lib/jsgrid/css/jsgrid.min.css',
+			'/lib/jsgrid/css/jsgrid-theme.min.css',
 			'/lib/sweetalert2/css/sweetalert2.min.css'
 		],
 		script: [
 			'/js/pages/users.js',
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
+			'/lib/jsgrid/js/jsgrid.min.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js'
 		]
 	});
