@@ -15,9 +15,9 @@ $(function () {
 
                 $.each(data, function (i, v) {
                     let o = {};
-                    o.id = v.roleid;
-                    o.name = v.rolename;
-                    o.value = v.roleid;
+                    o.id = v.roleId;
+                    o.name = v.roleName;
+                    o.value = v.roleId;
                     results.push(o);
                 });
 
@@ -49,7 +49,6 @@ $(function () {
         e.preventDefault();
 
         let $this = $(this);
-
         $this.prop('disabled', true);
 
         let params = {
@@ -57,10 +56,10 @@ $(function () {
             userId: my.userId,
             displayName: $('#inputName').val().trim(),
             email: $('#inputEmail').val().trim(),
-            roles: JSON.stringify($('#sel2Roles').select2('data')),
+            roleId: $('#sel2Roles').select2('data')[0].id,
             createdByUser: userInfo.userId,
             createdOnDate: moment().format('YYYY-MM-DD HH:mm'),
-            modifiedByUser: userInfo.userid,
+            modifiedByUser: userInfo.userId,
             modifiedOnDate: moment().format('YYYY-MM-DD HH:mm')
         };
 
@@ -257,6 +256,8 @@ $(function () {
                 my.userId = item.userId;
                 $('#inputName').val(item.displayName);
                 $('#inputEmail').val(item.email);
+                if (item.roleId)
+                    $('#sel2Roles').append('<option value="' + item.roleId + '" selected>' + item.userRoleName + '</option>')
 
                 $('#myModal').modal('show');
 
@@ -277,8 +278,8 @@ $(function () {
                 width: 150
             },
             {
-                name: "userRoleNames",
-                title: "Grupos",
+                name: "userRoleName",
+                title: "Departamento",
                 type: "text"
             },
             {

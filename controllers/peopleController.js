@@ -3,11 +3,13 @@ const util = require("util");
 const _ = require('lodash');
 
 // Gets list of users
-// vscode-fold=3
+// vscode-fold=1
 exports.getUsers = function (req, res) {
     try {
-        let sqlInst = "select u.*, stuff((select ', ' + r.rolename from roles r join userroles ur on r.roleid = ur.roleid where u.userid = ur.userid for xml path('')), 1, 1, '') as userRoleNames, ";
-        sqlInst += "stuff((select ',', ' ' + convert(varchar, r.roleid) + ':' + r.rolename from roles r join userroles ur on r.roleid = ur.roleid where u.userid = ur.userid for xml path('')), 1, 2, '') as userRoles ";
+        let sqlInst = "select u.*, "
+        sqlInst += "(select r.rolename from roles r where u.roleid = r.roleid) as userRoleName ";
+        // sqlInst += "select u.*, stuff((select ', ' + r.rolename from roles r join userroles ur on r.roleid = ur.roleid where u.userid = ur.userid for xml path('')), 1, 1, '') as userRoleNames, ";
+        // sqlInst += "stuff((select ',', ' ' + convert(varchar, r.roleid) + ':' + r.rolename from roles r join userroles ur on r.roleid = ur.roleid where u.userid = ur.userid for xml path('')), 1, 2, '') as userRoles ";
         sqlInst += 'from users u; ';
 
         db.querySql(sqlInst, function (data, err) {
@@ -28,19 +30,19 @@ exports.getUsers = function (req, res) {
 };
 
 // Adds user
-// vscode-fold=1
+// vscode-fold=2
 exports.addUser = function (req, res, reqBody, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
         let data = reqBody;
         if (data) {
             let sqlInst = 'declare @id int;';
-            sqlInst += `insert into users (displayname, email, createdbyuser, createdondate) values ('${data.displayName}', '${data.email}', ${data.createdByUser}, getdate); `;
+            sqlInst += `insert into users (displayname, email, roleid, createdbyuser, createdondate) values ('${data.displayName}', '${data.email}', ${data.roleId}, ${data.createdByUser}, getdate); `;
             sqlInst += 'set @id = scope_identity(); ';
 
-            _.forEach(JSON.parse(data.roles), function (value) {
-                sqlInst += `insert into userroles (userid, roleid) values (@id, (select top 1 roleid from roles where rolename = '${value.text}')); `;
-            });
+            // _.forEach(JSON.parse(data.roles), function (value) {
+            //     sqlInst += `insert into userroles (userid, roleid) values (@id, (select top 1 roleid from roles where rolename = '${value.text}')); `;
+            // });
 
             sqlINst += 'select @id as userId;';
 
@@ -68,20 +70,20 @@ exports.addUser = function (req, res, reqBody, cb) {
 };
 
 // Updates user
-// vscode-fold=2
+// vscode-fold=3
 exports.updateUser = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
         let data = reqBody;
         if (data) {
-            let sqlInst = "update users set  = '" + data.displayName + "', email = '" + data.email + "', modifiedbyuser = " + data.modifiedByUser + ", modifiedondate = getdate() ";
+            let sqlInst = "update users set displayname = '" + data.displayName + "', email = '" + data.email + "', modifiedbyuser = " + data.modifiedByUser + ", roleid = " + data.roleId + ", modifiedondate = getdate() ";
 
             sqlInst += "where userid = " + data.userId + "; ";
 
-            sqlInst += `delete from userroles where userid = ${data.userId}; `;
-            _.forEach(JSON.parse(data.roles), function (value) {
-                sqlInst += `insert into userroles (userid, roleid) values (${data.userId}, (select top 1 roleid from roles where rolename = '${value.text}'));`;
-            });
+            // sqlInst += `delete from userroles where userid = ${data.userId}; `;
+            // _.forEach(JSON.parse(data.userRoles), function (value) {
+            //     sqlInst += `insert into userroles (userid, roleid) values (${data.userId}, (select top 1 roleid from roles where rolename = '${value}'));`;
+            // });
 
             db.querySql(sqlInst, function (result, err) {
                 if (err) {
@@ -107,7 +109,7 @@ exports.updateUser = function (req, res, reqBody) {
 };
 
 // Removes user
-// vscode-fold=6
+// vscode-fold=4
 exports.removeUser = function (req, res, userId) {
     try {
         let sqlInst = `delete from users where userid = ${userId}; `;
@@ -132,7 +134,7 @@ exports.removeUser = function (req, res, userId) {
 };
 
 // Updates person
-// vscode-fold=3
+// vscode-fold=5
 exports.updatePerson = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -213,7 +215,7 @@ exports.updatePerson = function (req, res, reqBody) {
 };
 
 // Updates password
-// vscode-fold=4
+// vscode-fold=6
 exports.updatePassword = function (req, res, userId, password) {
     try {
         if (!userId) throw new Error("Input not valid");
@@ -238,7 +240,7 @@ exports.updatePassword = function (req, res, userId, password) {
 };
 
 // Updates person password
-// vscode-fold=5
+// vscode-fold=7
 exports.resetPassword = function (req, res, reqBody, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -268,7 +270,7 @@ exports.resetPassword = function (req, res, reqBody, cb) {
 };
 
 // Gets list of regions, cities, etc
-// vscode-fold=6
+// vscode-fold=8
 exports.getLists = function (req, res, listname, parentId, term, sortCol, sortOrder) {
     try {
         let sqlInst = "";
@@ -303,7 +305,7 @@ exports.getLists = function (req, res, listname, parentId, term, sortCol, sortOr
 };
 
 // Gets person addresss
-// vscode-fold=7
+// vscode-fold=9
 exports.getAddress = function (req, res, postalCode) {
     try {
         if (!postalCode) throw new Error("Input not valid");
@@ -351,7 +353,7 @@ exports.getAddress = function (req, res, postalCode) {
 };
 
 // Gets list of users
-// vscode-fold=8
+// vscode-fold=10
 exports.getPeople = function (req, res, portalId, cb) {
     try {
         let sqlInst = "select p.Approved, p.CityId, p.CountryId, p.CreatedOnDate, p.DisplayName, p.DocId, p.Email, p.FirstChoice ";
@@ -385,7 +387,7 @@ exports.getPeople = function (req, res, portalId, cb) {
 };
 
 // Gets people statistics
-// vscode-fold=9
+// vscode-fold=11
 exports.getPeopleDate = function (req, res, year, cb) {
     try {
         let sqlInst = `set language brazilian; select convert(char(3), datename(month, createdondate), 0) as months, count(*) as quantity from users where year(createdondate) = ${year} group by convert(char(3), datename(month, createdondate), 0);`;
@@ -408,7 +410,7 @@ exports.getPeopleDate = function (req, res, year, cb) {
 };
 
 // Gets roles
-// vscode-fold=1
+// vscode-fold=12
 exports.getRoles = function (req, res) {
     try {
         let sqlInst = `select * from roles; `;

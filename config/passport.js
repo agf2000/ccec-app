@@ -41,9 +41,11 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser(function (id, done) {
-        let sqlInst = `declare @listStr varchar(max); select  @listStr = coalesce(@listStr + ',', '') + r.rolename `;
-        sqlInst += `from roles r join userroles ur on r.roleid = ur.roleid where ur.userid = ${id}; `;
-        sqlInst += `select *, isnull(@listStr, '') as roles from users where userid = ${id} `;
+        // let sqlInst = `declare @listStr varchar(max); select  @listStr = coalesce(@listStr + ',', '') + r.roleName `;
+        // sqlInst += `from roles r join userroles ur on r.roleid = ur.roleid where ur.userid = ${id}; `;
+        // let sqlInst = `select *, isnull(@listStr, '') as roles from users where userid = ${id} `;
+        let sqlInst = `select * into #temp from users where userid = ${id} `;
+        sqlInst += `select *, (select rolename from roles where roleid = #temp.roleid) as userRoleName from #temp; `;
         db.querySql(sqlInst, (user, err) => {
             done(err, user.recordset[0]);
         }, true);

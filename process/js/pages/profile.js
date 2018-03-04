@@ -4,9 +4,9 @@ $(function () {
     $('#sel2Roles').select2({
         placeholder: 'Selecione o Departamento',
         language: "pt-BR",
-        tags: true,
+        // tags: true,
         ajax: {
-            url: '/api/roles',
+            url: '/users/roles',
             dataType: 'json',
             processResults: function (data, page) {
 
@@ -14,9 +14,9 @@ $(function () {
 
                 $.each(data, function (i, v) {
                     let o = {};
-                    o.id = v.roleid;
-                    o.name = v.rolename;
-                    o.value = v.roleid;
+                    o.id = v.roleId;
+                    o.name = v.roleName;
+                    o.value = v.roleId;
                     results.push(o);
                 });
 
@@ -27,7 +27,7 @@ $(function () {
             cache: true
         },
         minimumResultsForSearch: Infinity,
-        tokenSeparators: [",", " "],
+        // tokenSeparators: [",", " "],
         escapeMarkup: function (markup) {
             return markup;
         },
@@ -41,10 +41,12 @@ $(function () {
         }
     });
 
-    let roles = userInfo.roles.split(',');
-    $.each(roles, function (i, val) {
-        $('#sel2Roles').append($('<option value="' + i + '" selected>' + val + '</option>'));
-    });
+    // let roles = userInfo.roles.split(',');
+    // $.each(roles, function (i, val) {
+    //     $('#sel2Roles').append($('<option selected>' + val + '</option>'));
+    // });
+
+    $('#sel2Roles').append($('<option value="' + userInfo.roleId + '" selected>' + userInfo.userRoleName + '</option>'))
 
     $("#sel2Roles").trigger("change");
 
@@ -55,22 +57,26 @@ $(function () {
         e.preventDefault();
 
         let $this = $(this);
-
         $this.prop('disabled', true);
+
+        // let roles = [];
+        // $.each($('#sel2Roles').select2('data'), function (i, role) {
+        //     roles.push(role.text || role.name);
+        // })
 
         let params = {
             portalId: 0,
-            userId: userInfo.userid,
+            userId: userInfo.userId,
             displayName: $('#inputName').val().trim(),
             email: $('#inputEmail').val().trim(),
-            roles: JSON.stringify($('#sel2Roles').select2('data')),
-            modifiedByUser: userInfo.userid,
+            roleId: $('#sel2Roles').select2('data')[0].id,
+            modifiedByUser: userInfo.userId,
             modifiedOnDate: moment().format('YYYY-MM-DD HH:mm')
         };
 
         $.ajax({
             type: 'PUT',
-            url: '/api/updateUser',
+            url: '/users/user',
             data: params
         }).done(function (data) {
             if (!data.error) {
@@ -112,7 +118,7 @@ $(function () {
 
         let params = {
             portalId: 0,
-            userId: userInfo.userid,
+            userId: userInfo.userId,
             password: $('#inputPassword').val().trim(),
             newPassword: $('#inputNewPassword').val().trim()
         };
