@@ -48,8 +48,20 @@ $(function () {
                 width: 200
             },
             {
+                title: "Detinatário",
+                name: "toWhom",
+                type: "text",
+                width: 200
+            },
+            {
+                title: "Assunto",
+                name: "subject",
+                type: "text",
+                width: 200
+            },
+            {
                 title: "Data",
-                name: "createdOnDate",
+                name: "sentOnDate",
                 type: "date",
                 width: 50
             }
