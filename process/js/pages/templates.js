@@ -165,7 +165,7 @@ $(function () {
             headerTemplate: $('#headerTemplate').val().trim(),
             bodyTemplate: $('#bodyTemplate').val().trim(),
             footerTemplate: $('#footerTemplate').val().trim(),
-            createdByUser: userInfo.userid
+            createdByUser: userInfo.userId
         };
 
         $.ajax({

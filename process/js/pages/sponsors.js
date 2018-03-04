@@ -425,7 +425,7 @@ $(function () {
         formData.append('sponsorRegion', $('#sel2Regions').val());
         formData.append('sponsorState', $('#sel2States').val());
         formData.append('sponsorCity', $('#sel2Cities').val());
-        formData.append('createdByUser', userInfo.userid);
+        formData.append('createdByUser', userInfo.userId);
         var xhr = new XMLHttpRequest();
 
         // your url upload

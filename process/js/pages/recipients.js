@@ -445,7 +445,7 @@ $(function () {
             recipientGroup: $('#sel2Groups').select2('data')[0].id,
             recipientCategory: $('#sel2Categories').select2('data')[0].id,
             recipientCity: $('#sel2Cities').select2('data')[0].id,
-            createdByUser: userInfo.userid
+            createdByUser: userInfo.userId
         };
 
         $.ajax({
