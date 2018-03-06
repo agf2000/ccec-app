@@ -11,20 +11,24 @@ $(function () {
             def.resolve(item);
 
             $('#inputLogin').val(item.find(function (setting) {
-                return setting.settingname === 'emailProviderLogin'
-            }).settingvalue);
+                return setting.settingName === 'emailProviderLogin'
+            }).settingValue);
+
+            $('#inputReplyTo').val(item.find(function (setting) {
+                return setting.settingName === 'emailProviderReplyTo'
+            }).settingValue);
 
             $('#inputSMTP').val(item.find(function (setting) {
-                return setting.settingname === 'emailProviderSMTP'
-            }).settingvalue);
+                return setting.settingName === 'emailProviderSMTP'
+            }).settingValue);
 
             $('#inputPort').val(item.find(function (setting) {
-                return setting.settingname === 'emailProviderPort'
-            }).settingvalue);
+                return setting.settingName === 'emailProviderPort'
+            }).settingValue);
 
             $('#chkBoxSSL').prop('checked', item.find(function (setting) {
-                return setting.settingname === 'emailProviderUseSSL'
-            }).settingvalue);
+                return setting.settingName === 'emailProviderUseSSL'
+            }).settingValue);
         });
         return def.promise();
     };
@@ -47,6 +51,10 @@ $("form").submit(function (e) {
                 portalId: "0",
                 settingName: 'emailProviderLogin',
                 settingValue: $('#inputLogin').val()
+            }, {
+                portalId: "0",
+                settingName: 'emailProviderReplyTo',
+                settingValue: $('#inputReplyTo').val()
             }, {
                 portalId: "0",
                 settingName: 'emailProviderSMTP',
