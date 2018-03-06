@@ -465,7 +465,7 @@ $(function () {
                         type: "success",
                         showCancelButton: false,
                         confirmButtonText: "Ok",
-                        timer: 2000
+                        timer: 3000
                     }).then(
                         function () {
                             $this.prop('disabled', false);
@@ -546,12 +546,12 @@ $(function () {
         }).done(function (data) {
             if (!data.error) {
                 swal({
-                    title: "Sucesso!",
+                    title: "Info!",
                     html: "Correspondêcia(s) enviada.<br />Verifique o histórico de envio para mais informações.",
-                    type: "success",
+                    type: "info",
                     showCancelButton: false,
                     confirmButtonText: "Ok",
-                    timer: 2000
+                    timer: 3000
                 }).then(
                     function () {},
                     // handling the promise rejection
@@ -561,6 +561,7 @@ $(function () {
                         }
                     }
                 );
+                $this.prop('disabled', false);
             }
 
         }).fail(function (jqXHR, textStatus) {

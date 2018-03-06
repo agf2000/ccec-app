@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-ContentTools@^1.6.3:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/ContentTools/-/ContentTools-1.6.3.tgz#58f912130b80812b85eb6d3cd1ff68b23d0ad36f"
-
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -525,6 +521,10 @@ chokidar@^1.7.0:
     readdirp "^2.0.0"
   optionalDependencies:
     fsevents "^1.0.0"
+
+ckeditor@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.8.0.tgz#5d450fa02a68d5a143cf5619754fbf0c04cad426"
 
 cli-boxes@^1.0.0:
   version "1.0.0"
@@ -1350,7 +1350,7 @@ flagged-respawn@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/flagged-respawn/-/flagged-respawn-0.3.2.tgz#ff191eddcd7088a675b2610fffc976be9b8074b5"
 
-font-awesome@>=4.4.0, font-awesome@^4.7.0:
+font-awesome@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
@@ -1411,13 +1411,6 @@ forwarded@~0.1.0:
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
-
-froala-editor@^2.7.3:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-2.7.3.tgz#c17e1c7d70f736aff9b19b19361420a35022e5b3"
-  dependencies:
-    font-awesome ">=4.4.0"
-    jquery ">=1.11.0"
 
 from@~0:
   version "0.1.7"
@@ -2519,7 +2512,7 @@ jquery@2.2.4:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
-jquery@>=1.11.0, "jquery@>=1.7.1 <4.0.0":
+"jquery@>=1.7.1 <4.0.0":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 

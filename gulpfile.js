@@ -252,29 +252,50 @@ gulp.task('vendors', function () {
     gulp.src('node_modules/jquery.scrollto/jquery.scrollTo.min.js')
         .pipe(gulp.dest(app + '/lib/jquery.scrollto/js'));
 
-    gulp.src('node_modules/ContentTools/build/content-tools.min.css')
-        .pipe(gulp.dest(app + '/lib/ContentTools'));
-
-    gulp.src('node_modules/ContentTools/build/content-tools.min.js')
-        .pipe(gulp.dest(app + '/lib/ContentTools'));
-
-    gulp.src('node_modules/ContentTools/build/images/*')
-        .pipe(gulp.dest(app + '/lib/ContentTools/images'));
-
     // gulp.src('node_modules/autosize/dist/autosize.min.js')
     //     .pipe(gulp.dest(app + '/lib/autosize/js'));
 
-    gulp.src('node_modules/froala-editor/js/froala_editor.pkgd.min.js')
-        .pipe(gulp.dest(app + '/lib/froala-editor/js'));
+    gulp.src('node_modules/ckeditor/*.js')
+        .pipe(gulp.dest(app + '/lib/ckeditor'));
 
-    gulp.src('node_modules/froala-editor/css/froala_editor.pkgd.min.css')
-        .pipe(gulp.dest(app + '/lib/froala-editor/css'));
+    gulp.src('node_modules/ckeditor/contents.css')
+        .pipe(gulp.dest(app + '/lib/ckeditor'));
 
-    gulp.src('node_modules/froala-editor/css/froala_style.min.css')
-        .pipe(gulp.dest(app + '/lib/froala-editor/css'));
+    gulp.src('node_modules/ckeditor/plugins/autogrow/*')
+        .pipe(gulp.dest(app + '/lib/ckeditor/plugins/autogrow'));
 
-    gulp.src('node_modules/froala-editor/js/languages/pt_br.js')
-        .pipe(gulp.dest(app + '/lib/froala-editor/js/languages'));
+    // gulp.src('node_modules/ckeditor/plugins/save/**')
+    //     .pipe(gulp.dest(app + '/lib/ckeditor/plugins/save'));
+
+    gulp.src('node_modules/ckeditor/skins/moono-lisa/**')
+        .pipe(gulp.dest(app + '/lib/ckeditor/skins/moono-lisa'));
+
+    gulp.src('node_modules/ckeditor/lang/pt-br.js')
+        .pipe(gulp.dest(app + '/lib/ckeditor/lang'));
+
+    gulp.src('node_modules/ckeditor/lang/en.js')
+        .pipe(gulp.dest(app + '/lib/ckeditor/lang'));
+
+    // gulp.src('node_modules/ContentTools/build/content-tools.min.css')
+    //     .pipe(gulp.dest(app + '/lib/ContentTools'));
+
+    // gulp.src('node_modules/ContentTools/build/content-tools.min.js')
+    //     .pipe(gulp.dest(app + '/lib/ContentTools'));
+
+    // gulp.src('node_modules/ContentTools/build/images/*')
+    //     .pipe(gulp.dest(app + '/lib/ContentTools/images'));
+
+    // gulp.src('node_modules/froala-editor/js/froala_editor.pkgd.min.js')
+    //     .pipe(gulp.dest(app + '/lib/froala-editor/js'));
+
+    // gulp.src('node_modules/froala-editor/css/froala_editor.pkgd.min.css')
+    //     .pipe(gulp.dest(app + '/lib/froala-editor/css'));
+
+    // gulp.src('node_modules/froala-editor/css/froala_style.min.css')
+    //     .pipe(gulp.dest(app + '/lib/froala-editor/css'));
+
+    // gulp.src('node_modules/froala-editor/js/languages/pt_br.js')
+    //     .pipe(gulp.dest(app + '/lib/froala-editor/js/languages'));
 });
 
 gulp.task('imageMin', function () {

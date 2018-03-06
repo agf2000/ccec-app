@@ -205,17 +205,14 @@ router.get('/templates', ensureAuthenticated, function (req, res) {
 		css: [
 			'/css/pages/templates.css',
 			'/lib/select2/css/select2.min.css',
-			'/lib/sweetalert2/css/sweetalert2.min.css',
-			'/lib/froala-editor/css/froala_editor.pkgd.min.css',
-			'/lib/froala-editor/css/froala_style.min.css'
+			'/lib/sweetalert2/css/sweetalert2.min.css'
 		],
 		script: [
 			'/js/pages/templates.js',
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
-			'/lib/froala-editor/js/froala_editor.pkgd.min.js',
-			'/lib/froala-editor/js/languages/pt_br.js'
+			'/lib/ckeditor/ckeditor.js'
 		]
 	});
 });

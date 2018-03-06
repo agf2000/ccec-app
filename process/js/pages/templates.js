@@ -4,11 +4,6 @@ $(function () {
     my.templateId = null;
     const rg = /\[(.+?)\]/g;
 
-    $('.textarea').froalaEditor({
-        language: 'pt_br',
-        toolbarButtons: ['undo', 'redo', '|', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'outdent', 'indent', 'clearFormatting', 'insertTable', 'html']
-    })
-
     $('#sel2EmailTemplates').select2({
         placeholder: 'Tipos de Correspondências',
         language: "pt-BR",
@@ -56,7 +51,10 @@ $(function () {
                 $('#inputName').val(data[0].templateName.trim());
                 $('#h3Edit').html(`Editando: ${data[0].templateName.trim()}`);
 
-                $('#headerTemplate').froalaEditor('html.set', data[0].headerTemplate.trim());
+                CKEDITOR.instances.textareaTemplate.setData(data[0].headerTemplate.trim(), function () {
+                    this.checkDirty(); // true
+                });
+
                 // while (matchHeader = rg.exec(data[0].headerTemplate.trim())) // Iterate matches
                 //     data[0].headerTemplate.trim().replace(matchHeader[1], '');
 
@@ -91,50 +89,50 @@ $(function () {
     //     $('#headerPreview').html($('#headerTemplate').val());
     // });
 
-    $('#bodyTemplate').keyup(function (e) {
-        let matchValue;
+    // $('#bodyTemplate').keyup(function (e) {
+    //     let matchValue;
 
-        while (matchValue = rg.exec(this.value.trim())) // Iterate matches
-            this.value.trim().replace(matchValue, '');
+    //     while (matchValue = rg.exec(this.value.trim())) // Iterate matches
+    //         this.value.trim().replace(matchValue, '');
 
-        $('#bodyPreview').html(this.value);
-    });
+    //     $('#bodyPreview').html(this.value);
+    // });
 
-    $('#footerTemplate').keyup(function (e) {
-        let matchValue;
+    // $('#footerTemplate').keyup(function (e) {
+    //     let matchValue;
 
-        while (matchValue = rg.exec(this.value.trim())) // Iterate matches
-            this.value.trim().replace(matchValue, '');
+    //     while (matchValue = rg.exec(this.value.trim())) // Iterate matches
+    //         this.value.trim().replace(matchValue, '');
 
-        $('#footerPreview').html(this.value);
-    });
+    //     $('#footerPreview').html(this.value);
+    // });
 
-    $('.restoreTemplate').click(function (e) {
-        let r;
-        switch (e.currentTarget.value) {
-            case 'restoreBody':
-                r = confirm("Quer mesmo restaurar o corpo do email?");
-                if (r == true) {
-                    $('#bodyTemplate').val($('#oemBodyTemplate').html().trim());
-                    $('#bodyPreview').html($('#oemBodyTemplate').html().replace(/\s*\{.*?\}\s*/g, '').trim());
-                }
-                break;
-            case 'restoreFooter':
-                r = confirm("Quer mesmo restaurar o rodapé do email?");
-                if (r == true) {
-                    $('#footerTemplate').val($('#oemFooterTemplate').html().trim());
-                    $('#footerPreview').html($('#oemFooterTemplate').html().replace(/\s*\{.*?\}\s*/g, "").trim());
-                }
-                break;
-            default:
-                r = confirm("Quer mesmo restaurar o cabeçalho do email?");
-                if (r == true) {
-                    $('#headerTemplate').val($('#oemHeaderTemplate').html().trim());
-                    $('#headerPreview').html($('#oemHeaderTemplate').html().replace(/\s*\{.*?\}\s*/g, "").trim());
-                }
-                break;
-        }
-    });
+    // $('.restoreTemplate').click(function (e) {
+    //     let r;
+    //     switch (e.currentTarget.value) {
+    //         case 'restoreBody':
+    //             r = confirm("Quer mesmo restaurar o corpo do email?");
+    //             if (r == true) {
+    //                 $('#bodyTemplate').val($('#oemBodyTemplate').html().trim());
+    //                 $('#bodyPreview').html($('#oemBodyTemplate').html().replace(/\s*\{.*?\}\s*/g, '').trim());
+    //             }
+    //             break;
+    //         case 'restoreFooter':
+    //             r = confirm("Quer mesmo restaurar o rodapé do email?");
+    //             if (r == true) {
+    //                 $('#footerTemplate').val($('#oemFooterTemplate').html().trim());
+    //                 $('#footerPreview').html($('#oemFooterTemplate').html().replace(/\s*\{.*?\}\s*/g, "").trim());
+    //             }
+    //             break;
+    //         default:
+    //             r = confirm("Quer mesmo restaurar o cabeçalho do email?");
+    //             if (r == true) {
+    //                 $('#headerTemplate').val($('#oemHeaderTemplate').html().trim());
+    //                 $('#headerPreview').html($('#oemHeaderTemplate').html().replace(/\s*\{.*?\}\s*/g, "").trim());
+    //             }
+    //             break;
+    //     }
+    // });
 
     $('#btnNew').click(function (e) {
         if (e.clientX === 0) {
@@ -148,7 +146,7 @@ $(function () {
         my.templateId = null;
     });
 
-    $('.saveTemplate').click(function (e) {
+    $('#btnSaveTemplate').click(function (e) {
         if (e.clientX === 0) {
             return false;
         }
@@ -162,9 +160,11 @@ $(function () {
             templateId: my.templateId,
             portalId: 0,
             templateName: $('#inputName').val().trim(),
-            headerTemplate: $('#headerTemplate').val().trim(),
-            bodyTemplate: $('#bodyTemplate').val().trim(),
-            footerTemplate: $('#footerTemplate').val().trim(),
+            headerTemplate: CKEDITOR.instances.textareaTemplate.getData(),
+            bodyTemplate: '',
+            footerTemplate: '',
+            // bodyTemplate: $('#bodyTemplate').val().trim(),
+            // footerTemplate: $('#footerTemplate').val().trim(),
             createdByUser: userInfo.userId
         };
 
@@ -204,17 +204,5 @@ $(function () {
         });
     });
 
-    // autosize($('textarea'));
-
-    // $('textarea').on('keydown', autosize);
-
-    function autosize() {
-        var el = this;
-        setTimeout(function () {
-            el.style.cssText = 'height:auto; padding:0';
-            // for box-sizing other than "content-box" use:
-            // el.style.cssText = '-moz-box-sizing:content-box';
-            el.style.cssText = 'height:' + el.scrollHeight + 'px';
-        }, 0);
-    }
+    CKEDITOR.replace('textareaTemplate');
 });

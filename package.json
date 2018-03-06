@@ -6,7 +6,6 @@
 		"start": "node app.js"
 	},
 	"dependencies": {
-		"ContentTools": "^1.6.3",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "~1.17.1",
 		"bootstrap": "^3.3.7",
@@ -14,6 +13,7 @@
 		"bootstrap-switch": "^3.3.4",
 		"bootstrap-tagsinput": "^0.7.1",
 		"bootstrap3-dialog": "^1.35.4",
+		"ckeditor": "^4.8.0",
 		"connect-flash": "^0.1.1",
 		"cookie-parser": "~1.4.3",
 		"debug": "~2.6.3",
@@ -23,7 +23,6 @@
 		"express-session": "^1.15.6",
 		"fastclick": "^1.0.6",
 		"font-awesome": "^4.7.0",
-		"froala-editor": "^2.7.3",
 		"fs-extra": "^4.0.3",
 		"hbs": "~4.0.1",
 		"hotkeys-js": "^2.0.7",

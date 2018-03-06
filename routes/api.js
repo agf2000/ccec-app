@@ -47,31 +47,31 @@ let uploadLogo = multer({
 });
 
 // Gets list of settings
-// vscode-fold=3
+// vscode-fold=2
 router.get('/settings', ensureAuthenticated, function (req, res) {
     apiController.getSettings(req, res, req.body.settingName);
 });
 
 // Update settings
-// vscode-fold=8
+// vscode-fold=3
 router.put('/settings', ensureAuthenticated, function (req, res, next) {
     apiController.saveSettings(req, res, req.body);
 });
 
 // Gets list of sponsors
-// vscode-fold=9
+// vscode-fold=4
 router.get('/sponsors', function (req, res) {
     apiController.getSponsors(req, res);
 });
 
 // Get sponsor by id
-// vscode-fold=10
+// vscode-fold=5
 router.get('/sponsor/:sponsorId', function (req, res) {
     apiController.getSponsor(req, res, req.params.sponsorId);
 });
 
 // Removes sponsor
-// vscode-fold=11
+// vscode-fold=6
 router.delete('/sponsor', function (req, res) {
     fse.remove(`data/uploads/logos/${req.body.sponsorId}`, err => {
         if (err) return console.error(err);
@@ -83,7 +83,7 @@ router.delete('/sponsor', function (req, res) {
 });
 
 // Removes sponsor logo
-// vscode-fold=12
+// vscode-fold=7
 router.delete('/sponsorImage', function (req, res) {
     fse.remove(`data/uploads/logos/${req.body.sponsorId}/`, err => {
         if (err) return console.error(err)
@@ -95,7 +95,7 @@ router.delete('/sponsorImage', function (req, res) {
 });
 
 // Adds sponsor
-// vscode-fold=13
+// vscode-fold=8
 router.post('/sponsor', ensureAuthenticated, uploadLogo.array('inputLogo'), function (req, res, next) {
     if (req.files[0]) {
         apiController.addSponsor(req, res, req.body, (req.files ? req.files : null), function (result) {
@@ -148,7 +148,7 @@ router.post('/sponsor', ensureAuthenticated, uploadLogo.array('inputLogo'), func
 });
 
 // Update sponsor
-// vscode-fold=14
+// vscode-fold=9
 router.put('/sponsor', ensureAuthenticated, uploadLogo.array('inputLogo'), function (req, res, next) {
     if (req.files[0]) {
         fse.remove(path.join(__dirname, '..', 'data/uploads/logos/' + req.body.sponsorId + '/large/' + req.body.originalFileName));
@@ -205,169 +205,169 @@ router.put('/sponsor', ensureAuthenticated, uploadLogo.array('inputLogo'), funct
 });
 
 // Adds recipient
-// vscode-fold=15
+// vscode-fold=10
 router.post('/recipient', ensureAuthenticated, function (req, res, next) {
     apiController.addRecipient(req, res, req.body);
 });
 
 // Updates recipient
-// vscode-fold=16
+// vscode-fold=11
 router.put('/recipient', ensureAuthenticated, function (req, res, next) {
     apiController.updateRecipient(req, res, req.body);
 });
 
 // Removes recipient
-// vscode-fold=17
+// vscode-fold=12
 router.delete('/recipient', function (req, res) {
     apiController.removeRecipient(req, res, req.body.recipientId);
 });
 
 // Gets list of recipients
-// vscode-fold=18
+// vscode-fold=13
 router.get('/recipients', function (req, res) {
     apiController.getRecipients(req, res);
 });
 
 // Gets list of categories
-// vscode-fold=19
+// vscode-fold=14
 router.get('/categories', function (req, res) {
     apiController.getCategories(req, res, req.body.categoryName, req.body.categoryType);
 });
 
 // Adds category
-// vscode-fold=20
+// vscode-fold=15
 router.post('/category', ensureAuthenticated, function (req, res, next) {
     apiController.addCategory(req, res, req.body);
 });
 
 // Updates category
-// vscode-fold=21
+// vscode-fold=16
 router.put('/category', ensureAuthenticated, function (req, res, next) {
     apiController.updateCategory(req, res, req.body);
 });
 
 // Remoces category
-// vscode-fold=22
+// vscode-fold=17
 router.delete('/category', function (req, res) {
     apiController.removeCategory(req, res, req.body.recipientId);
 });
 
 // Gets list of groups
-// vscode-fold=23
+// vscode-fold=18
 router.get('/groups', function (req, res) {
     apiController.getGroups(req, res);
 });
 
 // Adds group
-// vscode-fold=24
+// vscode-fold=19
 router.post('/group', ensureAuthenticated, function (req, res, next) {
     apiController.addGroup(req, res, req.body);
 });
 
 // Updates group
-// vscode-fold=25
+// vscode-fold=20
 router.put('/group', ensureAuthenticated, function (req, res, next) {
     apiController.updateGroup(req, res, req.body);
 });
 
 // Removes group
-// vscode-fold=26
+// vscode-fold=21
 router.delete('/group', function (req, res) {
     apiController.removeGroup(req, res, req.body.recipientId);
 });
 
 // Gets list of regions
-// vscode-fold=27
+// vscode-fold=22
 router.get('/regions', function (req, res) {
     apiController.getRegions(req, res);
 });
 
 // Adds region
-// vscode-fold=28
+// vscode-fold=23
 router.post('/region', ensureAuthenticated, function (req, res, next) {
     apiController.addRegion(req, res, req.body);
 });
 
 // Updates region
-// vscode-fold=29
+// vscode-fold=24
 router.put('/region', ensureAuthenticated, function (req, res, next) {
     apiController.updateRegion(req, res, req.body);
 });
 
 // Removes region
-// vscode-fold=30
+// vscode-fold=25
 router.delete('/region', function (req, res) {
     apiController.removeRegion(req, res, req.body.recipientId);
 });
 
 // Gets list of states
-// vscode-fold=31
+// vscode-fold=26
 router.get('/states', function (req, res) {
     apiController.getStates(req, res);
 });
 
 // Adds state
-// vscode-fold=32
+// vscode-fold=27
 router.post('/state', ensureAuthenticated, function (req, res, next) {
     apiController.updateState(req, res, req.body);
 });
 
 // Gets list cities
-// vscode-fold=34
+// vscode-fold=28
 router.get('/cities', function (req, res) {
     apiController.getCities(req, res, req.query.term, req.query.stateId);
 });
 
 // Adds city
-// vscode-fold=35
+// vscode-fold=29
 router.post('/city', ensureAuthenticated, function (req, res, next) {
     apiController.addCity(req, res, req.body);
 });
 
 // Updates city
-// vscode-fold=36
+// vscode-fold=30
 router.put('/city', ensureAuthenticated, function (req, res, next) {
     apiController.updateCity(req, res, req.body);
 });
 
 // Removes city
-// vscode-fold=37
+// vscode-fold=31
 router.delete('/city', function (req, res) {
     apiController.removeCity(req, res, req.body.recipientId);
 });
 
 // Adds email tempate
-// vscode-fold=38
+// vscode-fold=32
 router.post('/emailTemplate', ensureAuthenticated, function (req, res, next) {
     apiController.addEmailTemplate(req, res, req.body);
 });
 
 // Updates email template
-// vscode-fold=39
+// vscode-fold=33
 router.put('/emailTemplate', ensureAuthenticated, function (req, res, next) {
     apiController.updateEmailTemplate(req, res, req.body);
 });
 
 // Gets list of email templates
-// vscode-fold=40
+// vscode-fold=34
 router.get('/emailTemplates', function (req, res) {
     apiController.getEmailTemplates(req, res);
 });
 
 // Gets email template by id
-// vscode-fold=41
+// vscode-fold=35
 router.get('/emailTemplate/:templateId', function (req, res) {
     apiController.getEmailTemplate(req, res, req.params.templateId);
 });
 
 // Removes email template
-// vscode-fold=42
+// vscode-fold=36
 router.delete('/emailTemplate', function (req, res) {
     apiController.removeEmailTemplate(req, res, req.body.recipientId);
 });
 
 // Add docs from upload
-// vscode-fold=43
+// vscode-fold=37
 router.post('/uploadDocs', ensureAuthenticated, uploadDocs.array('inputDocs'), function (req, res, next) {
     if (req.files) {
         res.json({
@@ -377,7 +377,7 @@ router.post('/uploadDocs', ensureAuthenticated, uploadDocs.array('inputDocs'), f
 });
 
 // Gets list of files
-// vscode-fold=44
+// vscode-fold=38
 router.get('/files', function (req, res) {
     res.json({
         response: _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/'))
@@ -405,7 +405,7 @@ let _getAllFilesFromFolder = function (dir) {
 };
 
 // Gets list of email recipients
-// vscode-fold=45
+// vscode-fold=39
 router.get('/recipientsMailingList', ensureAuthenticated, function (req, res, next) {
     apiController.getRecipientsMailList(req, res, req.query, function (results) {
         if (!results.error) {
@@ -417,7 +417,7 @@ router.get('/recipientsMailingList', ensureAuthenticated, function (req, res, ne
 });
 
 // Sends emails
-// vscode-fold=46
+// vscode-fold=40
 router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
     apiController.getRecipientsMailList(req, res, req.body, function (results) {
         if (!results.error) {
@@ -438,7 +438,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
 
                 content = content.replace('[PATROCINADOR]', sponsors);
 
-                if (req.body.singleAttach) {
+                if (JSON.parse(req.body.singleAttach)) {
                     let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
                     if (attachments) {
                         let attachArray = [];
@@ -500,84 +500,94 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                     }
                 } else {
 
-                    if (_getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'))) {
+                    fse.readdir(path.join(__dirname, '..', 'data/uploads/docs/'), function (err, files) {
+                        if (err) {
+                            // some sort of error
+                        } else {
+                            if (!files.length) {
+                                // directory appears to be empty
+                                // send the message and get a callback with an error or details of the message that was sent 
+                                email.send({
+                                    text: content,
+                                    from: "Colégio CEC <contato@riw.com.br>",
+                                    to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
+                                    subject: req.body.subject,
+                                    attachment: [{
+                                        data: `<html>${content}</html>`,
+                                        alternative: true
+                                    }]
+                                }, function (emailErr, message) {
+                                    if (emailErr) {
+                                        notSent++;
+                                    } else {
+                                        sent++;
+                                    }
 
-                        let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
-                        let attachment;
-                        _.findKey(attachments, function (f) {
-                            attachment = o.indexOf(person.recipientId);
-                        });
+                                    apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                                        console.error(cb.error);
 
-                        // send the message and get a callback with an error or details of the message that was sent 
-                        email.send({
-                            text: content,
-                            from: "Colégio CEC <contato@riw.com.br>",
-                            to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
-                            subject: req.body.subject,
-                            attachment: [{
-                                    data: `<html>${content}</html>`,
-                                    alternative: true
-                                },
-                                {
-                                    path: attachment,
-                                    type: mime.lookup(attachment),
-                                    name: "Boleto"
-                                }
-                            ]
-                        }, function (emailErr, message) {
-                            if (emailErr) {
-                                notSent++;
-                            } else {
-                                sent++;
-                            }
+                                        counter++;
 
-                            apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, attachments.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
-                                counter++;
-
-                                if (counter == results.response.recipients.length) {
-                                    fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
-                                        if (err) return console.error(err)
+                                        if (counter == results.response.recipients.length) {
+                                            res.json({
+                                                success: "success"
+                                            });
+                                        }
                                     });
-                                }
-                            });
 
-                            // console.log(emailErr || message);
-                        });
-
-                        res.json({
-                            success: "success"
-                        });
-
-                    } else {
-
-                        // send the message and get a callback with an error or details of the message that was sent 
-                        email.send({
-                            text: content,
-                            from: "Colégio CEC <contato@riw.com.br>",
-                            to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
-                            subject: req.body.subject,
-                            attachment: [{
-                                data: `<html>${content}</html>`,
-                                alternative: true
-                            }]
-                        }, function (emailErr, message) {
-                            if (emailErr) {
-                                notSent++;
+                                    // console.log(emailErr || message);
+                                });
                             } else {
-                                sent++;
+                                let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
+                                let attachment;
+                                _.findKey(attachments, function (f) {
+                                    attachment = o.indexOf(person.recipientId);
+                                });
+
+                                // send the message and get a callback with an error or details of the message that was sent 
+                                email.send({
+                                    text: content,
+                                    from: "Colégio CEC <contato@riw.com.br>",
+                                    to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
+                                    subject: req.body.subject,
+                                    attachment: [{
+                                            data: `<html>${content}</html>`,
+                                            alternative: true
+                                        },
+                                        {
+                                            path: attachment,
+                                            type: mime.lookup(attachment),
+                                            name: "Boleto"
+                                        }
+                                    ]
+                                }, function (emailErr, message) {
+                                    if (emailErr) {
+                                        notSent++;
+                                    } else {
+                                        sent++;
+                                    }
+
+                                    apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, attachments.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                                        console.error(cb.error);
+
+                                        counter++;
+
+                                        if (counter == results.response.recipients.length) {
+                                            fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
+                                                if (err) return console.error(err)
+
+                                                res.json({
+                                                    success: "success"
+                                                });
+                                            });
+                                        }
+                                    });
+
+                                    // console.log(emailErr || message);
+                                });
                             }
-
-                            apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
-                                console.error(cb.error);
-                            });
-
-                            res.json({
-                                success: "success"
-                            });
-
-                            // console.log(emailErr || message);
-                        });
-                    }
+                        }
+                    });
                 }
             });
         }
@@ -585,7 +595,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
 });
 
 // Gets list of email history
-// vscode-fold=47
+// vscode-fold=41
 router.get('/histories', ensureAuthenticated, function (req, res, next) {
     apiController.getHistories(req, res, req.query, function (results) {
         if (!results.error) {
