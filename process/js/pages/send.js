@@ -522,9 +522,9 @@ $(function () {
         }
 
         swal({
-            title: "Sucesso!",
+            title: "Info!",
             html: "Transmissão inicializada.<br />Aguarde ou clique em Ok.",
-            type: "success",
+            type: "info",
             showCancelButton: false,
             confirmButtonText: "Ok"
         }).then(
@@ -546,9 +546,9 @@ $(function () {
         }).done(function (data) {
             if (!data.error) {
                 swal({
-                    title: "Info!",
+                    title: "Sucesso!",
                     html: "Correspondêcia(s) enviada.<br />Verifique o histórico de envio para mais informações.",
-                    type: "info",
+                    type: "success",
                     showCancelButton: false,
                     confirmButtonText: "Ok",
                     timer: 3000
