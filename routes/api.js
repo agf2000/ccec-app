@@ -378,11 +378,11 @@ router.post('/uploadDocs', ensureAuthenticated, uploadDocs.array('inputDocs'), f
 
 // Gets list of files
 // vscode-fold=38
-router.get('/files', function (req, res) {
-    res.json({
-        response: _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/'))
-    });
-});
+// router.get('/files', function (req, res) {
+//     res.json({
+//         response: _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/'))
+//     });
+// });
 
 let _getAllFilesFromFolder = function (dir) {
 
@@ -603,6 +603,39 @@ router.get('/histories', ensureAuthenticated, function (req, res, next) {
                 histories: results
             });
         }
+    });
+});
+
+// Gets list of files
+// vscode-fold=42
+router.get('/files', ensureAuthenticated, function (req, res, next) {
+    let filesArray = [];
+    let files = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
+    _.forEach(files, function (file) {
+        filesArray.push({
+            fileName: path.basename(file),
+            filePath: path.relative(process.cwd(), file),
+            fileType: mime.lookup(file),
+            folder: path.dirname(path.relative(process.cwd(), file)).replace('data\\', '')
+        })
+    });
+
+    res.json({
+        filesArray
+    });
+});
+
+// Removes sponsor logo
+// vscode-fold=43
+router.delete('/file', function (req, res) {
+    fse.remove(req.body.filePath, err => {
+        if (err) return console.error(err)
+
+        console.log('success!') // I just deleted my entire HOME directory.
+
+        res.json({
+            success: "success"
+        });
     });
 });
 

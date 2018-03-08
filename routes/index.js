@@ -178,7 +178,6 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/sweetalert2/css/sweetalert2.min.css',
 			'/lib/jsgrid/css/jsgrid.min.css',
 			'/lib/jsgrid/css/jsgrid-theme.min.css',
-			// '/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
 			'/lib/pikaday/css/pikaday.css'
 		],
 		script: [
@@ -187,8 +186,6 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
 			'/lib/jsgrid/js/jsgrid.min.js',
-			// '/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js',
-			// '/lib/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js',
 			'/lib/pikaday/js/pikaday.js',
 			'/lib/hotkeys-js/js/hotkeys.min.js'
 		]
@@ -250,8 +247,7 @@ router.get('/historico', ensureAuthenticated, function (req, res) {
 			'/lib/select2/css/select2.min.css',
 			'/lib/sweetalert2/css/sweetalert2.min.css',
 			'/lib/jsgrid/css/jsgrid.min.css',
-			'/lib/jsgrid/css/jsgrid-theme.min.css',
-			'/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
+			'/lib/jsgrid/css/jsgrid-theme.min.css'
 		],
 		script: [
 			'/js/pages/history.js',
@@ -259,9 +255,32 @@ router.get('/historico', ensureAuthenticated, function (req, res) {
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
 			'/lib/jsgrid/js/jsgrid.min.js',
-			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
-			'/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js',
-			'/lib/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js'
+			'/lib/jsgrid/i18n/jsgrid-pt-br.js'
+		]
+	});
+});
+
+// Emails history
+// vscode-fold=12
+router.get('/arquivos', ensureAuthenticated, function (req, res) {
+	res.render('xplorer', {
+		title: 'Arquivos',
+		pageHeader: 'Arquivos',
+		pageDesc: 'Gerenciador de Anexos',
+		css: [
+			'/css/pages/xplorer.css',
+			'/lib/select2/css/select2.min.css',
+			'/lib/sweetalert2/css/sweetalert2.min.css',
+			'/lib/jsgrid/css/jsgrid.min.css',
+			'/lib/jsgrid/css/jsgrid-theme.min.css'
+		],
+		script: [
+			'/js/pages/xplorer.js',
+			'/lib/select2/js/select2.full.min.js',
+			'/lib/select2/i18n/pt-BR.js',
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/jsgrid/js/jsgrid.min.js',
+			'/lib/jsgrid/i18n/jsgrid-pt-br.js'
 		]
 	});
 });
