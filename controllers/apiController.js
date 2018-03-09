@@ -402,8 +402,8 @@ exports.addCategory = function (req, res, reqBody) {
         if (data) {
 
             let sqlInst = 'declare @id int; ';
-            sqlInst += `if not (exists (select top 1 1 from categories where categoryname = '${data.categoryName}')) `;
-            sqlInst += `insert into categories (categoryname, categorytype) values ('${data.categoryName}', '${data.categoryType}'); set @id = scope_identity(); select @id as categoryId `;
+            sqlInst += `insert into categories (categoryname, categorytype) values ('${data.categoryName}', '${data.categoryType}'); `;
+            sqlInst += 'set @id = scope_identity(); select @id as categoryId; ';
 
             db.querySql(sqlInst, function (result, err) {
                 if (err) {
@@ -413,7 +413,7 @@ exports.addCategory = function (req, res, reqBody) {
                     });
                 } else {
                     res.json({
-                        categoryId: data.recordset[0]
+                        categoryId: result.recordset[0]
                     });
                 }
             });
@@ -465,7 +465,9 @@ exports.updateCategory = function (req, res, reqBody) {
 // vscode-fold=18
 exports.removeCategory = function (req, res, categoryId) {
     try {
-        let sqlInst = `delete from categories where categoryid = ${categoryId}`;
+        let sqlInst = `if not exists(select 1 from sponsors where sponsorcategory = ${categoryId}) 
+                       or not exists(select 1 from recipients where recipientcategory = ${categoryId})
+                       delete from categories where categoryid = ${categoryId}; `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {
@@ -523,7 +525,6 @@ exports.addRegion = function (req, res, reqBody) {
         if (data) {
 
             let sqlInst = 'declare @id int; ';
-            sqlInst += `if not (exists (select top 1 1 from regions where regionname = '${data.regionName}')) `;
             sqlInst += `insert into regions (regionname) values ('${data.groupName}'); set @id = scope_identity(); select @id as regionId; `;
 
             db.querySql(sqlInst, function (result, err) {
@@ -534,7 +535,7 @@ exports.addRegion = function (req, res, reqBody) {
                     });
                 } else {
                     res.json({
-                        regionId: data.recordset[0]
+                        regionId: result.recordset[0]
                     });
                 }
             });
@@ -586,7 +587,9 @@ exports.updateRegion = function (req, res, reqBody) {
 // vscode-fold=22
 exports.removeRegion = function (req, res, regionId) {
     try {
-        let sqlInst = `delete from regions where regionid = ${regionId}`;
+        let sqlInst = `if not exists(select 1 from sponsors where sponsorregion = ${regionId})
+                       or not exists(select 1 from recipients where recipientregion = ${regionId})
+                       delete from regions where regionid = ${regionId}; `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {
@@ -644,7 +647,6 @@ exports.addGroup = function (req, res, reqBody) {
         if (data) {
 
             let sqlInst = 'declare @id int; '
-            sqlInst += `if not (exists (select top 1 1 from groups where groupname = '${data.groupName}')) `;
             sqlInst += `insert into groups (groupname) values ('${data.groupName}'); set @id = scope_identity(); select @id as groupId`;
 
             db.querySql(sqlInst, function (result, err) {
@@ -655,7 +657,7 @@ exports.addGroup = function (req, res, reqBody) {
                     });
                 } else {
                     res.json({
-                        groupId: data.recordset[0]
+                        groupId: result.recordset[0]
                     });
                 }
             });
@@ -707,7 +709,9 @@ exports.updateGroup = function (req, res, reqBody) {
 // vscode-fold=26
 exports.removeGroup = function (req, res, groupId) {
     try {
-        let sqlInst = `delete from groups where groupid = ${groupId}`;
+        let sqlInst = `if not exists(select 1 from sponsors where sponsorgroup = ${groupId})
+                       or not exists(select 1 from recipients where recipientgroup = ${groupId})
+                       delete from groups where groupid = ${groupId}; `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {

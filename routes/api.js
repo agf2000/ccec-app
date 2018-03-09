@@ -46,6 +46,26 @@ let uploadLogo = multer({
     })
 });
 
+let _getAllFilesFromFolder = function (dir) {
+
+    let filesystem = require("fs");
+    let results = [];
+
+    filesystem.readdirSync(dir).forEach(function (file) {
+
+        file = dir + '/' + file;
+        let stat = filesystem.statSync(file);
+
+        if (stat && stat.isDirectory()) {
+            results = results.concat(_getAllFilesFromFolder(file))
+        } else results.push(file);
+
+    });
+
+    return results;
+
+};
+
 // Gets list of settings
 // vscode-fold=2
 router.get('/settings', ensureAuthenticated, function (req, res) {
@@ -249,7 +269,7 @@ router.put('/category', ensureAuthenticated, function (req, res, next) {
 // Remoces category
 // vscode-fold=17
 router.delete('/category', function (req, res) {
-    apiController.removeCategory(req, res, req.body.recipientId);
+    apiController.removeCategory(req, res, req.body.categoryId);
 });
 
 // Gets list of groups
@@ -273,7 +293,7 @@ router.put('/group', ensureAuthenticated, function (req, res, next) {
 // Removes group
 // vscode-fold=21
 router.delete('/group', function (req, res) {
-    apiController.removeGroup(req, res, req.body.recipientId);
+    apiController.removeGroup(req, res, req.body.groupId);
 });
 
 // Gets list of regions
@@ -297,7 +317,7 @@ router.put('/region', ensureAuthenticated, function (req, res, next) {
 // Removes region
 // vscode-fold=25
 router.delete('/region', function (req, res) {
-    apiController.removeRegion(req, res, req.body.recipientId);
+    apiController.removeRegion(req, res, req.body.regionId);
 });
 
 // Gets list of states
@@ -333,7 +353,7 @@ router.put('/city', ensureAuthenticated, function (req, res, next) {
 // Removes city
 // vscode-fold=31
 router.delete('/city', function (req, res) {
-    apiController.removeCity(req, res, req.body.recipientId);
+    apiController.removeCity(req, res, req.body.cityId);
 });
 
 // Adds email tempate
@@ -363,7 +383,7 @@ router.get('/emailTemplate/:templateId', function (req, res) {
 // Removes email template
 // vscode-fold=36
 router.delete('/emailTemplate', function (req, res) {
-    apiController.removeEmailTemplate(req, res, req.body.recipientId);
+    apiController.removeEmailTemplate(req, res, req.body.templateId);
 });
 
 // Add docs from upload
@@ -383,26 +403,6 @@ router.post('/uploadDocs', ensureAuthenticated, uploadDocs.array('inputDocs'), f
 //         response: _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/'))
 //     });
 // });
-
-let _getAllFilesFromFolder = function (dir) {
-
-    let filesystem = require("fs");
-    let results = [];
-
-    filesystem.readdirSync(dir).forEach(function (file) {
-
-        file = dir + '/' + file;
-        let stat = filesystem.statSync(file);
-
-        if (stat && stat.isDirectory()) {
-            results = results.concat(_getAllFilesFromFolder(file))
-        } else results.push(file);
-
-    });
-
-    return results;
-
-};
 
 // Gets list of email recipients
 // vscode-fold=39

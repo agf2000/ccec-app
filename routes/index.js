@@ -159,6 +159,7 @@ router.get('/destinatarios', ensureAuthenticated, function (req, res) {
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
 			'/lib/jsgrid/js/jsgrid.min.js',
+			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
 			'/lib/hotkeys-js/js/hotkeys.min.js',
 			'/lib/jquery.scrollto/js/jquery.scrollTo.min.js',
 			'/lib/jquery.maskedinput/js/jquery.maskedinput.js'
@@ -186,6 +187,7 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
 			'/lib/jsgrid/js/jsgrid.min.js',
+			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
 			'/lib/pikaday/js/pikaday.js',
 			'/lib/hotkeys-js/js/hotkeys.min.js'
 		]
@@ -304,6 +306,7 @@ router.get('/usuarios', ensureAuthenticated, function (req, res) {
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/jsgrid/js/jsgrid.min.js',
+			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js'
 		]
 	});

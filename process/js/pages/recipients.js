@@ -713,17 +713,475 @@ $(function () {
         }
         e.preventDefault();
 
-        switch (e.currentTarget.value) {
-            case 'region':
-                $('#regionModal').modal();
+        switch (this.value) {
+            case "region":
+                $('#jsGridRegions').jsGrid('loadData');
+                $('#regionModal').modal('open');
                 break;
-            case 'group':
-                $('#groupModal').modal();
+            case "group":
+                $('#jsGridGroups').jsGrid('loadData');
+                $('#groupModal').modal('open');
                 break;
             default:
+                $('#jsGridCategories').jsGrid('loadData');
                 $('#categoryModal').modal();
                 break;
         }
+    });
+
+    $("#jsGridCategories").jsGrid({
+        width: '100%',
+        height: 'auto',
+        autoload: false,
+        confirmDeleting: true,
+        paging: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        inserting: true,
+        editing: true,
+        sorting: true,
+        // data: data, // an array of data
+        ajaxGridOptions: {
+            cache: false
+        },
+        controller: {
+            loadData: function (filter) {
+                var def = $.Deferred();
+                $.ajax({
+                    url: '/api/categories',
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }).done(function (item) {
+                    // console.log(item);
+                    def.resolve(item);
+                });
+                return def.promise();
+            },
+            deleteItem: function (deletingCategory) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/category',
+                    data: {
+                        categoryId: deletingCategory.categoryId
+                    }
+                }).done(function (data) {
+                    if (!data.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Caso a categoria esteja em uso, a mesma não pode ser excluida.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {},
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            },
+            updateItem: function (item) {
+                let d = $.Deferred();
+
+                let params = {
+                    categoryId: item.categoryId,
+                    categoryName: item.categoryName,
+                    categoryType: item.categoryType
+                };
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/category',
+                    data: params
+                }).done(function (updatedItem) {
+                    if (!updatedItem.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Categoria atualizada.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {
+                                d.resolve();
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                    return d.promise();
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            },
+            insertItem: function (item) {
+                let d = $.Deferred();
+
+                let params = {
+                    categoryName: item.categoryName,
+                    categoryType: item.categoryType
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/category',
+                    data: params
+                }).done(function (updatedItem) {
+                    if (!updatedItem.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Categoria inserida.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {
+                                d.resolve();
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                    return d.promise();
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            }
+        },
+        deleteConfirm: function (item) {
+            return "A categoria \"" + item.categoryName + "\" será removida. Deseja continuar?";
+        },
+        fields: [{
+                title: "Nome",
+                name: "categoryName",
+                type: "text"
+            },
+            {
+                name: "categoryType",
+                title: "Tipo",
+                type: "text",
+                width: 50
+            },
+            {
+                type: "control"
+            }
+        ]
+    });
+
+    $("#jsGridRegions").jsGrid({
+        width: '100%',
+        height: 'auto',
+        autoload: false,
+        confirmDeleting: true,
+        paging: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        inserting: true,
+        editing: true,
+        sorting: true,
+        // data: data, // an array of data
+        ajaxGridOptions: {
+            cache: false
+        },
+        controller: {
+            loadData: function (filter) {
+                var def = $.Deferred();
+                $.ajax({
+                    url: '/api/regions',
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }).done(function (item) {
+                    // console.log(item);
+                    def.resolve(item);
+                });
+                return def.promise();
+            },
+            deleteItem: function (deletingRegion) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/region',
+                    data: {
+                        regionId: deletingRegion.regionId
+                    }
+                }).done(function (data) {
+                    if (!data.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Caso a Região esteja em uso, a mesma não pode ser excluida.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {},
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            },
+            updateItem: function (item) {
+                let d = $.Deferred();
+
+                let params = {
+                    regionId: item.regionId,
+                    regionName: item.regionName
+                };
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/region',
+                    data: params
+                }).done(function (updatedItem) {
+                    if (!updatedItem.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Região atualizada.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {
+                                d.resolve();
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                    return d.promise();
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            },
+            insertItem: function (item) {
+                let d = $.Deferred();
+
+                let params = {
+                    regionName: item.regionName
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/region',
+                    data: params
+                }).done(function (updatedItem) {
+                    if (!updatedItem.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Região inserida.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {
+                                d.resolve();
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                    return d.promise();
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            }
+        },
+        deleteConfirm: function (item) {
+            return "A região \"" + item.regionName + "\" será removida. Deseja continuar?";
+        },
+        fields: [{
+                title: "Nome",
+                name: "regionName",
+                type: "text"
+            },
+            {
+                type: "control"
+            }
+        ]
+    });
+
+    $("#jsGridGroups").jsGrid({
+        width: '100%',
+        height: 'auto',
+        autoload: false,
+        confirmDeleting: true,
+        paging: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        inserting: true,
+        editing: true,
+        sorting: true,
+        // data: data, // an array of data
+        ajaxGridOptions: {
+            cache: false
+        },
+        controller: {
+            loadData: function (filter) {
+                var def = $.Deferred();
+                $.ajax({
+                    url: '/api/groups',
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }).done(function (item) {
+                    // console.log(item);
+                    def.resolve(item);
+                });
+                return def.promise();
+            },
+            deleteItem: function (deletingGroup) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/group',
+                    data: {
+                        groupId: deletingGroup.groupId
+                    }
+                }).done(function (data) {
+                    if (!data.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Caso o Grupo esteja em uso, o mesmo não pode ser excluido.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {},
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            },
+            updateItem: function (item) {
+                let d = $.Deferred();
+
+                let params = {
+                    groupId: item.groupId,
+                    groupName: item.groupName
+                };
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/group',
+                    data: params
+                }).done(function (updatedItem) {
+                    if (!updatedItem.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Grupo atualizado.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {
+                                d.resolve();
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                    return d.promise();
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            },
+            insertItem: function (item) {
+                let d = $.Deferred();
+
+                let params = {
+                    groupName: item.groupName
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/group',
+                    data: params
+                }).done(function (updatedItem) {
+                    if (!updatedItem.error) {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Grupo inserido.",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            timer: 3000
+                        }).then(
+                            function () {
+                                d.resolve();
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer')
+                                }
+                            }
+                        );
+                    }
+                    return d.promise();
+                }).fail(function (jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+                });
+            }
+        },
+        deleteConfirm: function (item) {
+            return "O grupo \"" + item.groupName + "\" será removida. Deseja continuar?";
+        },
+        fields: [{
+                title: "Nome",
+                name: "groupName",
+                type: "text"
+            },
+            {
+                type: "control"
+            }
+        ]
     });
 
     $('#inputPhone').mask('(99) 99999-9999');

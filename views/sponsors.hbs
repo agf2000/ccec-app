@@ -57,12 +57,9 @@
                     <div class="form-group">
                         <label for="sel2Cities">Cidade</label>
                         <br />
-                        <select id="sel2Cities" class="form-control" style="width: 95%;">
+                        <select id="sel2Cities" class="form-control" style="width: 100%;">
                             <option></option>
                         </select>
-                        <button class="btn btn-link btnEditModals" value="city" disabled>
-                            <span class="fa fa-edit"></span>
-                        </button>
                     </div>
                     <div class="form-group">
                         <label for="sel2Categories">Categoria</label>
@@ -143,18 +140,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Nova categoria</h4>
+                <h4 class="modal-title">Categorias</h4>
             </div>
             <div class="modal-body">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="inputCategoryName">Categoria</label>
-                        <input type="text" class="form-control" id="inputCategoryName" placeholder="Nome">
-                    </div>
-                </form>
+                {{>categories}}
             </div>
             <div class="modal-footer">
-                <button id="btnSaveCategory" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -171,15 +162,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Nova Região</h4>
+                <h4 class="modal-title">Regiões</h4>
             </div>
             <div class="modal-body">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="inputRegionName">Região</label>
-                        <input type="text" class="form-control" id="inputRegionName" placeholder="Nome">
-                    </div>
-                </form>
+                {{>regions}}
             </div>
             <div class="modal-footer">
                 <button id="btnSaveRegion" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
@@ -199,15 +185,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Novo Grupo</h4>
+                <h4 class="modal-title">Grupos</h4>
             </div>
             <div class="modal-body">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="inputGroupName">Grupo</label>
-                        <input type="text" class="form-control" id="inputGroupName" placeholder="Nome">
-                    </div>
-                </form>
+                {{>groups}}
             </div>
             <div class="modal-footer">
                 <button id="btnSaveGroup" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
@@ -218,6 +199,7 @@
     </div>
 </div>
 <!-- /Modal -->
+
 <script>
     let userInfo = "{{json user}}".replace(/&quot;/g, '"');
 </script>
