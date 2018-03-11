@@ -12,7 +12,7 @@ router.get('/', ensureAuthenticated, function (req, res, next) {
 	res.render('index', {
 		title: 'Colégio CEC :: App Mala Direta',
 		pageHeader: 'Colégio CEC',
-		pageDesc: 'Aplicativo Mala Direta',
+		pageDesc: 'Aplicativo de Comunicação',
 		user: req.user
 	});
 });
