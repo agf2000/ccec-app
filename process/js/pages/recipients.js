@@ -658,15 +658,19 @@ $(function () {
                 sorting: false
             },
             {
-                name: "recipientEmail",
-                title: "Email",
+                name: "stateName",
+                title: "Estado",
                 type: "text"
             },
             {
-                name: "completeAddress",
-                title: "Endereço",
-                type: "text",
-                sorting: false
+                name: "cityName",
+                title: "Cidade",
+                type: "text"
+            },
+            {
+                name: "recipientEmail",
+                title: "Email",
+                type: "text"
             },
             {
                 name: "recipientGroup",
@@ -699,6 +703,12 @@ $(function () {
                     }
                 },
                 title: "",
+                sorting: false
+            },
+            {
+                name: "completeAddress",
+                title: "Endereço",
+                type: "text",
                 sorting: false
             },
             {

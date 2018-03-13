@@ -429,7 +429,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
             let sponsors = '';
 
             _.forEach(results.response.sponsors, function (sponsor) {
-                sponsors += `<img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" /><br />`;
+                sponsors += `<img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" onclick="" /><br />`;
             });
 
             _.forEach(results.response.recipients, function (person) {
