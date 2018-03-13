@@ -658,19 +658,26 @@ $(function () {
                 sorting: false
             },
             {
-                name: "stateName",
-                title: "Estado",
-                type: "text"
+                name: "recipientState",
+                headerTemplate: "Estado",
+                itemTemplate: function (val, item) {
+                    if (val) {
+                        return val.split(':')[1];
+                    }
+                },
+                title: "",
+                sorting: false
             },
             {
-                name: "cityName",
-                title: "Cidade",
-                type: "text"
-            },
-            {
-                name: "recipientEmail",
-                title: "Email",
-                type: "text"
+                name: "recipientCity",
+                headerTemplate: "Cidade",
+                itemTemplate: function (val, item) {
+                    if (val) {
+                        return val.split(':')[1];
+                    }
+                },
+                title: "",
+                sorting: false
             },
             {
                 name: "recipientGroup",
@@ -704,6 +711,11 @@ $(function () {
                 },
                 title: "",
                 sorting: false
+            },
+            {
+                name: "recipientEmail",
+                title: "Email",
+                type: "text"
             },
             {
                 name: "completeAddress",
