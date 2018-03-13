@@ -424,7 +424,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
             let content = '',
                 sent = 0,
                 notSent = 0,
-                counter = 0;
+                counter = 1;
 
             let sponsors = '';
 
@@ -524,7 +524,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                                     }
 
                                     apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
-                                        console.error(cb.error);
+                                        if (cb.error) console.error(cb.error);
 
                                         counter++;
 
