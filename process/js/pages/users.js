@@ -66,13 +66,13 @@ $(function () {
 
         $.ajax({
             type: my.userId ? 'PUT' : 'POST',
-            url: '/users/user',
+            url: my.userId ? '/users/user' : '/users/register',
             data: params
         }).done(function (data) {
             if (!data.error) {
 
                 let msg = '';
-                if (my.userId == 0) {
+                if (data.userId) {
                     msg = 'Cadastro inserido.';
                 } else {
                     msg = 'Cadastro atualizado.';
@@ -87,7 +87,34 @@ $(function () {
                     timer: 2000
                 }).then(
                     function () {
-                        $('#myModal').modal('hide');
+                        let user = {};
+                        if (data.user) {
+                            user = {
+                                userId: data.user.userId,
+                                displayName: data.user.displayName,
+                                email: data.user.email,
+                                userRoleName: ($('#sel2Roles').select2('data')[0].name || $('#sel2Roles').select2('data')[0].text)
+                            }
+                        } else {
+                            $.extend(updatingUser, {
+                                displayName: $('#inputName').val(),
+                                email: $('#inputEmail').val(),
+                                userRoleName: ($('#sel2Roles').select2('data')[0].name || $('#sel2Roles').select2('data')[0].text)
+                            });
+
+                            $("#jsGrid").jsGrid("updateItem", updatingUser);
+
+                            $("#jsGrid").jsGrid('refresh');
+                        }
+
+                        if (data.user) {
+                            $("#jsGrid").jsGrid("insertItem", user);
+                        }
+
+                        $('#inputName').val('');
+                        $('#inputEmail').val('');
+                        $('#inputPassword').val('');
+                        $('#sel2Roles').val(null).trigger('change');
                     },
                     // handling the promise rejection
                     function (dismiss) {
@@ -97,12 +124,9 @@ $(function () {
                     }
                 );
             }
+
             $this.prop('disabled', false);
-            $('#inputName').val('');
-            $('#inputEmail').val('');
-            $('#inputPassword').val('');
-            $('#inputConfirmPassword').val('');
-            $('#sel2Roles').val(null).trigger('change');
+            $('#myModal').modal('hide');
         }).fail(function (jqXHR, textStatus) {
             console.log(jqXHR.responseText);
             $this.prop('disabled', false);
@@ -214,9 +238,12 @@ $(function () {
             {
                 type: "control",
                 headerTemplate: function () {
-                    return $("<button>").attr("type", "button").text("Adicionar")
+                    return $("<button>").attr("class", "btn btn-default").text("Adicionar")
                         .on("click", function () {
                             $('#myModal').modal('show');
+                            setTimeout(function () {
+                                $('#inputName').focus();
+                            }, 1000);
                         });
                 }
             }

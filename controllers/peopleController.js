@@ -37,14 +37,15 @@ exports.addUser = function (req, res, reqBody) {
         let data = reqBody;
         if (data) {
             let sqlInst = 'declare @id int;';
-            sqlInst += `insert into users (displayname, email, roleid, createdbyuser, createdondate) values ('${data.displayName}', '${data.email}', ${data.roleId}, ${data.createdByUser}, getdate); `;
+            sqlInst += `insert into users (portalid, displayname, username, email, hashed_password, roleid, createdbyuser, createdondate) 
+                        values (0, '${data.displayName}', '${data.email}', '${data.email}', '${data.password}', ${data.roleId}, ${data.createdByUser}, getdate()); `;
             sqlInst += 'set @id = scope_identity(); ';
 
             // _.forEach(JSON.parse(data.roles), function (value) {
             //     sqlInst += `insert into userroles (userid, roleid) values (@id, (select top 1 roleid from roles where rolename = '${value.text}')); `;
             // });
 
-            sqlINst += 'select @id as userId;';
+            sqlInst += 'select * from users where userid = @id;';
 
             db.querySql(sqlInst, function (result, err) {
                 if (err) {
@@ -54,7 +55,7 @@ exports.addUser = function (req, res, reqBody) {
                     });
                 } else {
                     res.json({
-                        "success": "success"
+                        user: result.recordset[0]
                     });
                 }
             });
@@ -71,29 +72,24 @@ exports.addUser = function (req, res, reqBody) {
 
 // Updates user
 // vscode-fold=3
-exports.updateUser = function (req, res, reqBody) {
+exports.updateUser = function (req, res, reqBody, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
         let data = reqBody;
         if (data) {
-            let sqlInst = "update users set displayname = '" + data.displayName + "', email = '" + data.email + "', modifiedbyuser = " + data.modifiedByUser + ", roleid = " + data.roleId + ", modifiedondate = getdate() ";
+            let sqlInst = "update users set displayname = '" + data.displayName + "', username = '" + data.email + "', email = '" + data.email + "', modifiedbyuser = " + data.modifiedByUser + ", roleid = " + data.roleId + ", modifiedondate = getdate() ";
 
             sqlInst += "where userid = " + data.userId + "; ";
-
-            // sqlInst += `delete from userroles where userid = ${data.userId}; `;
-            // _.forEach(JSON.parse(data.userRoles), function (value) {
-            //     sqlInst += `insert into userroles (userid, roleid) values (${data.userId}, (select top 1 roleid from roles where rolename = '${value}'));`;
-            // });
 
             db.querySql(sqlInst, function (result, err) {
                 if (err) {
                     console.log(err.message);
-                    res.status(500).json({
-                        "error": err.message
+                    cb({
+                        error: err.message
                     });
                 } else {
-                    res.json({
-                        "success": "success"
+                    cb({
+                        success: "success"
                     });
                 }
             });

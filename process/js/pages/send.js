@@ -152,22 +152,12 @@ $(function () {
 
     // $('#sel2Groups').append($('<option value="1" selected>Geral</option>'));
 
-    $('#sel2Groups').on("select2:select", function (e) {
-        if ($('#sel2Groups').val() !== null) {
-            let params = {
-                term: "",
-                categoryId: $('#sel2Categories').val() || "''",
-                regionId: $('#sel2Regions').val() || "''",
-                groupId: $('#sel2Groups').val() || "''",
-                cityId: $('#sel2Cities').val() || "''",
-                stateId: $('#sel2States').val() || "''",
-                recipientId: $('#sel2Recipients').val() || 0
-            }
-
-            $.getJSON('/api/recipientsMailingList', params, function (data) {
-                $('#sel2Recipients').append($(`<option value="0" selected>${data.recipients.response.recipients.length} destinatário(s) selecionado</option>`));
-            });
-        }
+    $('#sel2Groups').on("select2:select select2:unselect", function (e) {
+        // if ($('#sel2Groups').val() !== null) {
+        setTimeout(function () {
+            getRecipients();
+        }, 500);
+        // }
     });
 
     $('#sel2Categories').select2({
@@ -211,22 +201,12 @@ $(function () {
 
     // $('#sel2Categories').append($('<option value="1" selected>Geral</option>'));
 
-    $('#sel2Categories').on("select2:select", function (e) {
-        if ($('#sel2Categories').val() !== null) {
-            let params = {
-                term: "",
-                categoryId: $('#sel2Categories').val() || "''",
-                regionId: $('#sel2Regions').val() || "''",
-                groupId: $('#sel2Groups').val() || "''",
-                cityId: $('#sel2Cities').val() || "''",
-                stateId: $('#sel2States').val() || "''",
-                recipientId: $('#sel2Recipients').val() || 0
-            }
-
-            $.getJSON('/api/recipientsMailingList', params, function (data) {
-                $('#sel2Recipients').append($(`<option value="0" selected>${data.recipients.response.recipients.length} destinatário(s) selecionado</option>`));
-            });
-        }
+    $('#sel2Categories').on("select2:select select2:unselect", function (e) {
+        // if ($('#sel2Categories').val() !== null) {
+        setTimeout(function () {
+            getRecipients();
+        }, 500);
+        // }
     });
 
     $('#sel2Regions').select2({
@@ -268,27 +248,18 @@ $(function () {
         }
     });
 
-    $('#sel2Regions').on("select2:select", function (e) {
-        if ($('#sel2Regions').val() !== null) {
-            let params = {
-                term: "",
-                categoryId: $('#sel2Categories').val() || "''",
-                regionId: $('#sel2Regions').val() || "''",
-                groupId: $('#sel2Groups').val() || "''",
-                cityId: $('#sel2Cities').val() || "''",
-                stateId: $('#sel2States').val() || "''",
-                recipientId: $('#sel2Recipients').val() || 0
-            }
-
-            $.getJSON('/api/recipientsMailingList', params, function (data) {
-                $('#sel2Recipients').append($(`<option value="0" selected>${data.recipients.response.recipients.length} destinatário(s) selecionado</option>`));
-            });
-        }
+    $('#sel2Regions').on("select2:select select2:unselect", function (e) {
+        // if ($('#sel2Regions').val() !== null) {
+        setTimeout(function () {
+            getRecipients();
+        }, 500);
+        // }
     });
 
     $('#sel2States').select2({
         placeholder: 'Selecione o estado',
         language: "pt-BR",
+        allowClear: true,
         ajax: {
             url: '/api/states',
             dataType: 'json',
@@ -324,35 +295,26 @@ $(function () {
         }
     });
 
-    $('#sel2States').on("select2:select", function (e) {
+    $('#sel2States').on("select2:select select2:unselect", function (e) {
         if ($('#sel2States').val() !== null) {
             $.getJSON('/api/cities?stateId=' + $('#sel2States').select2('data')[0].id, function (data) {
                 if (data) {
                     $("#sel2Cities").prop("disabled", false);
                     $('#sel2Cities').show();
-
-                    let params = {
-                        term: "",
-                        categoryId: $('#sel2Categories').val() || "''",
-                        regionId: $('#sel2Regions').val() || "''",
-                        groupId: $('#sel2Groups').val() || "''",
-                        cityId: $('#sel2Cities').val() || "''",
-                        stateId: $('#sel2States').val() || "''",
-                        recipientId: $('#sel2Recipients').val() || 0
-                    }
-
-                    $.getJSON('/api/recipientsMailingList', params, function (data) {
-                        $('#sel2Recipients').append($(`<option value="0" selected>${data.recipients.response.recipients.length} destinatário(s) selecionado</option>`));
-                    });
                 }
             });
             $('#sel2Cities').select2('open');
+
+            setTimeout(function () {
+                getRecipients();
+            }, 500);
         }
     });
 
     $('#sel2Cities').select2({
         placeholder: 'Selecione a cidade',
         language: "pt-BR",
+        allowClear: true,
         ajax: {
             delay: 500,
             url: '/api/cities',
@@ -396,22 +358,12 @@ $(function () {
         }
     });
 
-    $('#sel2Cities').on("select2:select", function (e) {
-        if ($('#sel2Cities').val() !== null) {
-            let params = {
-                term: "",
-                categoryId: $('#sel2Categories').val() || "''",
-                regionId: $('#sel2Regions').val() || "''",
-                groupId: $('#sel2Groups').val() || "''",
-                cityId: $('#sel2Cities').val() || "''",
-                stateId: $('#sel2States').val() || "''",
-                recipientId: $('#sel2Recipients').val() || 0
-            }
-
-            $.getJSON('/api/recipientsMailingList', params, function (data) {
-                $('#sel2Recipients').append($(`<option value="0" selected>${data.recipients.response.recipients.length} destinatário(s) selecionado</option>`));
-            });
-        }
+    $('#sel2Cities').on("select2:select select2:unselect", function (e) {
+        // if ($('#sel2Cities').val() !== null) {
+        setTimeout(function () {
+            getRecipients();
+        }, 500);
+        // }
     });
 
     // $('#sel2Regions').append($('<option value="1" selected>Geral</option>'));
@@ -603,6 +555,21 @@ $(function () {
 
     CKEDITOR.replace('textareaTemplate');
 });
+
+function getRecipients() {
+    let params = {
+        term: "",
+        categoryId: $('#sel2Categories').val() || "''",
+        regionId: $('#sel2Regions').val() || "''",
+        groupId: $('#sel2Groups').val() || "''",
+        cityId: $('#sel2Cities').val() || "''",
+        stateId: $('#sel2States').val() || "''",
+        recipientId: $('#sel2Recipients').val() || 0
+    };
+    $.getJSON('/api/recipientsMailingList', params, function (data) {
+        $('#sel2Recipients').append($(`<option value="0" selected>${data.recipients.response.recipients.length} destinatário(s) selecionado</option>`));
+    });
+};
 
 function handleFileSelect(e) {
     if (!e.target.files) return;

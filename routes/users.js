@@ -11,22 +11,22 @@ router.get('/', ensureAuthenticated, function (req, res) {
 	peopleController.getUsers(req, res);
 });
 
-// Adds user
-// vscode-fold=2
-router.post('/user', ensureAuthenticated, function (req, res, next) {
-	peopleController.addUser(req, res, req.body);
-});
+// // Adds user
+// // vscode-fold=2
+// router.post('/user', ensureAuthenticated, function (req, res, next) {
+// 	peopleController.addUser(req, res, req.body);
+// });
 
-// Updates user
-// vscode-fold=3
-router.put('/user', ensureAuthenticated, function (req, res, next) {
-	peopleController.updateUser(req, res, req.body);
-});
+// // Updates user
+// // vscode-fold=3
+// router.put('/user', ensureAuthenticated, function (req, res, next) {
+// 	peopleController.updateUser(req, res, req.body);
+// });
 
 // Removes user
 // vscode-fold=4
 router.delete('/user', ensureAuthenticated, function (req, res, next) {
-	peopleController.removeUser(req, res, req.body);
+	peopleController.removeUser(req, res, req.body.userId);
 });
 
 // Gets list of rolews
@@ -47,20 +47,57 @@ router.get('/login', function (req, res) {
 	});
 });
 
-// Registration Form
-// vscode-fold=6
-router.get('/register', function (req, res) {
-	res.render('register', {
-		title: 'Cadastro de Usuários',
-		pageHeader: 'Cadastro de Usuários',
-		pageDesc: 'Para colaboradores e administradores',
-		script: [
-			'/js/pages/register.js'
-		]
-	});
-});
+// // Registration Form
+// // vscode-fold=6
+// router.get('/register', function (req, res) {
+// 	res.render('register', {
+// 		title: 'Cadastro de Usuários',
+// 		pageHeader: 'Cadastro de Usuários',
+// 		pageDesc: 'Para colaboradores e administradores',
+// 		script: [
+// 			'/js/pages/register.js'
+// 		]
+// 	});
+// });
 
 // Users
+// Update profile
+// vscode-fold=7
+router.put('/user', function (req, res, next) {
+	if (req.body.password) {
+		bcrypt.genSalt(10, function (err, salt) {
+			bcrypt.hash(req.body.password, salt, function (err, hash) {
+				if (err) {
+					console.log(err);
+				}
+				req.body.password = hash;
+
+				peopleController.updateUser(req, res, req.body, function (result) {
+					if (!result.error) {
+						peopleController.updatePassword(req, res, req.body.userId, req.body.password);
+					} else {
+						res.json({
+							"error": result.error
+						});
+					}
+				});
+			});
+		});
+	} else {
+		peopleController.updateUser(req, res, req.body, function (result) {
+			if (!result.error) {
+				res.json({
+					success: "success"
+				});
+			} else {
+				res.json({
+					"error": result.error
+				});
+			}
+		});
+	}
+});
+
 // User registration proccess
 // vscode-fold=7
 router.post('/register', function (req, res, next) {
@@ -71,38 +108,7 @@ router.post('/register', function (req, res, next) {
 			}
 			req.body.password = hash;
 
-			peopleController.addUser(req, res, req.body, function (result) {
-				if (!result.error) {
-
-					// let emailText = `Caro(a) ${req.body.firstName} ${req.body.lastName}, estamos felizes em lhe informar que seu cadastro foi aceito. \n\n
-					// 		Por favor leia a informação abaixo com atenção e certifique-se que estaja disponível para futuras referências. \n\n
-					// 		Endereço: ${req.headers.origin} \n
-					// 		Seu login: ${req.body.email} \n\n
-					// 		Obrigado e Bem Vindo a W1Buy.com`;
-
-					// // send the message and get a callback with an error or details of the message that was sent 
-					// email.send({
-					// 	text: emailText,
-					// 	from: "Administrador - W1Buy <w1buy@w1buy.com.br>",
-					// 	to: '"' + req.body.firstName + ' ' + req.body.lastName + '" <' + req.body.email + '>',
-					// 	subject: 'Seu cadastro no portal W1Buy'
-					// 	// attachment: [{
-					// 	// 	data: emailHtml,
-					// 	// 	alternative: true
-					// 	// }]
-					// }, function (emailErr, message) {
-					// 	console.log(emailErr || message);
-					// });
-
-					res.json({
-						UserId: result.userid
-					});
-				} else {
-					res.json({
-						"error": result.error
-					});
-				}
-			});
+			peopleController.addUser(req, res, req.body);
 		});
 	});
 });
