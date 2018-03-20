@@ -9,95 +9,62 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                <h4 class="modal-title" id="myModalLabel">Perfil</h4>
             </div>
             <div class="modal-body">
-                <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#profile" data-toggle="tab">Perfil</a>
-                        </li>
-                        <li>
-                            <a href="#password" data-toggle="tab">Senha</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="active tab-pane" id="profile">
-                            <form class="form-horizontal">
-                                <div class="register-box">
-                                    <div class="register-box-body">
-                                        <p class="profile-box-msg"></p>
+                <form class="form-horizontal">
+                    <div class="register-box">
+                        <div class="register-box-body">
+                            <p class="profile-box-msg"></p>
 
-                                        <div class="form-group">
-                                            <label for="inputName" class="col-sm-4 control-label">Nome:</label>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-4 control-label">Nome:</label>
 
-                                            <div class="col-sm-8">
-                                                <input id="inputName" type="text" class="form-control" id="inputName" placeholder="Name" value="{{user.displayName}}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail" class="col-sm-4 control-label">Email:</label>
-
-                                            <div class="col-sm-8">
-                                                <input id="inputEmail" type="email" class="form-control" id="inputEmail" placeholder="Email" value="{{user.email}}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sel2Roles" class="col-sm-4 control-label">Departamentos:</label>
-
-                                            <div class="col-sm-8">
-                                                <select id="sel2Roles" class="form-control" style="width: 100%;">
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-4 col-sm-8">
-                                                <button id="btnSaveUser" type="submit" class="btn btn-primary">Salvar</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-sm-8">
+                                    <input id="inputName" type="text" class="form-control" id="inputName" placeholder="Name">
                                 </div>
-                            </form>
-                            <!-- /.post -->
-                        </div>
-                        <!-- /.tab-pane -->
-                        <div class="tab-pane" id="password">
-                            <form class="form-horizontal">
-                                <div class="register-box">
-                                    <div class="register-box-body">
-                                        <p class="password-box-msg"></p>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-sm-4 control-label">Email:</label>
 
-                                        <div class="form-group">
-                                            <label for="inputNewPassword" class="col-sm-4 control-label">Nova:</label>
-
-                                            <div class="col-sm-8">
-                                                <input id="inputNewPassword" type="password" class="form-control" placeholder="Nova Senha">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputConfirmPassword" class="col-sm-4 control-label">Confirmar:</label>
-
-                                            <div class="col-sm-8">
-                                                <input id="inputConfirmPassword" type="password" class="form-control" placeholder="Confirmar Senha">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-4 col-sm-8">
-                                                <button id="btnAlterPassword" type="submit" class="btn btn-primary">Alterar</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-sm-8">
+                                    <input id="inputEmail" type="email" class="form-control" id="inputEmail" placeholder="Email">
                                 </div>
-                            </form>
+                            </div>
+                            <div class="form-group">
+                                <label for="sel2Roles" class="col-sm-4 control-label">Departamentos:</label>
+
+                                <div class="col-sm-8">
+                                    <select id="sel2Roles" class="form-control" style="width: 100%;">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-sm-4 control-label">Senha:</label>
+
+                                <div class="col-sm-8">
+                                    <input id="inputPassword" type="password" class="form-control" placeholder="Senha">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputConfirmPassword" class="col-sm-4 control-label">Confirmar:</label>
+
+                                <div class="col-sm-8">
+                                    <input id="inputConfirmPassword" type="password" class="form-control" placeholder="Confirmar Senha">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8">
+                                    <button id="btnSaveUser" type="submit" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.tab-pane -->
                     </div>
-                    <!-- /.tab-content -->
-
-                </div>
+                </form>
+                <!-- /.post -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>

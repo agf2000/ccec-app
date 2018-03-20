@@ -95,11 +95,15 @@ $(function () {
         if ($('#sel2EmailTemplates').val() !== null) {
             $.getJSON('/api/emailTemplate/' + $('#sel2EmailTemplates').select2('data')[0].id, function (data) {
 
-                $('#headerPreview').html(data[0].headerTemplate);
+                // $('#headerPreview').html(data[0].headerTemplate);
 
-                $('#bodyPreview').html(data[0].bodyTemplate);
+                // $('#bodyPreview').html(data[0].bodyTemplate);
 
-                $('#footerPreview').html(data[0].footerTemplate);
+                // $('#footerPreview').html(data[0].footerTemplate);
+
+                CKEDITOR.instances.textareaTemplate.setData(data[0].headerTemplate.trim(), function () {
+                    this.checkDirty(); // true
+                });
 
                 // my.templateId = $('#sel2EmailTemplates').select2('data')[0].id;
 
@@ -515,7 +519,7 @@ $(function () {
             cityId: $('#sel2Groups').val() || "''",
             stateId: $('#sel2Groups').val() || "''",
             subject: $('#sel2EmailTemplates').select2('data')[0].name,
-            content: $('#headerPreview').html() + $('#bodyPreview').html() + $('#footerPreview').html(),
+            content: CKEDITOR.instances.textareaTemplate.getData(), // $('#headerPreview').html() + $('#bodyPreview').html() + $('#footerPreview').html(),
             recipientId: $('#sel2Recipients').val() || 0,
             attachments: my.filesAttached,
             singleAttach: $('#chkSingle').prop('checked')
@@ -550,8 +554,7 @@ $(function () {
                     html: "Correspondêcia(s) enviada.<br />Verifique o histórico de envio para mais informações.",
                     type: "success",
                     showCancelButton: false,
-                    confirmButtonText: "Ok",
-                    timer: 3000
+                    confirmButtonText: "Ok"
                 }).then(
                     function () {},
                     // handling the promise rejection
@@ -598,6 +601,7 @@ $(function () {
         });
     });
 
+    CKEDITOR.replace('textareaTemplate');
 });
 
 function handleFileSelect(e) {

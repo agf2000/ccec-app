@@ -10,9 +10,9 @@ const router = express.Router();
 // vscode-fold=1
 router.get('/', ensureAuthenticated, function (req, res, next) {
 	res.render('index', {
-		title: 'Colégio CEC :: App Mala Direta',
+		title: 'Colégio CEC :: App Comunicações',
 		pageHeader: 'Colégio CEC',
-		pageDesc: 'Aplicativo de Comunicação',
+		pageDesc: 'Aplicativo de Comunicações',
 		user: req.user
 	});
 });
@@ -21,7 +21,7 @@ router.get('/', ensureAuthenticated, function (req, res, next) {
 // vscode-fold=2
 router.get('/login', function (req, res) {
 	res.render('login', {
-		title: 'Login',
+		title: 'CCEC :: Login',
 		layout: false,
 		script: [
 			'/js/pages/login.js'
@@ -37,7 +37,8 @@ router.get('/cadastro', ensureAuthenticated, function (req, res) {
 		pageHeader: 'Cadastro de Usuários',
 		pageDesc: 'Para colaboradores e administradores',
 		script: [
-			'/js/pages/register.js'
+			'/js/pages/register.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 		]
 	});
 });
@@ -114,7 +115,8 @@ router.get('/perfil', ensureAuthenticated, function (req, res, next) {
 			'/js/pages/profile.js',
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
-			'/lib/sweetalert2/js/sweetalert2.min.js'
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 			// '/lib/select2-bootstrap-theme/css/select2-bootstrap.min.css',
 		]
 	});
@@ -132,7 +134,8 @@ router.get('/provedor', ensureAuthenticated, function (req, res, next) {
 		],
 		script: [
 			'/js/pages/emailProvider.js',
-			'/lib/sweetalert2/js/sweetalert2.min.js'
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 		]
 	});
 });
@@ -162,7 +165,8 @@ router.get('/destinatarios', ensureAuthenticated, function (req, res) {
 			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
 			'/lib/hotkeys-js/js/hotkeys.min.js',
 			'/lib/jquery.scrollto/js/jquery.scrollTo.min.js',
-			'/lib/jquery.maskedinput/js/jquery.maskedinput.js'
+			'/lib/jquery.maskedinput/js/jquery.maskedinput.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 		]
 	});
 });
@@ -189,7 +193,8 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/jsgrid/js/jsgrid.min.js',
 			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
 			'/lib/pikaday/js/pikaday.js',
-			'/lib/hotkeys-js/js/hotkeys.min.js'
+			'/lib/hotkeys-js/js/hotkeys.min.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 		]
 	});
 });
@@ -211,7 +216,8 @@ router.get('/templates', ensureAuthenticated, function (req, res) {
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
-			'/lib/ckeditor/ckeditor.js'
+			'/lib/ckeditor/ckeditor.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 		]
 	});
 });
@@ -220,8 +226,8 @@ router.get('/templates', ensureAuthenticated, function (req, res) {
 // vscode-fold=11
 router.get('/enviar', ensureAuthenticated, function (req, res) {
 	res.render('send', {
-		title: 'Mala Direta',
-		pageHeader: 'Mala Direta',
+		title: 'Comunicações',
+		pageHeader: 'Comunicações',
 		pageDesc: 'Envio de Correspondência',
 		css: [
 			'/css/pages/send.css',
@@ -232,7 +238,9 @@ router.get('/enviar', ensureAuthenticated, function (req, res) {
 			'/js/pages/send.js',
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
-			'/lib/sweetalert2/js/sweetalert2.min.js'
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/ckeditor/ckeditor.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 		]
 	});
 });
@@ -307,7 +315,8 @@ router.get('/usuarios', ensureAuthenticated, function (req, res) {
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/jsgrid/js/jsgrid.min.js',
 			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
-			'/lib/sweetalert2/js/sweetalert2.min.js'
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
 		]
 	});
 });

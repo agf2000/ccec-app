@@ -1258,3 +1258,28 @@ exports.getHistories = function (req, res) {
         );
     }
 };
+
+// Removes attachment(s)
+// vscode-fold=44
+exports.removeAttachment = function (req, res, fileId, cb) {
+    try {
+        let sqlInst = `delete from attachments where fileid = ${fileId}`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    error: err.message
+                });
+            } else {
+                cb({
+                    success: "success"
+                });
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    }
+};

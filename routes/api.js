@@ -405,7 +405,7 @@ router.post('/uploadDocs', ensureAuthenticated, uploadDocs.array('inputDocs'), f
 // });
 
 // Gets list of email recipients
-// vscode-fold=39
+// vscode-fold=38
 router.get('/recipientsMailingList', ensureAuthenticated, function (req, res, next) {
     apiController.getRecipientsMailList(req, res, req.query, function (results) {
         if (!results.error) {
@@ -417,7 +417,7 @@ router.get('/recipientsMailingList', ensureAuthenticated, function (req, res, ne
 });
 
 // Sends emails
-// vscode-fold=40
+// vscode-fold=39
 router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
     apiController.getRecipientsMailList(req, res, req.body, function (results) {
         if (!results.error) {
@@ -429,7 +429,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
             let sponsors = '';
 
             _.forEach(results.response.sponsors, function (sponsor) {
-                sponsors += `<img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" onclick="" /><br />`;
+                sponsors += `<a href="${sponsor.sponsorUrl}"><img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" /></a><br />`;
             });
 
             _.forEach(results.response.recipients, function (person) {
@@ -438,156 +438,156 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
 
                 content = content.replace('[PATROCINADOR]', sponsors);
 
-                if (JSON.parse(req.body.singleAttach)) {
-                    let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
-                    if (attachments) {
-                        let attachArray = [];
+                // if (JSON.parse(req.body.singleAttach)) {
+                let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
+                if (attachments) {
+                    let attachArray = [];
+                    attachArray.push({
+                        data: `<html>${content}</html>`,
+                        alternative: true
+                    });
+
+                    _.forEach(attachments, function (item) {
                         attachArray.push({
-                            data: `<html>${content}</html>`,
-                            alternative: true
+                            path: item,
+                            type: mime.lookup(item),
+                            name: item
                         });
+                    });
 
-                        _.forEach(attachments, function (item) {
-                            attachArray.push({
-                                path: item,
-                                type: mime.lookup(item),
-                                name: item
-                            });
-                        });
+                    // send the message and get a callback with an error or details of the message that was sent 
+                    email.send({
+                        text: content,
+                        from: "Colégio CEC <contato@riw.com.br>",
+                        to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
+                        subject: req.body.subject,
+                        attachment: attachArray
+                    }, function (emailErr, message) {
+                        if (emailErr) {
+                            notSent++;
+                        } else {
+                            sent++;
+                        }
 
-                        // send the message and get a callback with an error or details of the message that was sent 
-                        email.send({
-                            text: content,
-                            from: "Colégio CEC <contato@riw.com.br>",
-                            to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
-                            subject: req.body.subject,
-                            attachment: attachArray
-                        }, function (emailErr, message) {
-                            if (emailErr) {
-                                notSent++;
-                            } else {
-                                sent++;
-                            }
-
-                            apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, attachArray.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
-                                if (cb.error) return console.error(cb.error)
-
-                                counter++;
-
-                                if (counter == results.response.recipients.length) {
-                                    fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
-                                        if (err) return console.error(err)
-
-                                        res.json({
-                                            success: "success"
-                                        });
-                                    });
-                                }
-                            });
-
-                            // console.log(emailErr || message);
-                        });
-                    } else {
-                        notSent++;
-
-                        apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment().format('YYYY-MM-DD HH:mm'), function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, attachArray.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) return console.error(cb.error)
 
-                            res.json({
-                                success: "success"
-                            });
-                        });
-                    }
-                } else {
+                            counter++;
 
-                    fse.readdir(path.join(__dirname, '..', 'data/uploads/docs/'), function (err, files) {
-                        if (err) {
-                            // some sort of error
-                        } else {
-                            if (!files.length) {
-                                // directory appears to be empty
-                                // send the message and get a callback with an error or details of the message that was sent 
-                                email.send({
-                                    text: content,
-                                    from: "Colégio CEC <contato@riw.com.br>",
-                                    to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
-                                    subject: req.body.subject,
-                                    attachment: [{
-                                        data: `<html>${content}</html>`,
-                                        alternative: true
-                                    }]
-                                }, function (emailErr, message) {
-                                    if (emailErr) {
-                                        notSent++;
-                                    } else {
-                                        sent++;
-                                    }
+                            if (counter == results.response.recipients.length) {
+                                fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
+                                    if (err) return console.error(err)
 
-                                    apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
-                                        if (cb.error) console.error(cb.error);
-
-                                        counter++;
-
-                                        if (counter == results.response.recipients.length) {
-                                            res.json({
-                                                success: "success"
-                                            });
-                                        }
+                                    res.json({
+                                        success: "success"
                                     });
-
-                                    // console.log(emailErr || message);
-                                });
-                            } else {
-                                let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
-                                let attachment;
-                                _.findKey(attachments, function (f) {
-                                    attachment = o.indexOf(person.recipientId);
-                                });
-
-                                // send the message and get a callback with an error or details of the message that was sent 
-                                email.send({
-                                    text: content,
-                                    from: "Colégio CEC <contato@riw.com.br>",
-                                    to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
-                                    subject: req.body.subject,
-                                    attachment: [{
-                                            data: `<html>${content}</html>`,
-                                            alternative: true
-                                        },
-                                        {
-                                            path: attachment,
-                                            type: mime.lookup(attachment),
-                                            name: "Boleto"
-                                        }
-                                    ]
-                                }, function (emailErr, message) {
-                                    if (emailErr) {
-                                        notSent++;
-                                    } else {
-                                        sent++;
-                                    }
-
-                                    apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, attachments.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
-                                        console.error(cb.error);
-
-                                        counter++;
-
-                                        if (counter == results.response.recipients.length) {
-                                            fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
-                                                if (err) return console.error(err)
-
-                                                res.json({
-                                                    success: "success"
-                                                });
-                                            });
-                                        }
-                                    });
-
-                                    // console.log(emailErr || message);
                                 });
                             }
-                        }
+                        });
+
+                        // console.log(emailErr || message);
                     });
+                    // } else {
+                    //     notSent++;
+
+                    //     apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment().format('YYYY-MM-DD HH:mm'), function (cb) {
+                    //         if (cb.error) return console.error(cb.error)
+
+                    //         res.json({
+                    //             success: "success"
+                    //         });
+                    //     });
+                    // }
+                } else {
+
+                    // fse.readdir(path.join(__dirname, '..', 'data/uploads/docs/'), function (err, files) {
+                    //     if (err) {
+                    //         // some sort of error
+                    //     } else {
+                    //         if (!files.length) {
+                    //             // directory appears to be empty
+                    // send the message and get a callback with an error or details of the message that was sent 
+                    email.send({
+                        text: content,
+                        from: "Colégio CEC <contato@riw.com.br>",
+                        to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
+                        subject: req.body.subject,
+                        attachment: [{
+                            data: `<html>${content}</html>`,
+                            alternative: true
+                        }]
+                    }, function (emailErr, message) {
+                        if (emailErr) {
+                            notSent++;
+                        } else {
+                            sent++;
+                        }
+
+                        apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                            if (cb.error) console.error(cb.error);
+
+                            counter++;
+
+                            if (counter == results.response.recipients.length) {
+                                res.json({
+                                    success: "success"
+                                });
+                            }
+                        });
+
+                        // console.log(emailErr || message);
+                    });
+                    //         } else {
+                    //             let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
+                    //             let attachment;
+                    //             _.findKey(attachments, function (f) {
+                    //                 attachment = o.indexOf(person.recipientId);
+                    //             });
+
+                    //             // send the message and get a callback with an error or details of the message that was sent 
+                    //             email.send({
+                    //                 text: content,
+                    //                 from: "Colégio CEC <contato@riw.com.br>",
+                    //                 to: '"' + person.recipientName + '" <' + person.recipientEmail + '>',
+                    //                 subject: req.body.subject,
+                    //                 attachment: [{
+                    //                         data: `<html>${content}</html>`,
+                    //                         alternative: true
+                    //                     },
+                    //                     {
+                    //                         path: attachment,
+                    //                         type: mime.lookup(attachment),
+                    //                         name: "Boleto"
+                    //                     }
+                    //                 ]
+                    //             }, function (emailErr, message) {
+                    //                 if (emailErr) {
+                    //                     notSent++;
+                    //                 } else {
+                    //                     sent++;
+                    //                 }
+
+                    //                 apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, attachments.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                    //                     console.error(cb.error);
+
+                    //                     counter++;
+
+                    //                     if (counter == results.response.recipients.length) {
+                    //                         fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
+                    //                             if (err) return console.error(err)
+
+                    //                             res.json({
+                    //                                 success: "success"
+                    //                             });
+                    //                         });
+                    //                     }
+                    //                 });
+
+                    //                 // console.log(emailErr || message);
+                    //             });
+                    //         }
+                    //     }
+                    // });
                 }
             });
         }
@@ -595,7 +595,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
 });
 
 // Gets list of email history
-// vscode-fold=41
+// vscode-fold=40
 router.get('/histories', ensureAuthenticated, function (req, res, next) {
     apiController.getHistories(req, res, req.query, function (results) {
         if (!results.error) {
@@ -607,7 +607,7 @@ router.get('/histories', ensureAuthenticated, function (req, res, next) {
 });
 
 // Gets list of files
-// vscode-fold=42
+// vscode-fold=41
 router.get('/files', ensureAuthenticated, function (req, res, next) {
     let filesArray = [];
     let files = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
@@ -626,15 +626,22 @@ router.get('/files', ensureAuthenticated, function (req, res, next) {
 });
 
 // Removes sponsor logo
-// vscode-fold=43
-router.delete('/file', function (req, res) {
+// vscode-fold=42
+router.delete('/attachment', function (req, res) {
     fse.remove(req.body.filePath, err => {
         if (err) return console.error(err)
 
-        console.log('success!') // I just deleted my entire HOME directory.
-
-        res.json({
-            success: "success"
+        // console.log('success!') // I just deleted my entire HOME directory.
+        apiController.removeAttachment(req, res, req.query.files, function (result) {
+            if (!result.error) {
+                res.json({
+                    success: "success"
+                });
+            } else {
+                res.json({
+                    error: result.error
+                });
+            }
         });
     });
 });

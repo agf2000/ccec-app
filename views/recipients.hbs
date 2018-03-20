@@ -9,11 +9,11 @@
             </h3>
         </div>
         <div id="collapseOne" class="panel-collapse collapse">
-            <form role="form">
+            <form data-toggle="validator" role="form">
                 <div class="box-body">
                     <div class="form-group">
                         <label for="inputName">Nome</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="Nome" style="text-transform: uppercase">
+                        <input type="text" class="form-control" id="inputName" placeholder="Nome" style="text-transform: uppercase" required>
                     </div>
                     <div class="form-group">
                         <label for="inputPhone">Celular</label>
@@ -30,21 +30,21 @@
                     <div class="form-group">
                         <label for="sel2States">Estado</label>
                         <br />
-                        <select id="sel2States" class="form-control" style="width: 100%;">
+                        <select id="sel2States" class="form-control" style="width: 100%;" required>
                             <option></option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="sel2Cities">Cidade</label>
                         <br />
-                        <select id="sel2Cities" class="form-control" style="width: 100%;">
+                        <select id="sel2Cities" class="form-control" style="width: 100%;" required>
                             <option></option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="sel2Categories">Categoria</label>
                         <br />
-                        <select id="sel2Categories" class="form-control" style="width: 95%;">
+                        <select id="sel2Categories" class="form-control" style="width: 95%;" required>
                             <option></option>
                         </select>
                         <button class="btn btn-link btnEditModals" value="category">
@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label for="sel2Regions">Região</label>
                         <br />
-                        <select id="sel2Regions" class="form-control" style="width: 95%;">
+                        <select id="sel2Regions" class="form-control" style="width: 95%;" required>
                             <option></option>
                         </select>
                         <button class="btn btn-link btnEditModals" value="region">
@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label for="sel2Groups">Grupo</label>
                         <br />
-                        <select id="sel2Groups" class="form-control" style="width: 95%;">
+                        <select id="sel2Groups" class="form-control" style="width: 95%;" required>
                             <option></option>
                         </select>
                         <button class="btn btn-link btnEditModals" value="group">

@@ -521,15 +521,15 @@ $(function () {
                                         dateEnd: ($('#inputDateEnd').val().length ? moment($('#inputDateEnd').val()).format('MM/DD/YYYY 00:00:00') : ''),
                                         active: $('#inputActive').is(':checked'),
                                         sponsorCategory: $('#sel2Categories').val(),
-                                        sponsorCategoryName: $('#sel2Categories').select2('data')[0].name,
+                                        sponsorCategoryName: ($('#sel2Categories').select2('data')[0].name || $('#sel2Categories').select2('data')[0].text),
                                         sponsorGroup: $('#sel2Groups').val(),
-                                        sponsorGroupName: $('#sel2Groups').select2('data')[0].name,
+                                        sponsorGroupName: ($('#sel2Groups').select2('data')[0].name || $('#sel2Groups').select2('data')[0].text),
                                         sponsorRegion: $('#sel2Regions').val(),
-                                        sponsorRegionName: $('#sel2Regions').select2('data')[0].name,
+                                        sponsorRegionName: ($('#sel2Regions').select2('data')[0].name || $('#sel2Regions').select2('data')[0].text),
                                         sponsorState: $('#sel2States').val(),
-                                        sponsorStateName: $('#sel2States').select2('data')[0].name,
+                                        sponsorStateName: ($('#sel2States').select2('data')[0].name || $('#sel2States').select2('data')[0].text),
                                         sponsorCity: $('#sel2Cities').val(),
-                                        sponsorCityName: $('#sel2Cities').select2('data')[0].name,
+                                        sponsorCityName: ($('#sel2Cities').select2('data')[0].name || $('#sel2Cities').select2('data')[0].text),
 
                                         sponsorLogo: response.sponsorLogo
                                     });
@@ -684,6 +684,7 @@ $(function () {
 
                 if (item.sponsorCategory)
                     $('#sel2Categories').append('<option value="' + item.sponsorCategory + '" selected>' + item.sponsorCategoryName + '</option>');
+                $("#sel2Categories").trigger("change");
                 if (item.sponsorGroup)
                     $('#sel2Groups').append('<option value="' + item.sponsorGroup + '" selected>' + item.sponsorGroupName + '</option>');
                 $("#sel2Groups").trigger("change");

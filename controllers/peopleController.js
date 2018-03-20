@@ -31,7 +31,7 @@ exports.getUsers = function (req, res) {
 
 // Adds user
 // vscode-fold=2
-exports.addUser = function (req, res, reqBody, cb) {
+exports.addUser = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
         let data = reqBody;

@@ -1,55 +1,55 @@
 <!-- Main content -->
 <section class="content">
+    <form data-toggle="validator" role="form">
+        <div>
+            <label for="id_label_single">
+                Escolher o tipo de correspondência:
 
-    <div>
-        <label for="id_label_single">
-            Escolher o tipo de correspondência:
+                <select id="sel2EmailTemplates" class="form-control">
+                    <option></option>
+                </select>
 
-            <select id="sel2EmailTemplates" class="form-control">
-                <option></option>
-            </select>
-
-            <button id="btnNew" class="btn btn-link">Novo Template</button>
-        </label>
-    </div>
-    <br />
-    <!-- Default box -->
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 id="h3Edit" class="box-title">Assunto:</h3>
+                <button id="btnNew" class="btn btn-link">Novo Template</button>
+            </label>
         </div>
-        <div class="box-body">
-            <input id="inputName" type="text" class="form-control" placeholder="Dê um nome ao template" />
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-        </div>
-        <!-- /.box-footer-->
-    </div>
-    <!-- /.box -->
-
-    <div class="box">
-        <div class="box-header with-border hidden">
-            <h3 class="box-title">Cabeçalho</h3>
-        </div>
-        <div class="box-body">
-            <textarea id="textareaTemplate" class="textarea"></textarea>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            <div class="box-tools">
-                <button id="btnRestoreTemplate" class="btn btn-default">
-                    Restaurar
-                </button>
-                <button id="btnSaveTemplate" class="btn btn-primary">
-                    Salvar
-                </button>
+        <br />
+        <!-- Default box -->
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 id="h3Edit" class="box-title">Assunto:</h3>
             </div>
+            <div class="box-body">
+                <input id="inputName" type="text" class="form-control" placeholder="Dê um nome ao template" required />
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+            </div>
+            <!-- /.box-footer-->
         </div>
-        <!-- /.box-footer-->
-    </div>
-    <!-- /.box -->
+        <!-- /.box -->
 
+        <div class="box">
+            <div class="box-header with-border hidden">
+                <h3 class="box-title">Cabeçalho</h3>
+            </div>
+            <div class="box-body">
+                <textarea id="textareaTemplate" class="textarea"></textarea>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="box-tools">
+                    <button id="btnSaveTemplate" type="submit" class="btn btn-primary">
+                        Salvar
+                    </button>
+                    <button id="btnRestoreTemplate" class="btn btn-default">
+                        Restaurar
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </form>
 </section>
 <!-- /.content -->
 

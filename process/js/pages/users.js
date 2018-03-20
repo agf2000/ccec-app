@@ -57,6 +57,7 @@ $(function () {
             displayName: $('#inputName').val().trim(),
             email: $('#inputEmail').val().trim(),
             roleId: $('#sel2Roles').select2('data')[0].id,
+            password: $('#inputPassword').val().trim(),
             createdByUser: userInfo.userId,
             createdOnDate: moment().format('YYYY-MM-DD HH:mm'),
             modifiedByUser: userInfo.userId,
@@ -64,7 +65,7 @@ $(function () {
         };
 
         $.ajax({
-            type: 'PUT',
+            type: my.userId ? 'PUT' : 'POST',
             url: '/users/user',
             data: params
         }).done(function (data) {
@@ -97,6 +98,11 @@ $(function () {
                 );
             }
             $this.prop('disabled', false);
+            $('#inputName').val('');
+            $('#inputEmail').val('');
+            $('#inputPassword').val('');
+            $('#inputConfirmPassword').val('');
+            $('#sel2Roles').val(null).trigger('change');
         }).fail(function (jqXHR, textStatus) {
             console.log(jqXHR.responseText);
             $this.prop('disabled', false);
@@ -105,75 +111,9 @@ $(function () {
         });
     });
 
-    $('#btnAlterPassword').click(function (e) {
-        if (e.clientX === 0) {
-            return false;
-        }
-        e.preventDefault();
-
-        let $this = $(this);
-
-        $this.prop('disabled', true);
-
-        let params = {
-            portalId: 0,
-            userId: my.userid,
-            password: $('#inputPassword').val().trim(),
-            newPassword: $('#inputNewPassword').val().trim()
-        };
-
-        $.ajax({
-            type: 'PUT',
-            url: '/alterPassword',
-            data: params
-        }).done(function (data) {
-            if (!data.error) {
-                swal({
-                    title: "Sucesso!",
-                    text: "Senha atualizada.",
-                    type: "success",
-                    showCancelButton: false,
-                    confirmButtonText: "Ok",
-                    timer: 2000
-                }).then(
-                    function () {},
-                    // handling the promise rejection
-                    function (dismiss) {
-                        if (dismiss === 'timer') {
-                            console.log('I was closed by the timer')
-                        }
-                    }
-                );
-            } else {
-                swal({
-                    title: "Erro!",
-                    text: data.error,
-                    type: "error",
-                    showCancelButton: false,
-                    confirmButtonText: "Ok"
-                });
-            }
-            $this.prop('disabled', false);
-        }).fail(function (jqXHR, textStatus) {
-            console.log(jqXHR.responseText);
-            $this.prop('disabled', false);
-            swal({
-                title: "Erro!",
-                text: data.jqXHR.statusText,
-                type: "error",
-                showCancelButton: false,
-                confirmButtonText: "Ok"
-            });
-        }).always(function () {
-            $('#inputPassword').val('');
-            $('#inputNewPassword').val('');
-            $('#inputConfirmPassword').val('');
-        });
-    });
-
     let updatingUser;
 
-    // jsGrid.locale(["pt-br"]);
+    jsGrid.locale(["pt-br"]);
 
     $("#jsGrid").jsGrid({
         width: '100%',
@@ -242,17 +182,6 @@ $(function () {
             let $row = this.rowByItem(item);
             if ($row.length) {
 
-                // let roles = item.userRoles.split(',');
-                // $.each(roles, function (i, val) {
-                //     let data = {
-                //         id: val.split(':')[0].trim(),
-                //         text: val.split(':')[1].trim()
-                //     }
-                //     let newOption = new Option(data.text, data.id, true, true);
-                //     $('#sel2Roles').select2().append(newOption);
-                // });
-                // $("#sel2Roles").trigger("change");
-
                 my.userId = item.userId;
                 $('#inputName').val(item.displayName);
                 $('#inputEmail').val(item.email);
@@ -283,7 +212,13 @@ $(function () {
                 type: "text"
             },
             {
-                type: "control"
+                type: "control",
+                headerTemplate: function () {
+                    return $("<button>").attr("type", "button").text("Adicionar")
+                        .on("click", function () {
+                            $('#myModal').modal('show');
+                        });
+                }
             }
         ]
     });

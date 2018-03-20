@@ -484,11 +484,11 @@ $(function () {
                                 recipientPhone: $('#inputPhone').val().replace(/[^\d\+]/g, ""),
                                 recipientEmail: $('#inputEmail').val(),
                                 recipientAddress: $('#inputAddress').val(),
-                                recipientGroup: $('#sel2Groups').select2('data').name,
-                                recipientCategory: $('#sel2Categories').select2('data').name,
-                                recipientRegions: $('#sel2Regions').select2('data').name,
-                                recipientState: $('#sel2States').select2('data').name,
-                                recipientCity: $('#sel2Cities').select2('data').name,
+                                recipientGroup: $('#sel2Groups').select2('data')[0].id + ':' + ($('#sel2Groups').select2('data')[0].name || $('#sel2Groups').select2('data')[0].text),
+                                recipientCategory: $('#sel2Categories').select2('data')[0].id + ':' + ($('#sel2Categories').select2('data')[0].name || $('#sel2Categories').select2('data')[0].text),
+                                recipientRegions: $('#sel2Regions').select2('data')[0].id + ':' + ($('#sel2Regions').select2('data')[0].name || $('#sel2Regions').select2('data')[0].text),
+                                recipientState: $('#sel2States').select2('data')[0].id + ':' + ($('#sel2States').select2('data')[0].name || $('#sel2States').select2('data')[0].text),
+                                recipientCity: $('#sel2Cities').select2('data')[0].id + ':' + ($('#sel2Cities').select2('data')[0].name || $('#sel2Cities').select2('data')[0].text),
                             });
 
                             $("#jsGrid").jsGrid("updateItem", updatingRecipient);
@@ -738,11 +738,11 @@ $(function () {
         switch (this.value) {
             case "region":
                 $('#jsGridRegions').jsGrid('loadData');
-                $('#regionModal').modal('open');
+                $('#regionModal').modal();
                 break;
             case "group":
                 $('#jsGridGroups').jsGrid('loadData');
-                $('#groupModal').modal('open');
+                $('#groupModal').modal();
                 break;
             default:
                 $('#jsGridCategories').jsGrid('loadData');

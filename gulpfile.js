@@ -296,6 +296,9 @@ gulp.task('vendors', function () {
 
     // gulp.src('node_modules/froala-editor/js/languages/pt_br.js')
     //     .pipe(gulp.dest(app + '/lib/froala-editor/js/languages'));
+
+    gulp.src('node_modules/bootstrap-validator/dist/validator.min.js')
+        .pipe(gulp.dest(app + '/lib/bootstrap-validator/js'));
 });
 
 gulp.task('imageMin', function () {
