@@ -1211,11 +1211,11 @@ exports.getEmailTemplate = function (req, res, templateId) {
 
 // Adds email log
 // vscode-fold=42
-exports.addEmailLog = function (req, res, portalId, sent, sentLog, notSent, attachies, toWhom, subject, sentDate, cb) {
+exports.addEmailLog = function (req, res, portalId, sent, toEmail, attachies, toWhom, subject, sentDate, cb) {
     try {
-        let sqlInst = "insert into sendlog (portalId, sent, sentlog, notsent, attachments, towhom, subject, sentondate";
+        let sqlInst = "insert into sendlog (portalId, sent, toemail, attachments, towhom, subject, sentondate";
 
-        sqlInst += `) values (${portalId}, ${sent}, '${sentLog}', ${notSent}, ${attachies}, '${toWhom}', '${subject}', '${sentDate}'); `;
+        sqlInst += `) values (${portalId}, '${sent}', '${toEmail}', ${attachies}, '${toWhom}', '${subject}', '${sentDate}'); `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {
@@ -1238,9 +1238,18 @@ exports.addEmailLog = function (req, res, portalId, sent, sentLog, notSent, atta
 
 // Gets email templates
 // vscode-fold=43
-exports.getHistories = function (req, res) {
+exports.getHistories = function (req, res, filter) {
     try {
-        let sqlInst = 'select * from sendlog;';
+        let sqlInst = 'select * from sendlog ';
+        sqlInst += 'where 1 = 1 ';
+        if (filter.sent)        
+            sqlInst += `and sent = '${filter.sent}' `;
+        if (filter.toEmail)
+            sqlInst += `and toemail like '%${filter.toEmail}%' `;
+        if (filter.toWhom)
+            sqlInst += `and towhom like '%${filter.toWhom}%' `;
+        if (filter.subject)
+            sqlInst += `and subject like '%${filter.subject}%' `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {

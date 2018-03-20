@@ -440,7 +440,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
 
                 // if (JSON.parse(req.body.singleAttach)) {
                 let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
-                if (attachments) {
+                if (attachments.length) {
                     let attachArray = [];
                     attachArray.push({
                         data: `<html>${content}</html>`,
@@ -464,12 +464,12 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                         attachment: attachArray
                     }, function (emailErr, message) {
                         if (emailErr) {
-                            notSent++;
+                            sent = false;
                         } else {
-                            sent++;
+                            sent = true;
                         }
 
-                        apiController.addEmailLog(req, res, 0, sent, emailErr, notSent, attachArray.length, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, person.recipientEmail, attachArray.length, person.recipientName, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) return console.error(cb.error)
 
                             counter++;
@@ -518,12 +518,12 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                         }]
                     }, function (emailErr, message) {
                         if (emailErr) {
-                            notSent++;
+                            sent = false;
                         } else {
-                            sent++;
+                            sent = true;
                         }
 
-                        apiController.addEmailLog(req, res, 0, sent, emailErr || '', notSent, 0, '"' + person.recipientName + '" <' + person.recipientEmail + '>', req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, person.recipientEmail, 0, person.recipientName, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) console.error(cb.error);
 
                             counter++;

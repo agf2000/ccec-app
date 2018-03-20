@@ -226,7 +226,7 @@ router.get('/templates', ensureAuthenticated, function (req, res) {
 // vscode-fold=11
 router.get('/enviar', ensureAuthenticated, function (req, res) {
 	res.render('send', {
-		title: 'Comunicações',
+		title: 'Colégio CEC :: Comunicações',
 		pageHeader: 'Comunicações',
 		pageDesc: 'Envio de Correspondência',
 		css: [
