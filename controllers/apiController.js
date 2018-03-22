@@ -900,7 +900,7 @@ exports.getRecipientsMailList = function (req, res, reqBody, cb) {
                            and ('${data.term}' = '' or r.recipientname like '${data.term}%')
                            and (${data.recipientId} = 0 or r.recipientid = ${data.recipientId});`;
 
-            sqlInst += `select s.sponsorId, s.sponsorName, 
+            sqlInst += `select s.sponsorId, s.sponsorName, sponsorUrl, 
                         (select top 1 f.[filename] from files f where f.fileid = s.fileid) as sponsorLogo,
                         s.fileId from sponsors s
                         where (s.datestart is null or getdate() > s.datestart) 
