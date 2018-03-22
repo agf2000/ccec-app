@@ -1292,3 +1292,53 @@ exports.removeAttachment = function (req, res, fileId, cb) {
         );
     }
 };
+
+// Removes histories
+// vscode-fold=11
+exports.removeHistories = function (req, res) {
+    try {
+        let sqlInst = 'delete from sendlog';
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json({
+                    success: "success"
+                });
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    }
+};
+
+// Removes history
+// vscode-fold=11
+exports.removeHistory = function (req, res, sentLogId) {
+    try {
+        let sqlInst = `delete from sendlog where sentLogid = ${sentLogId}; `;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json({
+                    success: "success"
+                });
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    }
+};

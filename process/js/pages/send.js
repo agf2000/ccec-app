@@ -150,8 +150,6 @@ $(function () {
         }
     });
 
-    // $('#sel2Groups').append($('<option value="1" selected>Geral</option>'));
-
     $('#sel2Groups').on("select2:select select2:unselect", function (e) {
         // if ($('#sel2Groups').val() !== null) {
         setTimeout(function () {
@@ -198,8 +196,6 @@ $(function () {
             return roles.name || roles.text;
         }
     });
-
-    // $('#sel2Categories').append($('<option value="1" selected>Geral</option>'));
 
     $('#sel2Categories').on("select2:select select2:unselect", function (e) {
         // if ($('#sel2Categories').val() !== null) {
@@ -468,8 +464,8 @@ $(function () {
             categoryId: $('#sel2Categories').val() || "''",
             regionId: $('#sel2Regions').val() || "''",
             groupId: $('#sel2Groups').val() || "''",
-            cityId: $('#sel2Groups').val() || "''",
-            stateId: $('#sel2Groups').val() || "''",
+            cityId: $('#sel2Cities').val() || "''",
+            stateId: $('#sel2States').val() || "''",
             subject: $('#sel2EmailTemplates').select2('data')[0].name,
             content: CKEDITOR.instances.textareaTemplate.getData(), // $('#headerPreview').html() + $('#bodyPreview').html() + $('#footerPreview').html(),
             recipientId: $('#sel2Recipients').val() || 0,

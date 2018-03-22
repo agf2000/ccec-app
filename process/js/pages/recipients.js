@@ -766,6 +766,47 @@ $(function () {
         ajaxGridOptions: {
             cache: false
         },
+        confirmDeleting: false,
+        onItemDeleting: function (args) {
+            args.cancel = true; // cancel deleting
+            swal({
+                title: 'Remover categoria ' + args.item.categoryName + ' ?',
+                text: "Esta ação não pode ser revertida!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Sim, remover!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: '/api/category',
+                        data: {
+                            categoryId: args.item.categoryId
+                        }
+                    }).done(function (result) {
+                        // console.log(item);
+                        if (!result.error) {
+                            $('#jsGrid').jsGrid('deleteItem', args.item); //call deleting once more in callback
+                            swal({
+                                type: 'success',
+                                title: 'Histórico removido',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        } else {
+                            swal(
+                                'Erro!',
+                                result.error,
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        },
         controller: {
             loadData: function (filter) {
                 var def = $.Deferred();

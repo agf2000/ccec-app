@@ -424,7 +424,7 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
             let content = '',
                 sent = 0,
                 notSent = 0,
-                counter = 1;
+                counter = results.response.recipients.length;
 
             let sponsors = '';
 
@@ -526,9 +526,9 @@ router.post('/sendEmail', ensureAuthenticated, function (req, res, next) {
                         apiController.addEmailLog(req, res, 0, sent, person.recipientEmail, 0, person.recipientName, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) console.error(cb.error);
 
-                            counter++;
+                            counter = counter - 1;
 
-                            if (counter == results.response.recipients.length) {
+                            if (counter == 0) {
                                 res.json({
                                     success: "success"
                                 });
@@ -644,6 +644,18 @@ router.delete('/attachment', function (req, res) {
             }
         });
     });
+});
+
+// Removes histories
+// vscode-fold=43
+router.delete('/histories', function (req, res) {
+    apiController.removehistories(req, res);
+});
+
+// Removes history
+// vscode-fold=43
+router.delete('/history', function (req, res) {
+    apiController.removeHistory(req, res, req.query.sentLogId);
 });
 
 module.exports = router;

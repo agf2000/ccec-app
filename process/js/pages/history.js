@@ -17,6 +17,44 @@ $(function () {
         ajaxGridOptions: {
             cache: false
         },
+        confirmDeleting: false,
+        onItemDeleting: function (args) {
+            args.cancel = true; // cancel deleting
+            swal({
+                title: 'Remover histórico ' + args.item.sentLogId + ' ?',
+                text: "Esta ação não pode ser revertida!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Sim, remover!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: '/api/history?sentLogId=' + args.item.sentLogId
+                    }).done(function (result) {
+                        // console.log(item);
+                        if (!result.error) {
+                            $('#jsGrid').jsGrid('deleteItem', args.item); //call deleting once more in callback
+                            swal({
+                                type: 'success',
+                                title: 'categoria removida',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        } else {
+                            swal(
+                                'Erro!',
+                                result.error,
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        },
         controller: {
             loadData: function (filter) {
                 var def = $.Deferred();
@@ -34,6 +72,13 @@ $(function () {
             }
         },
         fields: [{
+                title: "",
+                name: "sentLogId",
+                type: "number",
+                width: 10,
+                filtering: false
+            },
+            {
                 title: "Enviado",
                 name: "sent",
                 type: "checkbox",
@@ -68,11 +113,42 @@ $(function () {
                 }
             },
             {
-                type: "control"
+                type: "control",
+                editButton: false,
+                headerTemplate: function () {
+                    return $("<button>").attr("class", "btn btn-danger").text("Remover")
+                        .on("click", function () {
+                            swal({
+                                title: 'Remover todo o histórico?',
+                                text: "Esta ação pode ser revertida!",
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                cancelButtonText: 'Cancelar',
+                                confirmButtonText: 'Sim, remover!'
+                            }).then((result) => {
+                                if (result.value) {
+                                    $.ajax({
+                                        url: '/api/histories',
+                                        type: "DELETE",
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        data: filter
+                                    }).done(function (result) {
+                                        // console.log(item);
+                                        swal({
+                                            type: 'success',
+                                            title: 'Histórico removido',
+                                            showConfirmButton: false,
+                                            timer: 2000
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                }
             }
         ]
     });
-
-    jsGrid.locale("pt-br");
-
 });
