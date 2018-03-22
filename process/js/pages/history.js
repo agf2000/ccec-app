@@ -38,6 +38,7 @@ $(function () {
                         // console.log(item);
                         if (!result.error) {
                             $('#jsGrid').jsGrid('deleteItem', args.item); //call deleting once more in callback
+                            $('#jsGrid').jsGrid('loadData');
                             swal({
                                 type: 'success',
                                 title: 'categoria removida',
@@ -130,13 +131,11 @@ $(function () {
                             }).then((result) => {
                                 if (result.value) {
                                     $.ajax({
-                                        url: '/api/histories',
                                         type: "DELETE",
-                                        contentType: "application/json; charset=utf-8",
-                                        dataType: "json",
-                                        data: filter
+                                        url: '/api/histories',
                                     }).done(function (result) {
                                         // console.log(item);
+                                        $('#jsGrid').jsGrid('loadData');
                                         swal({
                                             type: 'success',
                                             title: 'Histórico removido',

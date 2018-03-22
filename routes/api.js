@@ -649,7 +649,7 @@ router.delete('/attachment', function (req, res) {
 // Removes histories
 // vscode-fold=43
 router.delete('/histories', function (req, res) {
-    apiController.removehistories(req, res);
+    apiController.removeHistories(req, res);
 });
 
 // Removes history
