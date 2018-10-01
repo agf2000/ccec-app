@@ -281,7 +281,7 @@ $(function () {
                 name: "studentCode",
                 title: "Matrícula",
                 type: "text",
-                width: 100
+                width: 80
             },
             {
                 title: "Aluno",
