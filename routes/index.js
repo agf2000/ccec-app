@@ -173,7 +173,7 @@ router.get('/destinatarios', ensureAuthenticated, function (req, res) {
 
 // Recipients
 // vscode-fold=9
-router.get('/students', ensureAuthenticated, function (req, res) {
+router.get('/alunos', ensureAuthenticated, function (req, res) {
 	res.render('students', {
 		title: 'Cadastro de Alunos',
 		pageHeader: 'Cadastro de Alunos',
