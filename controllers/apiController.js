@@ -2,7 +2,7 @@ const db = require("../core/db");
 const _ = require('lodash');
 
 // Gets settings
-// vscode-fold=2
+// vscode-fold=1
 exports.getSettings = function (req, res, settingName) {
     try {
         let sqlInst = '';
@@ -30,7 +30,7 @@ exports.getSettings = function (req, res, settingName) {
 };
 
 // Saves settings
-// vscode-fold=7
+// vscode-fold=2
 exports.saveSettings = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -68,8 +68,8 @@ exports.saveSettings = function (req, res, reqBody) {
     };
 };
 
-// Gets recipients
-// vscode-fold=8
+// Gets list of sponsors mailing list
+// vscode-fold=3
 exports.getSponsorsMailList = function (req, res, reqBody, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -109,7 +109,7 @@ exports.getSponsorsMailList = function (req, res, reqBody, cb) {
 };
 
 // Gets sponsors
-// vscode-fold=9
+// vscode-fold=4
 exports.getSponsors = function (req, res) {
     try {
         let sqlInst = 'select s.*, (select top 1 f.[filename] from files f where f.fileid = s.fileid) as sponsorLogo, ';
@@ -140,7 +140,7 @@ exports.getSponsors = function (req, res) {
 };
 
 // Gets sponsor
-// vscode-fold=10
+// vscode-fold=5
 exports.getSponsor = function (req, res, sponsorId) {
     try {
         let sqlInst = 'select s.*, (select top 1 f.[filename] from files f where f.fileid = (select fileid from sponsors where sponsorid = ' + sponsorId + ')) as sponsorLogo, ';
@@ -171,7 +171,7 @@ exports.getSponsor = function (req, res, sponsorId) {
 };
 
 // Removes sponsor
-// vscode-fold=11
+// vscode-fold=6
 exports.removeSponsor = function (req, res, sponsorId) {
     try {
         let sqlInst = `delete from files where fileid = (select fileid from sponsors where sponsorid = ${sponsorId}); `
@@ -198,7 +198,7 @@ exports.removeSponsor = function (req, res, sponsorId) {
 };
 
 // Removes sponsor image
-// vscode-fold=12
+// vscode-fold=7
 exports.removeSponsorImage = function (req, res, sponsorId) {
     try {
         let sqlInst = `update sponsors set fileid = null where sponsorid = ${sponsorId}`;
@@ -223,7 +223,7 @@ exports.removeSponsorImage = function (req, res, sponsorId) {
 };
 
 // Adds sponsor
-// vscode-fold=13
+// vscode-fold=8
 exports.addSponsor = function (req, res, reqBody, files, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -303,7 +303,7 @@ exports.addSponsor = function (req, res, reqBody, files, cb) {
 };
 
 // Updates sponsor
-// vscode-fold=14
+// vscode-fold=9
 exports.updateSponsor = function (req, res, reqBody, files, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -366,7 +366,7 @@ exports.updateSponsor = function (req, res, reqBody, files, cb) {
 };
 
 // Gets categories
-// vscode-fold=15
+// vscode-fold=10
 exports.getCategories = function (req, res, categoryName) {
     try {
         let sqlInst = '';
@@ -394,7 +394,7 @@ exports.getCategories = function (req, res, categoryName) {
 };
 
 // Updates category
-// vscode-fold=16
+// vscode-fold=11
 exports.addCategory = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -429,7 +429,7 @@ exports.addCategory = function (req, res, reqBody) {
 };
 
 // Updates category
-// vscode-fold=17
+// vscode-fold=12
 exports.updateCategory = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -462,7 +462,7 @@ exports.updateCategory = function (req, res, reqBody) {
 };
 
 // Removes category
-// vscode-fold=18
+// vscode-fold=13
 exports.removeCategory = function (req, res, categoryId) {
     try {
         let sqlInst = `if not exists(select 1 from sponsors where sponsorcategory = ${categoryId}) 
@@ -489,7 +489,7 @@ exports.removeCategory = function (req, res, categoryId) {
 };
 
 // Gets regions
-// vscode-fold=19
+// vscode-fold=14
 exports.getRegions = function (req, res, regionName) {
     try {
         let sqlInst = '';
@@ -517,7 +517,7 @@ exports.getRegions = function (req, res, regionName) {
 };
 
 // Updates region
-// vscode-fold=20
+// vscode-fold=15
 exports.addRegion = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -551,7 +551,7 @@ exports.addRegion = function (req, res, reqBody) {
 };
 
 // Updates region
-// vscode-fold=21
+// vscode-fold=16
 exports.updateRegion = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -584,7 +584,7 @@ exports.updateRegion = function (req, res, reqBody) {
 };
 
 // Removes region
-// vscode-fold=22
+// vscode-fold=17
 exports.removeRegion = function (req, res, regionId) {
     try {
         let sqlInst = `if not exists(select 1 from sponsors where sponsorregion = ${regionId})
@@ -611,7 +611,7 @@ exports.removeRegion = function (req, res, regionId) {
 };
 
 // Gets groups
-// vscode-fold=23
+// vscode-fold=18
 exports.getGroups = function (req, res, groupName) {
     try {
         let sqlInst = '';
@@ -639,7 +639,7 @@ exports.getGroups = function (req, res, groupName) {
 };
 
 // Updates group
-// vscode-fold=24
+// vscode-fold=19
 exports.addGroup = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -673,7 +673,7 @@ exports.addGroup = function (req, res, reqBody) {
 };
 
 // Updates group
-// vscode-fold=25
+// vscode-fold=20
 exports.updateGroup = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -706,7 +706,7 @@ exports.updateGroup = function (req, res, reqBody) {
 };
 
 // Removes group
-// vscode-fold=26
+// vscode-fold=21
 exports.removeGroup = function (req, res, groupId) {
     try {
         let sqlInst = `if not exists(select 1 from sponsors where sponsorgroup = ${groupId})
@@ -733,7 +733,7 @@ exports.removeGroup = function (req, res, groupId) {
 };
 
 // Gets states
-// vscode-fold=27
+// vscode-fold=22
 exports.getStates = function (req, res, stateName) {
     try {
         let sqlInst = '';
@@ -761,7 +761,7 @@ exports.getStates = function (req, res, stateName) {
 };
 
 // Gets cities
-// vscode-fold=28
+// vscode-fold=23
 exports.getCities = function (req, res, cityName, stateId) {
     try {
         let sqlInst = '';
@@ -791,7 +791,7 @@ exports.getCities = function (req, res, cityName, stateId) {
 };
 
 // Updates city
-// vscode-fold=29
+// vscode-fold=24
 exports.addCity = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -826,7 +826,7 @@ exports.addCity = function (req, res, reqBody) {
 };
 
 // Updates city
-// vscode-fold=30
+// vscode-fold=25
 exports.updateCity = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -859,7 +859,7 @@ exports.updateCity = function (req, res, reqBody) {
 };
 
 // Removes city
-// vscode-fold=31
+// vscode-fold=26
 exports.removeCity = function (req, res, cityId) {
     try {
         let sqlInst = `delete from cities where cityid = ${cityId}`;
@@ -884,7 +884,7 @@ exports.removeCity = function (req, res, cityId) {
 };
 
 // Gets recipients
-// vscode-fold=32
+// vscode-fold=27
 exports.getRecipientsMailList = function (req, res, reqBody, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -935,7 +935,7 @@ exports.getRecipientsMailList = function (req, res, reqBody, cb) {
 };
 
 // Gets recipients
-// vscode-fold=33
+// vscode-fold=28
 exports.getRecipients = function (req, res) {
     try {
         let sqlInst = 'select r.recipientId, r.recipientName, r.recipientPhone, r.recipientEmail, r.recipientAddress ';
@@ -965,7 +965,7 @@ exports.getRecipients = function (req, res) {
 };
 
 // Adds recipient
-// vscode-fold=34
+// vscode-fold=29
 exports.addRecipient = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -1010,7 +1010,7 @@ exports.addRecipient = function (req, res, reqBody) {
 };
 
 // Updates recipient
-// vscode-fold=35
+// vscode-fold=30
 exports.updateRecipient = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -1043,7 +1043,7 @@ exports.updateRecipient = function (req, res, reqBody) {
 };
 
 // Removes recipient
-// vscode-fold=36
+// vscode-fold=31
 exports.removeRecipient = function (req, res, recipientId) {
     try {
         let sqlInst = `delete from recipients where recipientid = ${recipientId}`;
@@ -1068,7 +1068,7 @@ exports.removeRecipient = function (req, res, recipientId) {
 };
 
 // Adds email template
-// vscode-fold=37
+// vscode-fold=32
 exports.addEmailTemplate = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -1106,7 +1106,7 @@ exports.addEmailTemplate = function (req, res, reqBody) {
 };
 
 // Updates email template
-// vscode-fold=38
+// vscode-fold=33
 exports.updateEmailTemplate = function (req, res, reqBody) {
     try {
         if (!reqBody) throw new Error("Input not valid");
@@ -1139,7 +1139,7 @@ exports.updateEmailTemplate = function (req, res, reqBody) {
 };
 
 // Removes email template
-// vscode-fold=39
+// vscode-fold=34
 exports.removeEmailTemplate = function (req, res, templateId) {
     try {
         let sqlInst = `delete from emailtemplates where templateid = ${templateId}`;
@@ -1164,7 +1164,7 @@ exports.removeEmailTemplate = function (req, res, templateId) {
 };
 
 // Gets email templates
-// vscode-fold=40
+// vscode-fold=35
 exports.getEmailTemplates = function (req, res) {
     try {
         let sqlInst = 'select * from emailtemplates;';
@@ -1187,7 +1187,7 @@ exports.getEmailTemplates = function (req, res) {
 };
 
 // Gets email template by id
-// vscode-fold=41
+// vscode-fold=36
 exports.getEmailTemplate = function (req, res, templateId) {
     try {
         let sqlInst = `select * from emailtemplates where templateid = ${templateId};`;
@@ -1210,7 +1210,7 @@ exports.getEmailTemplate = function (req, res, templateId) {
 };
 
 // Adds email log
-// vscode-fold=42
+// vscode-fold=37
 exports.addEmailLog = function (req, res, portalId, sent, toEmail, attachies, toWhom, subject, sentDate, cb) {
     try {
         let sqlInst = "insert into sendlog (portalId, sent, toemail, attachments, towhom, subject, sentondate";
@@ -1237,12 +1237,12 @@ exports.addEmailLog = function (req, res, portalId, sent, toEmail, attachies, to
 };
 
 // Gets email templates
-// vscode-fold=43
+// vscode-fold=38
 exports.getHistories = function (req, res, filter) {
     try {
         let sqlInst = 'select * from sendlog ';
         sqlInst += 'where 1 = 1 ';
-        if (filter.sent)        
+        if (filter.sent)
             sqlInst += `and sent = '${filter.sent}' `;
         if (filter.toEmail)
             sqlInst += `and toemail like '%${filter.toEmail}%' `;
@@ -1269,7 +1269,7 @@ exports.getHistories = function (req, res, filter) {
 };
 
 // Removes attachment(s)
-// vscode-fold=44
+// vscode-fold=39
 exports.removeAttachment = function (req, res, fileId, cb) {
     try {
         let sqlInst = `delete from attachments where fileid = ${fileId}`;
@@ -1294,7 +1294,7 @@ exports.removeAttachment = function (req, res, fileId, cb) {
 };
 
 // Removes histories
-// vscode-fold=11
+// vscode-fold=40
 exports.removeHistories = function (req, res) {
     try {
         let sqlInst = 'delete from sendlog';
@@ -1319,10 +1319,131 @@ exports.removeHistories = function (req, res) {
 };
 
 // Removes history
-// vscode-fold=11
+// vscode-fold=41
 exports.removeHistory = function (req, res, sentLogId) {
     try {
         let sqlInst = `delete from sendlog where sentLogid = ${sentLogId}; `;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json({
+                    success: "success"
+                });
+            }
+        });
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    }
+};
+
+// Gets list of students
+// vscode-fold=42
+exports.getStudents = function (req, res) {
+    try {
+        let sqlInst = "select * ";
+        sqlInst += "from students ";
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({
+                    "error": err.message
+                });
+            } else {
+                res.json(data.recordset);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Adds student
+// vscode-fold=43
+exports.addStudent = function (req, res, reqBody) {
+    try {
+        if (!reqBody) throw new Error("Input not valid");
+        let data = reqBody;
+        if (data) {
+            let sqlInst = "declare @id int; "
+
+            sqlInst += "insert into students (portalId, studentcode, studentname, studentgrade, fathername, fatheremail, mothername, motheremail, createdbyuser, createdondate";
+
+            sqlInst += `) values (${data.portalId}, '${data.studentCode}', '${data.studentName}', '${data.studentGrade}', '${data.fatherName}', '${data.fatherEmail}', '${data.motherName}', '${data.motherEmail}', ${data.createdByUser}, getdate()`;
+
+            sqlInst += "); set @id = scope_identity(); ";
+
+            sqlInst += 'select * ';
+            sqlInst += 'from students where studentid = @id order by createdondate desc; ';
+
+            db.querySql(sqlInst, function (data, err) {
+                if (err) {
+                    console.log(err.message);
+                    res.status(500).json({
+                        "error": err.message
+                    });
+                } else {
+                    res.json(data.recordset[0]);
+                }
+            });
+        } else {
+            // throw new Error("Input not valid");
+            return res.status(500).json(`Input not valid (status: 500)`);
+        }
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    };
+};
+
+// Updates student
+// vscode-fold=44
+exports.updateStudent = function (req, res, reqBody) {
+    try {
+        if (!reqBody) throw new Error("Input not valid");
+        let data = reqBody;
+        if (data) {
+
+            let sqlInst = `update students set studentname = '${data.studentName}', studentcode = '${data.studentCode}', studentGrade = '${data.studentGrade}', fathername = '${data.fatherName}', fatheremail = '${data.fatherEmail}', mothername = '${data.motherName}', motheremail = '${data.motherEmail}' where studentid = ${data.studentId}; `;
+
+            db.querySql(sqlInst, function (result, err) {
+                if (err) {
+                    console.log(err.message);
+                    res.status(500).json({
+                        "error": err.message
+                    });
+                } else {
+                    res.json({
+                        "success": "success"
+                    });
+                }
+            });
+        } else {
+            // throw new Error("Input not valid");
+            return res.status(500).json(`Input not valid (status: 500)`);
+        }
+    } catch (ex) {
+        res.status(500).send(
+            ex.message
+        );
+    };
+};
+
+// Removes student
+// vscode-fold=45
+exports.removeStudent = function (req, res, studentId) {
+    try {
+        let sqlInst = `delete from students where studentid = ${studentId}`;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {

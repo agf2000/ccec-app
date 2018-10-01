@@ -171,8 +171,39 @@ router.get('/destinatarios', ensureAuthenticated, function (req, res) {
 	});
 });
 
-// Email provider specs
+// Recipients
 // vscode-fold=9
+router.get('/students', ensureAuthenticated, function (req, res) {
+	res.render('students', {
+		title: 'Cadastro de Alunos',
+		pageHeader: 'Cadastro de Alunos',
+		pageDesc: 'Para correspondências via emails',
+		css: [
+			'/css/pages/students.css',
+			'/lib/select2/css/select2.min.css',
+			'/lib/sweetalert2/css/sweetalert2.min.css',
+			'/lib/jsgrid/css/jsgrid.min.css',
+			'/lib/jsgrid/css/jsgrid-theme.min.css',
+			'/lib/jquery-ui/css/jquery-ui.min.css',
+			'/lib/jquery-ui/css/jquery-ui.theme.min.css'
+		],
+		script: [
+			'/js/pages/students.js',
+			'/lib/select2/js/select2.full.min.js',
+			'/lib/select2/i18n/pt-BR.js',
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/jsgrid/js/jsgrid.min.js',
+			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
+			'/lib/hotkeys-js/js/hotkeys.min.js',
+			'/lib/jquery.scrollto/js/jquery.scrollTo.min.js',
+			'/lib/jquery.maskedinput/js/jquery.maskedinput.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
+		]
+	});
+});
+
+// Email provider specs
+// vscode-fold=10
 router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 	res.render('sponsors', {
 		title: 'Patrocinadores',
@@ -200,7 +231,7 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 });
 
 // Templates
-// vscode-fold=10
+// vscode-fold=11
 router.get('/templates', ensureAuthenticated, function (req, res) {
 	res.render('templates', {
 		title: 'Templates',
@@ -223,7 +254,7 @@ router.get('/templates', ensureAuthenticated, function (req, res) {
 });
 
 // Emails
-// vscode-fold=11
+// vscode-fold=12
 router.get('/enviar', ensureAuthenticated, function (req, res) {
 	res.render('send', {
 		title: 'Colégio CEC :: Comunicações',
@@ -246,7 +277,7 @@ router.get('/enviar', ensureAuthenticated, function (req, res) {
 });
 
 // Emails history
-// vscode-fold=12
+// vscode-fold=13
 router.get('/historico', ensureAuthenticated, function (req, res) {
 	res.render('history', {
 		title: 'Histórico',
@@ -271,7 +302,7 @@ router.get('/historico', ensureAuthenticated, function (req, res) {
 });
 
 // Emails history
-// vscode-fold=12
+// vscode-fold=14
 router.get('/arquivos', ensureAuthenticated, function (req, res) {
 	res.render('xplorer', {
 		title: 'Arquivos',
@@ -296,7 +327,7 @@ router.get('/arquivos', ensureAuthenticated, function (req, res) {
 });
 
 // Users management
-// vscode-fold=13
+// vscode-fold=15
 router.get('/usuarios', ensureAuthenticated, function (req, res) {
 	res.render('users', {
 		title: 'Usuários',
@@ -322,7 +353,7 @@ router.get('/usuarios', ensureAuthenticated, function (req, res) {
 });
 
 // User alter passoword
-// vscode-fold=14
+// vscode-fold=16
 router.put('/alterPassword', ensureAuthenticated, function (req, res, next) {
 	db.querySql("select * from users where userid = '" + req.body.userId + "'", (data, err) => {
 		if (err) {
@@ -362,7 +393,7 @@ router.put('/alterPassword', ensureAuthenticated, function (req, res, next) {
 });
 
 // logout
-// vscode-fold=14
+// vscode-fold=17
 router.get('/logout', function (req, res) {
 	req.logout();
 	res.redirect('/');

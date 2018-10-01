@@ -658,4 +658,28 @@ router.delete('/history', function (req, res) {
     apiController.removeHistory(req, res, req.query.sentLogId);
 });
 
+// Gets list of studdents
+// vscode-fold=44
+router.get('/students', function (req, res) {
+    apiController.getStudents(req, res);
+});
+
+// Adds city
+// vscode-fold=45
+router.post('/student', ensureAuthenticated, function (req, res, next) {
+    apiController.addStudent(req, res, req.body);
+});
+
+// Updates city
+// vscode-fold=46
+router.put('/student', ensureAuthenticated, function (req, res, next) {
+    apiController.updateStudent(req, res, req.body);
+});
+
+// Removes student
+// vscode-fold=47
+router.delete('/student', function (req, res) {
+    apiController.removeStudent(req, res, req.query.studentId);
+});
+
 module.exports = router;
