@@ -185,7 +185,7 @@ $(function () {
 
     let updatingStudent;
 
-    // jsGrid.locale(["pt-br"]);
+    jsGrid.locale(["pt-br"]);
 
     $("#jsGrid").jsGrid({
         width: '100%',
@@ -281,7 +281,7 @@ $(function () {
                 name: "studentCode",
                 title: "Matrícula",
                 type: "text",
-                width: 80
+                width: 50
             },
             {
                 title: "Aluno",
@@ -291,7 +291,8 @@ $(function () {
             {
                 name: "studentGrade",
                 title: "Série",
-                type: "text"
+                type: "text",
+                width: 50
             }, {
                 name: "fatherName",
                 title: "Pai",
