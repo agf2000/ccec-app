@@ -280,7 +280,8 @@ $(function () {
         fields: [{
                 name: "studentCode",
                 title: "Matrícula",
-                type: "text"
+                type: "text",
+                width: 100
             },
             {
                 title: "Aluno",
