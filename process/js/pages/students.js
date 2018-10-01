@@ -278,13 +278,13 @@ $(function () {
             }
         },
         fields: [{
-                title: "Aluno",
-                name: "studentName",
+                name: "studentCode",
+                title: "Matrícula",
                 type: "text"
             },
             {
-                name: "studentCode",
-                title: "Matrícula",
+                title: "Aluno",
+                name: "studentName",
                 type: "text"
             },
             {
