@@ -682,4 +682,139 @@ router.delete('/student', function (req, res) {
     apiController.removeStudent(req, res, req.query.studentId);
 });
 
+// Gets list of students mailing list
+// vscode-fold=48
+router.get('/studentsMailingList', ensureAuthenticated, function (req, res, next) {
+    apiController.getStudentsMailList(req, res, req.query, function (results) {
+        if (!results.error) {
+            res.json({
+                students: results
+            });
+        }
+    });
+});
+
+// Sends emails
+// vscode-fold=39
+router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
+    apiController.getStudentsMailList(req, res, req.body, function (results) {
+        if (!results.error) {
+            let content = '',
+                sent = 0,
+                notSent = 0,
+                counter = results.response.students.length;
+
+            let sponsors = '';
+
+            _.forEach(results.response.sponsors, function (sponsor) {
+                sponsors += `<a href="http://${sponsor.sponsorUrl}"><img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" /></a><br />`;
+            });
+
+            _.forEach(results.response.students, function (person) {
+
+                let name = '', email = '';
+
+                if (person.studentEmail !== '') {
+                    name = person.studentName;
+                    email = person.studentEmail;
+                } else if (person.fatherEmail !== '') {
+                    name = person.fatherName;
+                    email = person.fatherEmail;
+                } else if (person.motherEmail !== '') {
+                    name = person.motherName;
+                    email = person.motherEmail;
+                }
+
+                content = req.body.content.replace('[RESPONSAVEL]', name);
+
+                content = content.replace('[PATROCINADOR]', sponsors);
+
+                // if (JSON.parse(req.body.singleAttach)) {
+                let attachments = _getAllFilesFromFolder(path.join(__dirname, '..', 'data/uploads/docs/'));
+                if (attachments.length) {
+                    let attachArray = [];
+                    attachArray.push({
+                        data: `<html>${content}</html>`,
+                        alternative: true
+                    });
+
+                    _.forEach(attachments, function (item) {
+                        attachArray.push({
+                            path: item,
+                            type: mime.lookup(item),
+                            name: item
+                        });
+                    });
+
+                    // send the message and get a callback with an error or details of the message that was sent 
+                    email.send({
+                        text: content,
+                        from: "Colégio CEC <contato@riw.com.br>",
+                        to: '"' + name + '" <' + email + '>',
+                        subject: req.body.subject,
+                        attachment: attachArray
+                    }, function (emailErr, message) {
+                        if (emailErr) {
+                            sent = false;
+                        } else {
+                            sent = true;
+                        }
+
+                        apiController.addEmailLog(req, res, 0, sent, email, attachArray.length, name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                            if (cb.error) return console.error(cb.error)
+
+                            counter++;
+
+                            if (counter == results.response.students.length) {
+                                fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
+                                    if (err) return console.error(err)
+
+                                    res.json({
+                                        success: "success"
+                                    });
+                                });
+                            }
+                        });
+
+                        // console.log(emailErr || message);
+                    });
+
+                } else {
+
+                    email.send({
+                        text: content,
+                        from: "Colégio CEC <contato@riw.com.br>",
+                        to: '"' + name + '" <' + email + '>',
+                        subject: req.body.subject,
+                        attachment: [{
+                            data: `<html>${content}</html>`,
+                            alternative: true
+                        }]
+                    }, function (emailErr, message) {
+                        if (emailErr) {
+                            sent = false;
+                        } else {
+                            sent = true;
+                        }
+
+                        apiController.addEmailLog(req, res, 0, sent, email, 0, name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                            if (cb.error) console.error(cb.error);
+
+                            counter = counter - 1;
+
+                            if (counter == 0) {
+                                res.json({
+                                    success: "success"
+                                });
+                            }
+                        });
+
+                        // console.log(emailErr || message);
+                    });
+                }
+            });
+        }
+    });
+});
+
 module.exports = router;

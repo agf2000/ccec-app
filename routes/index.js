@@ -197,7 +197,15 @@ router.get('/alunos', ensureAuthenticated, function (req, res) {
 			'/lib/hotkeys-js/js/hotkeys.min.js',
 			'/lib/jquery.scrollto/js/jquery.scrollTo.min.js',
 			'/lib/jquery.maskedinput/js/jquery.maskedinput.js',
-			'/lib/bootstrap-validator/js/validator.min.js'
+			'/lib/bootstrap-validator/js/validator.min.js',
+			'/lib/kendo/js/kendo.core.min.js',
+			'/lib/kendo/js/cultures/kendo.culture.pt-BR.min.js',
+			'/lib/kendo/js/messages/kendo.messages.pt-BR.min.js',
+			'/lib/kendo/js/kendo.userevents.min.js',
+			'/lib/kendo/js/kendo.selectable.min.js',
+			'/lib/kendo/js/kendo.calendar.min.js',
+			'/lib/kendo/js/kendo.popup.min.js',
+			'/lib/kendo/js/kendo.datepicker.min.js'
 		]
 	});
 });
@@ -244,6 +252,29 @@ router.get('/templates', ensureAuthenticated, function (req, res) {
 		],
 		script: [
 			'/js/pages/templates.js',
+			'/lib/select2/js/select2.full.min.js',
+			'/lib/select2/i18n/pt-BR.js',
+			'/lib/sweetalert2/js/sweetalert2.min.js',
+			'/lib/ckeditor/ckeditor.js',
+			'/lib/bootstrap-validator/js/validator.min.js'
+		]
+	});
+});
+
+// Emails
+// vscode-fold=12
+router.get('/envios', ensureAuthenticated, function (req, res) {
+	res.render('bulkMail', {
+		title: 'Colégio CEC :: Comunicações',
+		pageHeader: 'Comunicações',
+		pageDesc: 'Envio de Correspondência',
+		css: [
+			'/css/pages/bulkMail.css',
+			'/lib/select2/css/select2.min.css',
+			'/lib/sweetalert2/css/sweetalert2.min.css'
+		],
+		script: [
+			'/js/pages/bulkMail.js',
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',

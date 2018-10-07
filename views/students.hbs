@@ -12,21 +12,36 @@
             <form data-toggle="validator" role="form">
                 <div class="box-body">
                     <div class="form-group">
-                        <label for="inputStudentName">Aluno</label>
-                        <input type="text" class="form-control" id="inputStudentName" placeholder="Aluno" style="text-transform: uppercase"
-                            required>
-                    </div>
-                    <div class="form-group">
                         <label for="inputStudentCode">Matrícula</label>
                         <input type="text" class="form-control" id="inputStudentCode" placeholder="Matrícula do Aluno"
                             style="text-transform: uppercase" required>
                     </div>
                     <div class="form-group">
-                        <label for="sel2Grades">Serie</label>
+                        <label for="inputStudentName">Aluno</label>
+                        <input type="text" class="form-control" id="inputStudentName" placeholder="Aluno" style="text-transform: uppercase"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel2Grades">Série</label>
                         <br />
-                        <select id="sel2Grades" class="form-control" style="width: 100%;" required>
+                        <select id="sel2Grades" class="form-control" style="width: 100%; text-transform: uppercase;">
                             <option></option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel2Shifts">Turno</label>
+                        <br />
+                        <select id="sel2Shifts" class="form-control" style="width: 100%; text-transform: uppercase;">
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStudentBDay">Aniversário do aluno</label>
+                        <input type="date" class="form-control" id="inputStudentBDay" style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStudentEmail">Email do Aluno</label>
+                        <input type="email" class="form-control" id="inputStudentEmail" placeholder="Email do Aluno">
                     </div>
                     <div class="form-group">
                         <label for="inputFatherName">Pai</label>
@@ -38,12 +53,20 @@
                         <input type="email" class="form-control" id="inputFatherEmail" placeholder="Email do Pai">
                     </div>
                     <div class="form-group">
+                        <label for="inputFatherBDay">Aniversário do Pai</label>
+                        <input type="date" class="form-control" id="inputFatherBDay" style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group">
                         <label for="inputMotherName">Mãe</label>
                         <input type="text" class="form-control" id="inputMotherName" placeholder="Mãe" style="text-transform: uppercase">
                     </div>
                     <div class="form-group">
                         <label for="inputMotherEmail">Email da Mãe</label>
                         <input type="email" class="form-control" id="inputMotherEmail" placeholder="Email da Mãe">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMotherBDay">Aniversário da Mãe</label>
+                        <input type="date" class="form-control" id="inputMotherBDay" style="text-transform: uppercase;">
                     </div>
                 </div>
                 <!-- /.box-body -->

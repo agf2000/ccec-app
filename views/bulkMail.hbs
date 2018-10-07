@@ -1,0 +1,109 @@
+<!-- Main content -->
+<section class="content">
+    <form data-toggle="validator" role="form">
+        <div>
+            <label for="sel2EmailTemplates">
+                Escolher o assunto:
+
+                <select id="sel2EmailTemplates" class="form-control" style="width: 100%;" required>
+                    <option></option>
+                </select>
+            </label>
+
+            <label for="sel2Grades">
+                &nbsp; Séries:
+
+                <select id="sel2Grades" multiple="multiple" class="form-control" style="width: 100%;">
+                    <option></option>
+                </select>
+            </label>
+
+            <label for="sel2Shifts">
+                &nbsp; Turnos:
+
+                <select id="sel2Shifts" multiple="multiple" class="form-control" style="width: 100%;">
+                    <option></option>
+                </select>
+            </label>
+            &nbsp; &nbsp;
+            <label for="chkBoxStudents" class="checkbox-inline">
+                <input id="chkBoxStudents" type="checkbox" value="" checked><strong>Alunos</strong>
+            </label>
+
+            <label for="chkBoxFathers" class="checkbox-inline">
+                <input id="chkBoxFathers" type="checkbox" value="" checked><strong>Pais</strong>
+            </label>
+
+            <label for="chxBokMothers" class="checkbox-inline">
+                <input id="chkBoxMothers" type="checkbox" value="" checked><strong>Mães</strong>
+            </label>
+            &nbsp; &nbsp;
+            <button id="btnApply" class="btn btn-default">Aplicar</button>
+            &nbsp; &nbsp;
+            <label id="lblStudents"></label>
+        </div>
+
+        <!-- Default box -->
+        <div class="box box-solid">
+            <div class="box-body">
+                <textarea id="textareaTemplate" class="textarea">
+                 Escolher o conteúdo do email...
+            </textarea>
+                <div id="headerPreview" class="oem">
+                </div>
+                <div id="bodyPreview" class="oem">
+                </div>
+                <div id="footerPreview" class="oem">
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="checkbox hidden">
+                    <label>
+                        <input type="checkbox" name="chkSingle" id="chkSingle">
+                        <strong>Enviar conteúdo</strong>
+                    </label>
+                </div>
+                <button id="btnOpenUpload" class="btn btn-info">
+                    <sapn class="fa fa-cloud-upload"></sapn> &nbsp;Anéxos
+                </button>
+                <button id="btnSend" type="submit" class="btn btn-primary">
+                    <span class="fa fa-send-o"></span> &nbsp; Enviar</button>
+            </div>
+        </div>
+        <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+
+        <!-- Files modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="filesModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Fazer upload de anexos</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{>fileBrowser}}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btnUploadFiles" class="btn btn-primary">
+                            <sapn class="fa fa-cloud-upload"></sapn> &nbsp; Salvar arquivo(s)
+                        </button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </form>
+</section>
+<!-- /.content -->
+
+<script>
+    let userInfo = "{{json user}}".replace(/&quot;/g, '"');
+</script>

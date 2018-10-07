@@ -1347,8 +1347,10 @@ exports.removeHistory = function (req, res, sentLogId) {
 // vscode-fold=42
 exports.getStudents = function (req, res) {
     try {
-        let sqlInst = "select * ";
-        sqlInst += "from students ";
+        let sqlInst = `select [portalId], [studentId], [studentCode], [studentGrade], [studentName], [studentEmail], 
+                      isnull([studentBDay], null) as studentBDay , [studentShift], [fatherName], [fatherEmail],
+                      isnull([fatherBDay], null) as fatherBDay, [motherName], [motherEmail], isnull([motherBDay], null) as motherBDay,
+                      [createdOnDate], [createdByUser], [modifiedOnDate], [modifiedByUser] from students `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {
@@ -1376,9 +1378,33 @@ exports.addStudent = function (req, res, reqBody) {
         if (data) {
             let sqlInst = "declare @id int; "
 
-            sqlInst += "insert into students (portalId, studentcode, studentname, studentgrade, fathername, fatheremail, mothername, motheremail, createdbyuser, createdondate";
+            sqlInst += "insert into students (portalId, studentcode, studentname, studentgrade, studentshift, studentemail,  fathername, fatheremail, mothername, motheremail, createdbyuser, createdondate";
 
-            sqlInst += `) values (${data.portalId}, '${data.studentCode}', '${data.studentName}', '${data.studentGrade}', '${data.fatherName}', '${data.fatherEmail}', '${data.motherName}', '${data.motherEmail}', ${data.createdByUser}, getdate()`;
+            if (data.studentBDay) {
+                sqlInst += `, studentbday`
+            }
+
+            if (data.fatherBDay) {
+                sqlInst += `, fatherbday`
+            }
+
+            if (data.motherBDay) {
+                sqlInst += `, motherbday`
+            }
+
+            sqlInst += `) values (${data.portalId}, '${data.studentCode}', '${data.studentName}', '${data.studentGrade}', '${data.studentShift}', '${data.studentEmail}', '${data.fatherName}', '${data.fatherEmail}', '${data.motherName}', '${data.motherEmail}', ${data.createdByUser}, getdate()`;
+
+            if (data.studentBDay) {
+                sqlInst += `, '${studentBDay}'`
+            }
+
+            if (data.fatherBDay) {
+                sqlInst += `, '${fatherBDay}'`
+            }
+
+            if (data.motherBDay) {
+                sqlInst += `, '${motherBDay}'`
+            }
 
             sqlInst += "); set @id = scope_identity(); ";
 
@@ -1414,7 +1440,20 @@ exports.updateStudent = function (req, res, reqBody) {
         let data = reqBody;
         if (data) {
 
-            let sqlInst = `update students set studentname = '${data.studentName}', studentcode = '${data.studentCode}', studentGrade = '${data.studentGrade}', fathername = '${data.fatherName}', fatheremail = '${data.fatherEmail}', mothername = '${data.motherName}', motheremail = '${data.motherEmail}' where studentid = ${data.studentId}; `;
+            let sqlInst = `update students set studentname = '${data.studentName}', studentcode = '${data.studentCode}', studentgrade = '${data.studentGrade}', 
+            studentemail = '${data.studentEmail}', studentshift = '${data.studentShift}', fathername = '${data.fatherName}', 
+            fatheremail = '${data.fatherEmail}', mothername = '${data.motherName}', motheremail = '${data.motherEmail}', modifiedbyuser = ${data.modifiedByUser}, modifiedondate = getdate() `;
+
+            if (data.studentBDay)
+                sqlInst += ", studentbday = '" + data.studentBDay + "' ";
+
+            if (data.fatherBDay)
+                sqlInst += ", fatherbday = '" + data.fatherBDay + "' ";
+
+            if (data.motherBDay)
+                sqlInst += ", motherbday = '" + data.motherBDay + "' ";
+
+            sqlInst += `where studentid = ${data.studentId}; `;
 
             db.querySql(sqlInst, function (result, err) {
                 if (err) {
@@ -1462,4 +1501,95 @@ exports.removeStudent = function (req, res, studentId) {
             ex.message
         );
     }
+};
+
+// Gets students mailing list
+// vscode-fold=46
+exports.getStudentsMailList = function (req, res, reqBody, cb) {
+    try {
+        if (!reqBody) throw new Error("Input not valid");
+        let data = reqBody;
+        if (data) {
+            let grades = '',
+                shifts = '',
+                sqlInst = '';
+
+            _.forEach(JSON.parse(data.studentGrade), function (grd) {
+                grades += `${grd},`;
+            });
+
+            _.forEach(JSON.parse(data.studentShift), function (grd) {
+                shifts += `${grd},`;
+            });
+
+            sqlInst += 'declare @grades varchar(8000),  @shifts varchar(8000); ';
+
+            sqlInst += `set @grades = '${grades};' `;
+            sqlInst += `set @shifts = '${shifts};' `;
+
+            sqlInst += `delete from studentids; 
+
+            if ('${data.students}' = 'true')
+                insert into studentids (id)
+                select s.[studentid]
+                from students s
+                where isnull(s.studentemail, '') < > '';
+
+            if ('${data.fathers}' = 'true')
+                insert into studentids (id)
+                select s.[studentid]
+                from students s
+                where isnull(s.fatheremail, '') < > '';
+
+            if ('${data.mothers}' = 'true')
+                insert into studentids (id)
+                select s.[studentid]
+                from students s
+                where isnull(s.motheremail, '') < > '';
+
+            select s.[studentId], s.[studentCode], s.[studentGrade], s.[studentName], s.[studentEmail], s.[fatherEmail], s.[motherEmail]
+                from students s
+            inner join studentids ids on ids.id = s.studentid
+            where ('${data.term}' = '' or s.studentname like '${data.term}%') `;
+
+            if (grades.length > 2)
+                sqlInst += `and ',' + @grades + ',' like '%,' + convert(varchar(8000), isnull(studentgrade, '')) + ',%' `;
+
+            if (shifts.length > 2)
+                sqlInst += `and ',' + @shifts + ',' like '%,' + convert(varchar(8000), isnull(studentshift, '')) + ',%' `;
+
+            sqlInst += ';';
+
+            sqlInst += `select s.sponsorId, s.sponsorName, sponsorUrl, 
+                        (select top 1 f.[filename] from files f where f.fileid = s.fileid) as sponsorLogo,
+                        s.fileId from sponsors s
+                        where (s.datestart is null or getdate() > s.datestart) 
+	                    and (s.datestart is null or s.dateend > getdate());`;
+
+            db.querySql(sqlInst, function (data, err) {
+                if (err) {
+                    console.log(err.message);
+                    cb({
+                        error: err.message
+                    });
+                } else {
+                    cb({
+                        response: {
+                            students: data.recordsets[0],
+                            sponsors: data.recordsets[1]
+                        }
+                    })
+                }
+            });
+        } else {
+            // throw new Error("Input not valid");
+            cb({
+                error: `Input not valid (status: 500)`
+            });
+        }
+    } catch (ex) {
+        cb({
+            error: ex.message
+        });
+    };
 };
