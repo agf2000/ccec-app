@@ -48,7 +48,6 @@ $(function () {
             cache: true
         },
         dropdownAutoWidth: true,
-        width: 'auto',
         minimumInputLength: 1,
         escapeMarkup: function (markup) {
             return markup;
