@@ -712,20 +712,17 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
 
             _.forEach(results.response.students, function (person) {
 
-                let name = '', email = '';
+                let email = '';
 
                 if (person.studentEmail !== '') {
-                    name = person.studentName;
                     email = person.studentEmail;
                 } else if (person.fatherEmail !== '') {
-                    name = person.fatherName;
                     email = person.fatherEmail;
                 } else if (person.motherEmail !== '') {
-                    name = person.motherName;
                     email = person.motherEmail;
                 }
 
-                content = req.body.content.replace('[RESPONSAVEL]', name);
+                content = req.body.content.replace('[RESPONSAVEL]', person.name);
 
                 content = content.replace('[PATROCINADOR]', sponsors);
 
@@ -750,7 +747,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                     email.send({
                         text: content,
                         from: "Colégio CEC <contato@riw.com.br>",
-                        to: '"' + name + '" <' + email + '>',
+                        to: '"' + person.name + '" <' + email + '>',
                         subject: req.body.subject,
                         attachment: attachArray
                     }, function (emailErr, message) {
@@ -760,7 +757,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                             sent = true;
                         }
 
-                        apiController.addEmailLog(req, res, 0, sent, email, attachArray.length, name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, email, attachArray.length, person.name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) return console.error(cb.error)
 
                             counter++;
@@ -784,7 +781,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                     email.send({
                         text: content,
                         from: "Colégio CEC <contato@riw.com.br>",
-                        to: '"' + name + '" <' + email + '>',
+                        to: '"' + person.name + '" <' + email + '>',
                         subject: req.body.subject,
                         attachment: [{
                             data: `<html>${content}</html>`,
@@ -797,7 +794,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                             sent = true;
                         }
 
-                        apiController.addEmailLog(req, res, 0, sent, email, 0, name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, email, 0, person.name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) console.error(cb.error);
 
                             counter = counter - 1;
