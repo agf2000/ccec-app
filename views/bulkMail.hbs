@@ -27,20 +27,28 @@
             </label>
             &nbsp; &nbsp;
             <label for="chkBoxStudents" class="checkbox-inline">
-                <input id="chkBoxStudents" type="checkbox" value="" checked><strong>Alunos</strong>
+                <input id="chkBoxStudents" name="sendTo" type="checkbox" value="" checked><strong>Alunos</strong>
             </label>
 
             <label for="chkBoxFathers" class="checkbox-inline">
-                <input id="chkBoxFathers" type="checkbox" value="" checked><strong>Pais</strong>
+                <input id="chkBoxFathers" name="sendTo" type="checkbox" value="" checked><strong>Pais</strong>
             </label>
 
             <label for="chxBokMothers" class="checkbox-inline">
-                <input id="chkBoxMothers" type="checkbox" value="" checked><strong>Mães</strong>
+                <input id="chkBoxMothers" name="sendTo" type="checkbox" value="" checked><strong>Mães</strong>
             </label>
+
             &nbsp; &nbsp;
             <button id="btnApply" class="btn btn-default">Aplicar</button>
             &nbsp; &nbsp;
-            <label id="lblStudents"></label>
+
+            <label for="sel2Students">
+                &nbsp; Destinatários:
+
+                <select id="sel2Students" class="form-control" style="width: 100%;">
+                    <option></option>
+                </select>
+            </label>
         </div>
 
         <!-- Default box -->

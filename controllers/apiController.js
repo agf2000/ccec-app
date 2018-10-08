@@ -1527,30 +1527,39 @@ exports.getStudentsMailList = function (req, res, reqBody, cb) {
             sqlInst += `set @grades = '${grades};' `;
             sqlInst += `set @shifts = '${shifts};' `;
 
-            sqlInst += `delete from studentids; 
+            sqlInst += 'delete from studentids; ';
 
-            if ('${data.students}' = 'true')
-                insert into studentids (id)
-                select s.[studentid]
-                from students s
-                where isnull(s.studentemail, '') < > '';
+            if (data.students == 'true')
+                sqlInst += `insert into studentids (id)
+                    select s.[studentid]
+                    from students s
+                    where isnull(s.studentemail, '') < > ''; `;
 
-            if ('${data.fathers}' = 'true')
-                insert into studentids (id)
-                select s.[studentid]
-                from students s
-                where isnull(s.fatheremail, '') < > '';
+            if (data.fathers == 'true')
+                sqlInst += `insert into studentids (id)
+                    select s.[studentid]
+                    from students s
+                    where isnull(s.fatheremail, '') < > ''; `;
 
-            if ('${data.mothers}' = 'true')
-                insert into studentids (id)
-                select s.[studentid]
-                from students s
-                where isnull(s.motheremail, '') < > '';
+            if (data.mothers == 'true')
+                sqlInst += `insert into studentids (id)
+                    select s.[studentid]
+                    from students s
+                    where isnull(s.motheremail, '') < > ''; `;
 
-            select s.[studentId], s.[studentCode], s.[studentGrade], s.[studentName], s.[studentEmail], s.[fatherEmail], s.[motherEmail]
-                from students s
-            inner join studentids ids on ids.id = s.studentid
-            where ('${data.term}' = '' or s.studentname like '${data.term}%') `;
+            sqlInst += 'select s.[studentId], s.[studentCode], s.[studentGrade], s.[studentEmail], s.[studentName], s.[fatherName], s.[fatherEmail], s.[motherName], s.[motherEmail]';
+
+            if (data.fathers == 'true') {
+                sqlInst += ', s.[fatherName] as name ';
+            } else if (data.mothers == 'true') {
+                sqlInst += ', s.[motherName] as name ';
+            } else {
+                sqlInst += ', s.[studentName] as name ';
+            }
+
+            sqlInst += `from students s
+                inner join studentids ids on ids.id = s.studentid
+                where ('${data.term}' = '*' or s.studentname like '${data.term}%') `;
 
             if (grades.length > 2)
                 sqlInst += `and ',' + @grades + ',' like '%,' + convert(varchar(8000), isnull(studentgrade, '')) + ',%' `;

@@ -6,15 +6,23 @@ $(function () {
 
     $('#sel2Students').select2({
         placeholder: 'Todos alunos',
-        language: "pt-BR",
+        language: {
+            locale: "pt-BR",
+            // You can find all of the options in the language files provided in the
+            // build. They all must be functions that return the string that should be
+            // displayed.
+            inputTooShort: function () {
+                return "Digite * pra ver todos...";
+            }
+        },
         ajax: {
             url: '/api/studentsMailingList',
             dataType: 'json',
             data: function (params) {
                 return {
                     term: params.term,
-                    studentGrade: $('#sel2Grades').val() || "''",
-                    studentShift: $('#sel2Shifts').val() || "''",
+                    studentGrade: JSON.stringify($('#sel2Grades').val()),
+                    studentShift: JSON.stringify($('#sel2Shifts').val()),
                     students: $('#chkBoxStudents').is(':checked'),
                     fathers: $('#chkBoxFathers').is(':checked'),
                     mothers: $('#chkBoxMothers').is(':checked'),
@@ -28,8 +36,8 @@ $(function () {
                 $.each(data.students.response.students, function (i, v) {
                     let o = {};
                     o.id = v.studentId;
-                    o.name = v.studentName;
-                    o.value = v.studenttId;
+                    o.name = v.name;
+                    o.value = v.studentId;
                     results.push(o);
                 });
 
@@ -335,7 +343,7 @@ $(function () {
         $this.prop('disabled', true);
 
         let params = {
-            term: '',
+            term: '*',
             studentGrade: JSON.stringify($('#sel2Grades').val()),
             studentShift: JSON.stringify($('#sel2Shifts').val()),
             students: $('#chkBoxStudents').is(':checked'),
@@ -451,11 +459,19 @@ $(function () {
     });
 
     CKEDITOR.replace('textareaTemplate');
+
+    $('input[name="sendTo"]').click(function (e) {
+        let $this = $(this);
+        if (!$('input[name="sendTo"]:checked').length) {
+            alert('Favor escolher uma opção');
+            $this.prop('checked', true);
+        }
+    });
 });
 
 function getStudents() {
     let params = {
-        term: "",
+        term: '*',
         studentGrade: JSON.stringify($('#sel2Grades').val()),
         studentShift: JSON.stringify($('#sel2Shifts').val()),
         students: $('#chkBoxStudents').is(':checked'),
@@ -464,7 +480,7 @@ function getStudents() {
         studentId: $('#sel2Students').val() || 0
     };
     $.getJSON('/api/studentsMailingList', params, function (data) {
-        $('#lblStudents').html(`${data.students.response.students.length} destinatário(s) selecionado</option>`);
+        $('#sel2Students').append(`<option value="0" selected>${data.students.response.students.length} destinatário(s) selecionado</option>`);
     });
 };
 
