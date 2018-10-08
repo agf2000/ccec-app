@@ -62,6 +62,12 @@ $(function () {
         }
     });
 
+    $('#sel2Students').on('select2:open', function (e) {
+        setTimeout(() => {
+            $('.select2-search__field').focus();
+        }, 200);
+    });
+
     var grades = [{
             id: '0',
             text: "Todas",
