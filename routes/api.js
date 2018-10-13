@@ -707,7 +707,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
             let sponsors = '';
 
             _.forEach(results.response.sponsors, function (sponsor) {
-                sponsors += `<a href="http://${sponsor.sponsorUrl}"><img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" /></a><br />`;
+                sponsors += `<a href="http://${sponsor.sponsorUrl}"><img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" max-width="300" max-height="100"  /></a><br />`;
             });
 
             // let emailAddress = '';
