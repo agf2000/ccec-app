@@ -332,6 +332,7 @@ $(function () {
                                 studentGrade: data.studentGrade,
                                 studentShift: data.studentShift,
                                 studentBDay: data.studentBDay,
+                                studentEmail: data.studentEmail,
                                 fatherName: data.fatherName,
                                 fatherEmail: data.fatherEmail,
                                 fatherBDay: data.fatherBDay,

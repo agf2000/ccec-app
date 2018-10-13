@@ -1395,15 +1395,15 @@ exports.addStudent = function (req, res, reqBody) {
             sqlInst += `) values (${data.portalId}, '${data.studentCode}', '${data.studentName}', '${data.studentGrade}', '${data.studentShift}', '${data.studentEmail}', '${data.fatherName}', '${data.fatherEmail}', '${data.motherName}', '${data.motherEmail}', ${data.createdByUser}, getdate()`;
 
             if (data.studentBDay) {
-                sqlInst += `, '${studentBDay}'`
+                sqlInst += `, '${data.studentBDay}'`
             }
 
             if (data.fatherBDay) {
-                sqlInst += `, '${fatherBDay}'`
+                sqlInst += `, '${data.fatherBDay}'`
             }
 
             if (data.motherBDay) {
-                sqlInst += `, '${motherBDay}'`
+                sqlInst += `, '${data.motherBDay}'`
             }
 
             sqlInst += "); set @id = scope_identity(); ";

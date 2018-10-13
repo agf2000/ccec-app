@@ -679,7 +679,7 @@ router.put('/student', ensureAuthenticated, function (req, res, next) {
 // Removes student
 // vscode-fold=47
 router.delete('/student', function (req, res) {
-    apiController.removeStudent(req, res, req.query.studentId);
+    apiController.removeStudent(req, res, req.body.studentId);
 });
 
 // Gets list of students mailing list
