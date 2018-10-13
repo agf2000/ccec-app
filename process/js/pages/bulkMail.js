@@ -6,6 +6,7 @@ $(function () {
 
     $('#sel2Students').select2({
         placeholder: 'Todos alunos',
+        allowClear: true,
         language: {
             locale: "pt-BR",
             // You can find all of the options in the language files provided in the
@@ -13,6 +14,9 @@ $(function () {
             // displayed.
             inputTooShort: function () {
                 return "Digite * pra ver todos...";
+            },
+            noResults: function () {
+                return "Nenhum resultado encontrado"
             }
         },
         ajax: {
@@ -66,6 +70,20 @@ $(function () {
         setTimeout(() => {
             $('.select2-search__field').focus();
         }, 200);
+    }).on('select2:unselect', function (e) {
+        setTimeout(function () {
+            $('#sel2Students').select2('close');
+        }, 300);
+
+        $('#sel2Grades').prop('disabled', false);
+        $('#sel2Shifts').prop('disabled', false);
+        // $('input[name="sendTo"]').prop('disabled', false);
+        $('#btnApply').prop('disabled', false);
+    }).on('select2:select', function (e) {
+        $('#sel2Grades').prop('disabled', true);
+        $('#sel2Shifts').prop('disabled', true);
+        // $('input[name="sendTo"]').prop('disabled', true);
+        $('#btnApply').prop('disabled', true);
     });
 
     var grades = [{
@@ -140,7 +158,7 @@ $(function () {
     ];
 
     $('#sel2Grades').select2({
-        placeholder: 'Selecionar',
+        // placeholder: 'Selecionar',
         language: "pt-BR",
         data: grades,
         minimumResultsForSearch: Infinity,
@@ -177,7 +195,7 @@ $(function () {
     ];
 
     $('#sel2Shifts').select2({
-        placeholder: 'Selecionar',
+        // placeholder: 'Selecionar',
         language: "pt-BR",
         data: shifts,
         minimumResultsForSearch: Infinity,

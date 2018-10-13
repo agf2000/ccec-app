@@ -1530,44 +1530,64 @@ exports.getStudentsMailList = function (req, res, reqBody, cb) {
             sqlInst += 'delete from studentids; ';
 
             if (data.students == 'true')
-                sqlInst += `insert into studentids (id)
-                    select s.[studentid]
+                sqlInst += `insert into studentids (id, name, email)
+                    select s.studentid, isnull(s.studentname, ''), isnull(s.studentemail, '')
                     from students s
                     where isnull(s.studentemail, '') < > ''; `;
 
             if (data.fathers == 'true')
-                sqlInst += `insert into studentids (id)
-                    select s.[studentid]
+                sqlInst += `insert into studentids (id, name, email)
+                    select s.studentid, isnull(s.fathername, ''), isnull(s.fatheremail, '')
                     from students s
                     where isnull(s.fatheremail, '') < > ''; `;
 
             if (data.mothers == 'true')
-                sqlInst += `insert into studentids (id)
-                    select s.[studentid]
+                sqlInst += `insert into studentids (id, name, email)
+                    select s.studentid, isnull(s.mothername, ''), isnull(s.motheremail, '')
                     from students s
                     where isnull(s.motheremail, '') < > ''; `;
 
-            sqlInst += 'select s.[studentId], s.[studentCode], s.[studentGrade], s.[studentEmail], s.[studentName], s.[fatherName], s.[fatherEmail], s.[motherName], s.[motherEmail]';
+            sqlInst += `select s.[studentId], s.[studentCode], s.[studentGrade], ids.name, isnull(ids.email, '') as emailAddress `;
 
-            if (data.fathers == 'true') {
-                sqlInst += ', s.[fatherName] as name ';
-            } else if (data.mothers == 'true') {
-                sqlInst += ', s.[motherName] as name ';
-            } else {
-                sqlInst += ', s.[studentName] as name ';
-            }
+            // if (data.students == 'true') {
+            //     sqlInst += ', s.[studentName] as name ';
+            // } else if (data.fathers == 'true') {
+            //     sqlInst += ', s.[fatherName] as name ';
+            // } else if (data.mothers == 'true') {
+            //     sqlInst += ', s.[motherName] as name ';
+            // }
 
             sqlInst += `from students s
                 inner join studentids ids on ids.id = s.studentid
-                where ('${data.term}' = '*' or s.studentname like '${data.term}%') `;
+                where `;
 
-            if (grades.length > 2)
-                sqlInst += `and ',' + @grades + ',' like '%,' + convert(varchar(8000), isnull(studentgrade, '')) + ',%' `;
+            if (data.studentId !== "0") {
+                sqlInst += `studentid = ${data.studentId} `;
+            } else {
+                if (data.students == 'true') {
+                    sqlInst += `('${data.term}' = '*' or s.studentname like '${data.term}%') `;
+                } else if (data.fathers == 'true') {
+                    sqlInst += `('${data.term}' = '*' or s.fathername like '${data.term}%') `;
+                } else if (data.mothers == 'true') {
+                    sqlInst += `('${data.term}' = '*' or s.mothername like '${data.term}%') `;
+                }
 
-            if (shifts.length > 2)
-                sqlInst += `and ',' + @shifts + ',' like '%,' + convert(varchar(8000), isnull(studentshift, '')) + ',%' `;
+                if (grades.length > 2)
+                    sqlInst += `and ',' + @grades + ',' like '%,' + convert(varchar(8000), isnull(studentgrade, '')) + ',%' `;
 
-            sqlInst += ';';
+                if (shifts.length > 2)
+                    sqlInst += `and ',' + @shifts + ',' like '%,' + convert(varchar(8000), isnull(studentshift, '')) + ',%' `;
+
+                // if (data.students == 'true') {
+                //     sqlInst += 'order by studentname';
+                // } else if (data.fathers == 'true') {
+                //     sqlInst += 'order by fathername';
+                // } else if (data.mothers == 'true') {
+                //     sqlInst += 'order by mothername';
+                // }
+            }
+
+            sqlInst += 'order by name;';
 
             sqlInst += `select s.sponsorId, s.sponsorName, sponsorUrl, 
                         (select top 1 f.[filename] from files f where f.fileid = s.fileid) as sponsorLogo,

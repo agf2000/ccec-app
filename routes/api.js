@@ -710,17 +710,24 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                 sponsors += `<a href="http://${sponsor.sponsorUrl}"><img src="http://ccecapp.riw.com.br/uploads/logos/${sponsor.sponsorId}/large/${sponsor.sponsorLogo}" title="${sponsor.sponsorName}" /></a><br />`;
             });
 
+            // let emailAddress = '';
+
+            // let studentsSent = false,
+            //     fathersSent = false,
+            //     mothersSent = false;
+
             _.forEach(results.response.students, function (person) {
 
-                let email = '';
-
-                if (person.studentEmail !== '') {
-                    email = person.studentEmail;
-                } else if (person.fatherEmail !== '') {
-                    email = person.fatherEmail;
-                } else if (person.motherEmail !== '') {
-                    email = person.motherEmail;
-                }
+                // if (req.body.students == "true" && !studentsSent && req.body.students !== emailAddress) {
+                //     emailAddress = person.studentEmail;
+                //     studentsSent = true;
+                // } else if (req.body.fathers == "true" && !fathersSent && req.body.fathers !== emailAddress) {
+                //     emailAddress = person.fatherEmail;
+                //     fathersSent = true;
+                // } else if (req.body.mothers == "true" && !mothersSent && req.body.mothers !== emailAddress) {
+                //     emailAddress = person.motherEmail;
+                //     mothersSent = true;
+                // }
 
                 content = req.body.content.replace('[RESPONSAVEL]', person.name);
 
@@ -747,7 +754,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                     email.send({
                         text: content,
                         from: "Colégio CEC <contato@riw.com.br>",
-                        to: '"' + person.name + '" <' + email + '>',
+                        to: '"' + person.name + '" <' + person.emailAddress + '>',
                         subject: req.body.subject,
                         attachment: attachArray
                     }, function (emailErr, message) {
@@ -757,7 +764,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                             sent = true;
                         }
 
-                        apiController.addEmailLog(req, res, 0, sent, email, attachArray.length, person.name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, person.emailAddress, attachArray.length, person.name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) return console.error(cb.error)
 
                             counter++;
@@ -781,7 +788,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                     email.send({
                         text: content,
                         from: "Colégio CEC <contato@riw.com.br>",
-                        to: '"' + person.name + '" <' + email + '>',
+                        to: '"' + person.name + '" <' + person.emailAddress + '>',
                         subject: req.body.subject,
                         attachment: [{
                             data: `<html>${content}</html>`,
@@ -794,7 +801,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                             sent = true;
                         }
 
-                        apiController.addEmailLog(req, res, 0, sent, email, 0, person.name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
+                        apiController.addEmailLog(req, res, 0, sent, person.emailAddress, 0, person.name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) console.error(cb.error);
 
                             counter = counter - 1;
