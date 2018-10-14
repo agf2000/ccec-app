@@ -222,10 +222,10 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/sweetalert2/css/sweetalert2.min.css',
 			'/lib/jsgrid/css/jsgrid.min.css',
 			'/lib/jsgrid/css/jsgrid-theme.min.css',
-			'/lib/pikaday/css/pikaday.css'
+			'/lib/pikaday/css/pikaday.css',
+			'/lib/pages/sponsors.css'
 		],
 		script: [
-			'/js/pages/sponsors.js',
 			'/lib/select2/js/select2.full.min.js',
 			'/lib/select2/i18n/pt-BR.js',
 			'/lib/sweetalert2/js/sweetalert2.min.js',
@@ -233,7 +233,8 @@ router.get('/patrocinadores', ensureAuthenticated, function (req, res, next) {
 			'/lib/jsgrid/i18n/jsgrid-pt-br.js',
 			'/lib/pikaday/js/pikaday.js',
 			'/lib/hotkeys-js/js/hotkeys.min.js',
-			'/lib/bootstrap-validator/js/validator.min.js'
+			'/lib/bootstrap-validator/js/validator.min.js',
+			'/js/pages/sponsors.js'
 		]
 	});
 });
