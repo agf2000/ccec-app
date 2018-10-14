@@ -702,7 +702,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
             let content = '',
                 sent = 0,
                 notSent = 0,
-                counter = results.response.students.length;
+                counter = 0;
 
             let sponsors = '';
 
