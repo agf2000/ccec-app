@@ -6,9 +6,21 @@ $(function () {
     kendo.culture("pt-BR");
     kendo.culture().calendar.firstDay = 1
 
+    $('#sel2StudentFilter').select2({
+        width: 'resolve'
+    });
+
+    $('#sel2FatherFilter').select2({
+        width: 'resolve'
+    });
+
+    $('#sel2MotherFilter').select2({
+        width: 'resolve'
+    });
+
     var grades = [{
             id: 0,
-            text: 'Selecione uma série',
+            text: 'Selecionar',
             selected: true
         },
         {
@@ -97,7 +109,7 @@ $(function () {
 
     var shifts = [{
             id: 0,
-            text: 'Selecione um turno',
+            text: 'Selecionar',
             selected: true
         },
         {
@@ -397,13 +409,15 @@ $(function () {
         width: '100%',
         height: 'auto',
         autoload: true,
+        pageLoading: false,
         confirmDeleting: true,
-        paging: false,
+        paging: true,
         pageSize: 10,
         pageButtonCount: 5,
         inserting: false,
         editing: false,
         sorting: true,
+        filtering: true,
         // data: data, // an array of data
         ajaxGridOptions: {
             cache: false
@@ -411,11 +425,18 @@ $(function () {
         controller: {
             loadData: function (filter) {
                 var def = $.Deferred();
+                if ($('#sel2StudentFilter').val())
+                    filter.studentFilter = $('#sel2StudentFilter').val();
+                if ($('#sel2FatherFilter').val())
+                    filter.fatherFilter = $('#sel2FatherFilter').val();
+                if ($('#sel2StudentFilter').val())
+                    filter.motherFilter = $('#sel2MotherFilter').val();
                 $.ajax({
                     url: '/api/students',
                     type: "GET",
                     contentType: "application/json; charset=utf-8",
-                    dataType: "json"
+                    dataType: "json",
+                    data: filter
                 }).done(function (item) {
                     // console.log(item);
                     def.resolve(item);
@@ -506,13 +527,29 @@ $(function () {
             }, {
                 name: "studentGrade",
                 title: "Série",
-                type: "text",
-                width: 50
+                type: "select",
+                width: 50,
+                items: grades,
+                valueField: "text",
+                textField: "text",
+                filterTemplate: function () {
+                    let $select = jsGrid.fields.select.prototype.filterTemplate.call(this);
+                    // $select.prepend($("<option>").prop("value", "0").text("Todos"));
+                    return $select;
+                }
             }, {
                 name: "studentShift",
                 title: "Turno",
-                type: "text",
-                width: 60
+                type: "select",
+                width: 50,
+                items: shifts,
+                valueField: "text",
+                textField: "text",
+                filterTemplate: function () {
+                    let $select = jsGrid.fields.select.prototype.filterTemplate.call(this);
+                    // $select.prepend($("<option>").prop("value", "0").text("Todos"));
+                    return $select;
+                }
             }, {
                 name: "studentEmail",
                 title: "Email do Aluno",
@@ -551,6 +588,15 @@ $(function () {
                 type: "control"
             }
         ]
+    });
+
+    $('#btnApplyFilter').click(function (e) {
+        if (e.clientX === 0) {
+            return false;
+        }
+        e.preventDefault();
+
+        $("#jsGrid").jsGrid("loadData");
     });
 });
 

@@ -1350,7 +1350,41 @@ exports.getStudents = function (req, res) {
         let sqlInst = `select [portalId], [studentId], [studentCode], [studentGrade], [studentName], [studentEmail], 
                       isnull([studentBDay], null) as studentBDay , [studentShift], [fatherName], [fatherEmail],
                       isnull([fatherBDay], null) as fatherBDay, [motherName], [motherEmail], isnull([motherBDay], null) as motherBDay,
-                      [createdOnDate], [createdByUser], [modifiedOnDate], [modifiedByUser] from students `;
+                      [createdOnDate], [createdByUser], [modifiedOnDate], [modifiedByUser]
+                      from students
+                      where portalId = 0 `;
+
+        if (req.query.studentFilter) {
+            if (req.query.studentFilter == 'studentEmailYes') {
+                sqlInst += `and isnull(studentemail, '') <> '' `;
+            } else if (req.query.studentFilter == 'studentEmailNo') {
+                sqlInst += `and isnull(studentemail, '') = '' `;
+            }
+        }
+        if (req.query.fatherFilter) {
+            if (req.query.fatherFilter == 'fatherEmailYes') {
+                sqlInst += `and isnull(fatheremail, '') <> '' `;
+            } else if (req.query.fatherFilter == 'fatherEmailNo') {
+                sqlInst += `and isnull(fatheremail, '') = '' `;
+            }
+        }
+        if (req.query.motherFilter) {
+            if (req.query.motherFilter == 'fatherEmailYes') {
+                sqlInst += `and isnull(motheremail, '') <> '' `;
+            } else if (req.query.motherFilter == 'motherEmailNo') {
+                sqlInst += `and isnull(fatheremail, '') = '' `;
+            }
+        }
+        if (req.query.studentCode)
+            sqlInst += `and studentcode like '${req.query.studentCode}%' `;
+        if (req.query.studentName)
+            sqlInst += `and studentName like '${req.query.studentName}%' `;
+        if (req.query.studentGrade !== 'Selecionar')
+            sqlInst += `and studentGrade = '${req.query.studentGrade}' `;
+        if (req.query.studentShift !== 'Selecionar')
+            sqlInst += `and studentShift = '${req.query.studentShift}' `;
+        if (req.query.studentEmail)
+            sqlInst += `and studentEmail like '${req.query.studentEmail}%' `;
 
         db.querySql(sqlInst, function (data, err) {
             if (err) {
@@ -1531,19 +1565,19 @@ exports.getStudentsMailList = function (req, res, reqBody, cb) {
 
             if (data.students == 'true')
                 sqlInst += `insert into studentids (id, name, email)
-                    select s.studentid, isnull(s.studentname, ''), isnull(s.studentemail, '')
+                    select s.studentid, isnull(s.studentname, '') + ' (Aluno)', isnull(s.studentemail, '')
                     from students s
                     where isnull(s.studentemail, '') < > ''; `;
 
             if (data.fathers == 'true')
                 sqlInst += `insert into studentids (id, name, email)
-                    select s.studentid, isnull(s.fathername, ''), isnull(s.fatheremail, '')
+                    select s.studentid, isnull(s.fathername, '') + ' (Pai)', isnull(s.fatheremail, '')
                     from students s
                     where isnull(s.fatheremail, '') < > ''; `;
 
             if (data.mothers == 'true')
                 sqlInst += `insert into studentids (id, name, email)
-                    select s.studentid, isnull(s.mothername, ''), isnull(s.motheremail, '')
+                    select s.studentid, isnull(s.mothername, '') + ' (Mãe)', isnull(s.motheremail, '')
                     from students s
                     where isnull(s.motheremail, '') < > ''; `;
 

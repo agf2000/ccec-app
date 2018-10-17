@@ -772,7 +772,7 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                             counter++;
 
                             if (counter == results.response.students.length) {
-                                fse.remove(path.join(__dirname, '..', 'data/uploads/docs/'), err => {
+                                fse.remove(path.join(__dirname, '..', 'data/uploads/docs'), err => {
                                     if (err) return console.error(err)
 
                                     res.json({
@@ -806,9 +806,9 @@ router.post('/sendBulkEmail', ensureAuthenticated, function (req, res, next) {
                         apiController.addEmailLog(req, res, 0, sent, person.emailAddress, 0, person.name, req.body.subject, moment(message.header.date).format('YYYY-MM-DD HH:mm'), function (cb) {
                             if (cb.error) console.error(cb.error);
 
-                            counter = counter - 1;
+                            counter++;
 
-                            if (counter == 0) {
+                            if (counter == results.response.students.length) {
                                 res.json({
                                     success: "success"
                                 });

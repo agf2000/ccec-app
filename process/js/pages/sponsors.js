@@ -712,9 +712,13 @@ $(function () {
             },
             {
                 name: "sponsorUrl",
+                headerTemplate: "Link",
                 title: "Link",
-                type: "text",
-                width: 150
+                itemTemplate: function (val, item) {
+                    return `<a href="http://${val}" target="_blank">Link</a>`
+                },
+                type: "",
+                sorting: false
             },
             {
                 name: "sponsorCategoryName",
